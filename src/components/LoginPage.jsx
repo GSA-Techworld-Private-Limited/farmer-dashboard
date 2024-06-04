@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import MyContext from "./context/ContextStore";
-
+import logo from "../assets/images/png/gsa.png";
 const LoginPage = () => {
   const navigate = useNavigate();
   const { setAuthenticated } = useContext(MyContext);
@@ -13,7 +13,7 @@ const LoginPage = () => {
   return (
     <div className="bg-white flex items-center justify-center py-20 container min-h-screen">
       <div className="w-[559px] pt-4 px-[50px] pb-11 border border-light-green rounded-3xl">
-        <p className="text-center">logo</p>
+        <img className="mx-auto" src={logo} alt="" />
         <form onSubmit={handleSubmit}>
           <input
             // required

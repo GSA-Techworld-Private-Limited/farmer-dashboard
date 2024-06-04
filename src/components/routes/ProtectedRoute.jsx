@@ -1,12 +1,16 @@
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
 import { useContext } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import MyContext from "../context/ContextStore";
 
-const ProtectedRoute = () => {
+function ProtectedRoute({ redirectPath = "/", children }) {
+  const token = sessionStorage.getItem("refreshToken");
+  const location = useLocation();
   const { authenticated } = useContext(MyContext);
+  if (!token && !authenticated) {
+    return <Navigate to={redirectPath} replace state={{ from: location }} />;
+  }
 
-  return authenticated ? <Outlet /> : <Navigate to="/" />;
-};
+  return children || <Outlet />;
+}
 
 export default ProtectedRoute;

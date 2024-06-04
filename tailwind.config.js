@@ -34,6 +34,11 @@ export default {
       backgroundImage: {
         hero: "linear-gradient(180deg, #3F7E00 0%, #336205 100%)",
         "nav-bg": "linear-gradient(103.57deg, #336205 37.57%, #3F7E00 54.11%)",
+        farmer: "linear-gradient(244.17deg, #00B9F2 7.43%, #1D3FB7 109.05%)",
+        vendors: "linear-gradient(245.13deg, #A5CD39 1.84%, #31D277 86.18%)",
+        nurseries: "linear-gradient(60.81deg, #4D44B5 4.74%, #A8A1FE 84.78%)",
+        employees: "linear-gradient(69.6deg, #FF4444 18.62%, #FE8787 97.37%)",
+        experts: "linear-gradient(69.6deg, #E35C00 18.62%, #FD7B22 97.37%)",
       },
     },
   },

@@ -1,8 +1,34 @@
 .custom_scroll::-webkit-scrollbar {
   width: 8px;
-  background: linear-gradient(180deg, #3f7e00 0%, #336205 100%);
+  background: transparent;
 }
 .custom_scroll::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background: #2a5105;
+}
+.active div {
+  background-color: #2a5105;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 12px;
+  background-color: #e7e4ec;
+}
+.MuiDataGrid-row,
+.css-yrdy0g-MuiDataGrid-columnHeaderRow {
+  gap: 12px;
+}
+.MuiDataGrid-cellOffsetLeft {
+  display: none !important;
+}
+.MuiDataGrid-columnHeader,
+.MuiDataGrid-cell {
+  outline: none !important;
+}
+.css-yrdy0g-MuiDataGrid-columnHeaderRow {
+  background-color: #eaffd4 !important;
+  border: unset !important;
 }
