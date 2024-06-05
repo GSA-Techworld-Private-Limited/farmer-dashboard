@@ -7,7 +7,7 @@ import MyContext from "../context/ContextStore";
 const AddExperts = () => {
   const { setTitle } = useContext(MyContext);
   return (
-    <div className="py-6 px-10 w-full">
+    <div className="py-6 px-10 w-full h-[calc(100vh-76px)] flex flex-col">
       <div className="flex mb-4 justify-between">
         <Link to="/experts">
           <button
@@ -20,7 +20,7 @@ const AddExperts = () => {
         </Link>
         <CommonBtn btntext="+ Add Experts" style="bg-[#FF7D24]" />
       </div>
-      <form>
+      <form className="w-full overflow-auto">
         <div className="flex gap-[70px]">
           <div className="w-full">
             <div className="flex flex-col mb-2">

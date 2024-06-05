@@ -2,3 +2,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.custom-radio {
+  @apply appearance-none w-6 h-6 border-[3px] border-black rounded-full cursor-pointer relative;
+}
+
+.custom-radio:checked::before {
+  content: "";
+  @apply w-3 h-3 bg-[#5DB505] rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
+}
