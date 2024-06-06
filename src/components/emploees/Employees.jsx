@@ -135,8 +135,9 @@ const Employees = () => {
               }
             />
           </div>
-          {columns.map((val) => (
+          {columns.map((val, i) => (
             <div
+              key={i}
               style={{ width: val.width }}
               className="py-3 text-[#444444] font-poppins font-bold text-sm leading-5"
             >
@@ -145,8 +146,11 @@ const Employees = () => {
           ))}
         </div>
         <div className="flex flex-col gap-4 pt-4">
-          {rows.map((val) => (
-            <div className="flex items-center gap-2 hover:bg-[#f3f1f1] duration-300">
+          {rows.map((val, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-2 hover:bg-[#f3f1f1] duration-300"
+            >
               <div className="px-4 h-5">
                 <CheckBox
                   isChecked={checkedItems[val.employee_ID] || false}

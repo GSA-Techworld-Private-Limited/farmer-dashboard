@@ -6,26 +6,22 @@ import MyContext from "../context/ContextStore";
 import CheckBox from "../common/CheckBox";
 const columns = [
   { headerName: "SL. No", width: 64 },
-  { headerName: "Date", width: 82 },
-  { headerName: "Farmer ID", width: 102 },
-  { headerName: "Farmer Name", width: 140 },
-  { headerName: "Contact", width: 107 },
+  { headerName: "Date", width: 99 },
+  { headerName: "Request ID", width: 112 },
+  { headerName: "Farmer Name", width: 145 },
+  { headerName: "Crop Name", width: 104 },
   {
-    headerName: "State",
-    width: 106,
-  },
-  {
-    headerName: "City",
+    headerName: "Variety",
     width: 104,
   },
   {
-    headerName: "Employee ID",
-    width: 104,
+    headerName: "Acres",
+    width: 87,
   },
 
   {
-    headerName: "Crop Added",
-    width: 104,
+    headerName: "Soil Type",
+    width: 107,
   },
   {
     headerName: "Status",
@@ -37,76 +33,66 @@ const rows = [
   {
     id: 1,
     DOJ: "25/09/23",
-    employee_ID: "9498740",
-    farmer_ID: "949870",
-    contact: "9287347823",
-    city: "bengaluru",
+    acres: "Rainy",
+    request_ID: "949870",
+    cropName: "Wheat",
     name: "Ankit Kumar",
-    state: "Karnataka",
-    pincode: 560078,
-    cropAdded: true,
-    status: "active",
+    variety: "Rabi",
+    soilType: "Rainy",
+    status: "Pending",
   },
   {
     id: 2,
     DOJ: "25/09/23",
-    employee_ID: "9498740",
-    farmer_ID: "949870",
-    contact: "9287347823",
-    city: "bengaluru",
+    acres: "Rainy",
+    request_ID: "949870",
+    cropName: "Wheat",
     name: "Ankit Kumar",
-    state: "Karnataka",
-    pincode: 560078,
-    cropAdded: true,
-    status: "active",
+    variety: "Rabi",
+    soilType: "Rainy",
+    status: "Pending",
   },
   {
     id: 3,
     DOJ: "25/09/23",
-    employee_ID: "9498740",
-    farmer_ID: "949870",
-    contact: "9287347823",
-    city: "bengaluru",
+    acres: "Rainy",
+    request_ID: "949870",
+    cropName: "Wheat",
     name: "Ankit Kumar",
-    state: "Karnataka",
-    pincode: 560078,
-    cropAdded: true,
-    status: "active",
+    variety: "Rabi",
+    soilType: "Rainy",
+    status: "Pending",
   },
   {
     id: 4,
     DOJ: "25/09/23",
-    employee_ID: "9498740",
-    farmer_ID: "949870",
-    contact: "9287347823",
-    city: "bengaluru",
+    acres: "Rainy",
+    request_ID: "949870",
+    cropName: "Wheat",
     name: "Ankit Kumar",
-    state: "Karnataka",
-    pincode: 560078,
-    cropAdded: true,
-    status: "active",
+    variety: "Rabi",
+    soilType: "Rainy",
+    status: "Pending",
   },
   {
     id: 5,
     DOJ: "25/09/23",
-    employee_ID: "9498740",
-    farmer_ID: "949870",
-    contact: "9287347823",
-    city: "bengaluru",
+    acres: "Rainy",
+    request_ID: "949870",
+    cropName: "Wheat",
     name: "Ankit Kumar",
-    state: "Karnataka",
-    pincode: 560078,
-    cropAdded: false,
-    status: "Inactive",
+    variety: "Rabi",
+    soilType: "Rainy",
+    status: "Delivered",
   },
 ];
-const Farmers = () => {
+const AddedCrops = () => {
   const { setTitle, setCheckedItems, checkedItems, setCategorySelect } =
     useContext(MyContext);
   const navigate = useNavigate();
-  const addFarmer = () => {
-    navigate(`/farmers/add-farmer`);
-    setTitle(`Add Farmer`);
+  const cropsDetails = (id) => {
+    setTitle(`Request ID - ${id}`);
+    navigate(`/farmers/crops-added/id=${id}`);
   };
   return (
     <div className="h-[calc(100vh-76px)] flex flex-col w-full">
@@ -123,19 +109,11 @@ const Farmers = () => {
               className="text-base leading-[22px] w-full text-[#6C757D] placeholder:text-[#6C757D] outline-none font-poppins py-[13px] px-1"
             />
           </div>
-          <div className="flex items-center gap-4">
-            <CommonBtn
-              clickEvent={addFarmer}
-              btntext="+ Add Farmer"
-              style="bg-[#FF7D24]"
-            />
-            <CommonBtn btntext="Delete" style="bg-[#FF2E2E]" />
-            <CommonBtn btntext="Export" style="bg-[#444444]" />
-          </div>
+          <CommonBtn btntext="Export" style="bg-[#444444]" />
         </div>
       </div>
       <div className="w-full overflow-auto">
-        <div className="flex items-center gap-2 bg-[#EAFFD4]">
+        <div className="flex items-center gap-4 bg-[#EAFFD4]">
           <div className="px-4 h-5">
             <CheckBox
               isChecked={checkedItems[0] || false}
@@ -158,7 +136,7 @@ const Farmers = () => {
           {rows.map((val, i) => (
             <div
               key={i}
-              className="flex items-center gap-2 hover:bg-[#f3f1f1] duration-300"
+              className="flex items-center gap-4 hover:bg-[#f3f1f1] duration-300"
             >
               <div className="px-4 h-5">
                 <CheckBox
@@ -175,39 +153,35 @@ const Farmers = () => {
               <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[64px]">
                 {val.id}
               </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[82px]">
+              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[99px]">
                 {val.DOJ}
               </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline w-[102px]">
-                {val.farmer_ID}
+              <div
+                onClick={() => cropsDetails(val.request_ID)}
+                className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline w-[112px]"
+              >
+                {val.request_ID}
               </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[140px]">
+              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[145px]">
                 {val.name}
               </div>
 
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[107px]">
-                {val.contact}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[106px]">
-                {val.state}
+              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[104px]">
+                {val.cropName}
               </div>
               <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[104px]">
-                {val.city}
+                {val.variety}
               </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline w-[104px]">
-                {val.employee_ID}
+              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[87px]">
+                {val.acres}
               </div>
-              <div
-                className={`py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[104px] ${
-                  val.cropAdded ? "text-[#3F7E00]" : "text-[#FD5353]"
-                }`}
-              >
-                {val.cropAdded ? "Yes" : "No"}
+              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[107px]">
+                {val.soilType}
               </div>
               <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[104px]">
                 <span
                   className={`text-white font-medium font-poppins leading-5 text-sm inline-block text-center px-2 min-w-[98px] py-[5px] rounded-lg bg-[#5DB505] ${
-                    val.status === "active" ? "bg-[#5DB505]" : "bg-[#FD5353]"
+                    val.status === "Delivered" ? "bg-[#5DB505]" : "bg-[#FD5353]"
                   }`}
                 >
                   {val.status}
@@ -221,4 +195,4 @@ const Farmers = () => {
   );
 };
 
-export default Farmers;
+export default AddedCrops;

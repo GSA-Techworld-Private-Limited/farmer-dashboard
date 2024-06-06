@@ -1,13 +1,14 @@
-import { ArrowBack } from "@mui/icons-material";
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
 import CommonBtn from "../common/CommonBtn";
-import MyContext from "../context/ContextStore";
+import { SearchRounded } from "@mui/icons-material";
 import CheckBox from "../common/CheckBox";
+import MyContext from "../context/ContextStore";
+import { handleCheckBoxChange } from "../utils/handleCheckBox";
+import { useNavigate } from "react-router-dom";
+
 const columns = [
   { headerName: "SL. No", width: 72 },
-  { headerName: "DOJ", width: 136 },
-  { headerName: "Farmer Name", width: 158 },
+  { headerName: "Vendor", width: 158 },
   { headerName: "Contact", width: 107 },
   {
     headerName: "State",
@@ -22,8 +23,8 @@ const columns = [
     width: 104,
   },
   {
-    headerName: "Crop Added",
-    width: 104,
+    headerName: "Farmers Added",
+    width: 122,
   },
   {
     headerName: "Status",
@@ -34,86 +35,89 @@ const columns = [
 const rows = [
   {
     id: 1,
-    DOJ: "26/05/2023",
-    employee_ID: "9498740",
     contact: "9287347823",
     city: "bengaluru",
-    name: "Ankit Kumar",
-    state: "Karnataka",
+    name: "Jon",
     pincode: 560078,
-    cropAdded: true,
+    state: "Karnataka",
+    farmersAdded: 24,
     status: "active",
   },
   {
     id: 2,
-    DOJ: "26/05/2023",
-    employee_ID: "9498740",
     contact: "9287347823",
     city: "bengaluru",
-    name: "Ankit Kumar",
-    state: "Karnataka",
+    name: "Cersei",
     pincode: 560078,
-    cropAdded: true,
+    state: "Karnataka",
+    farmersAdded: 24,
     status: "active",
   },
   {
     id: 3,
-    DOJ: "26/05/2023",
-    employee_ID: "9498740",
     contact: "9287347823",
     city: "bengaluru",
-    name: "Ankit Kumar",
-    state: "Karnataka",
+    name: "Jaime",
     pincode: 560078,
-    cropAdded: true,
+    state: "Karnataka",
+    farmersAdded: 24,
     status: "active",
   },
   {
     id: 4,
-    DOJ: "26/05/2023",
-    employee_ID: "9498740",
     contact: "9287347823",
     city: "bengaluru",
-    name: "Ankit Kumar",
-    state: "Karnataka",
+    name: "Arya",
     pincode: 560078,
-    cropAdded: true,
+    state: "Karnataka",
+    farmersAdded: 24,
     status: "active",
   },
   {
     id: 5,
-    DOJ: "26/05/2023",
-    employee_ID: "9498740",
     contact: "9287347823",
     city: "bengaluru",
-    name: "Ankit Kumar",
-    state: "Karnataka",
+    name: "Daenerys",
     pincode: 560078,
-    cropAdded: false,
-    status: "Inactive",
+    state: "Karnataka",
+    farmersAdded: 24,
+    status: "active",
   },
 ];
-const FramerDetails = () => {
-  const { setTitle, setCheckedItems, checkedItems, setCategorySelect } =
+const Vendors = () => {
+  const { setCheckedItems, setCategorySelect, checkedItems, setTitle } =
     useContext(MyContext);
+  const navigate = useNavigate();
+  const addVendors = () => {
+    navigate(`/vendors/add-vendors`);
+    setTitle(`Add Vendors`);
+  };
   return (
-    <div className="h-[calc(100vh-76px)] flex flex-col">
-      <div className="pt-6 px-10 w-full ">
-        <div className="flex mb-7 justify-between">
-          <Link to="/employees">
-            <button
-              onClick={() => setTitle("Employees")}
-              className="flex items-center gap-[14px] text-base font-semibold text-[#303972] leading-6 font-poppins"
-            >
-              <ArrowBack />
-              <span>Back</span>
-            </button>
-          </Link>
+    <div className="w-full h-[calc(100vh-76px)] flex flex-col">
+      <div className="flex justify-between items-center py-5 px-7 pb-7">
+        <div className="flex items-center border border-[#EEEEEE] overflow-hidden rounded-md w-[350px]">
+          <label htmlFor="search" className="px-[18px] text-[#4D44B5]">
+            <SearchRounded />
+          </label>
+          <input
+            type="text"
+            id="search"
+            placeholder="Search here..."
+            className="text-base leading-[22px] w-full text-[#6C757D] placeholder:text-[#6C757D] outline-none font-poppins py-[13px] px-1"
+          />
+        </div>
+        <div className="flex items-center gap-4">
+          <CommonBtn
+            clickEvent={addVendors}
+            btntext="+ Add Vendor"
+            style="bg-[#FF7D24]"
+          />
+          <CommonBtn btntext="Delete" style="bg-[#FF2E2E]" />
           <CommonBtn btntext="Export" style="bg-[#444444]" />
         </div>
       </div>
       <div className="w-full overflow-auto">
-        <div className="flex items-center gap-3 bg-[#EAFFD4]">
+        <div className="flex items-center gap-6 bg-[#EAFFD4]">
           <div className="px-4 h-5">
             <CheckBox
               isChecked={checkedItems[0] || false}
@@ -136,14 +140,14 @@ const FramerDetails = () => {
           {rows.map((val, i) => (
             <div
               key={i}
-              className="flex items-center gap-3 hover:bg-[#f3f1f1] duration-300"
+              className="flex items-center gap-6 hover:bg-[#f3f1f1] duration-300"
             >
               <div className="px-4 h-5">
                 <CheckBox
-                  isChecked={checkedItems[val.id] || false}
+                  isChecked={checkedItems[val.employee_ID] || false}
                   handleCheckBox={() =>
                     handleCheckBoxChange(
-                      val.id,
+                      val.employee_ID,
                       setCheckedItems,
                       setCategorySelect
                     )
@@ -153,13 +157,9 @@ const FramerDetails = () => {
               <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
                 {val.id}
               </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[136px]">
-                {val.DOJ}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[158px]">
+              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#3F7E00] underline w-[158px]">
                 {val.name}
               </div>
-
               <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[107px]">
                 {val.contact}
               </div>
@@ -172,19 +172,11 @@ const FramerDetails = () => {
               <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[104px]">
                 {val.pincode}
               </div>
-              <div
-                className={`py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[104px] ${
-                  val.cropAdded ? "text-[#3F7E00]" : "text-[#FD5353]"
-                }`}
-              >
-                {val.cropAdded ? "Yes" : "No"}
+              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] underline w-[122px]">
+                {val.farmersAdded}
               </div>
               <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[104px]">
-                <span
-                  className={`text-white font-medium font-poppins leading-5 text-sm inline-block text-center px-2 min-w-[98px] py-[5px] rounded-lg bg-[#5DB505] ${
-                    val.status === "active" ? "bg-[#5DB505]" : "bg-[#FD5353]"
-                  }`}
-                >
+                <span className="text-white font-medium font-poppins leading-5 text-sm px-7 py-[5px] rounded-lg bg-[#5DB505]">
                   {val.status}
                 </span>
               </div>
@@ -196,4 +188,4 @@ const FramerDetails = () => {
   );
 };
 
-export default FramerDetails;
+export default Vendors;

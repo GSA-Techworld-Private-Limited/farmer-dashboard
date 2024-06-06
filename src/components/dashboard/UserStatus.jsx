@@ -3,7 +3,6 @@ import { FarmersIcon } from "../common/Icons";
 import ChartBar from "../common/ChartBar";
 
 const UserStatus = () => {
- 
   const data = [
     {
       title: "Farmers",

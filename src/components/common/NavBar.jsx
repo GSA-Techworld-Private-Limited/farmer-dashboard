@@ -7,8 +7,8 @@ const NavBar = () => {
   const { title, setAuthenticated } = useContext(MyContext);
   const navigate = useNavigate();
   const logout = () => {
-    navigate("/");
     setAuthenticated(false);
+    navigate("/");
   };
   return (
     <div className="w-full bg-nav-bg py-5 px-12 flex items-center justify-between">

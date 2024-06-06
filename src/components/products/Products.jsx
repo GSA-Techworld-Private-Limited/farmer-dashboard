@@ -7,95 +7,81 @@ import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
 
 const columns = [
-  { field: "id", headerName: "SL. No", width: 72 },
-  { field: "DOJ", headerName: "DOJ", width: 126 },
-  { field: "Expert_ID", headerName: "Expert ID", width: 136 },
-  { field: "firstName", headerName: "Expert Name", width: 158 },
-  { field: "contact", headerName: "Contact", width: 122, sortable: false },
-  {
-    field: "email",
-    headerName: "email",
-    width: 171,
-  },
-  {
-    field: "city",
-    headerName: "City",
-    sortable: false,
-    width: 104,
-  },
-  {
-    field: "status",
-    headerName: "Status",
-    sortable: false,
-    width: 109,
-  },
+  { headerName: "SL. No", width: 72 },
+  { headerName: "Picture", width: 126 },
+  { headerName: "Product ID", width: 136 },
+  { headerName: "Product Name", width: 158 },
+  { headerName: "QTY.", width: 122 },
+  { headerName: "Actual Price", width: 171 },
+  { headerName: "Selling Price", width: 104 },
+  { headerName: "Status", width: 109 },
 ];
 
 const rows = [
   {
     id: 1,
-    DOJ: "26/05/2023",
-    Expert_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    firstName: "Jon",
-    email: "abx@gamil.com",
-    status: "active",
+    image: "",
+    product_ID: "9498740",
+    salePrice: "1099",
+    name: "Jon",
+    price: "999",
+    qty: 10,
+    status: "Available",
   },
   {
     id: 2,
-    DOJ: "26/05/2023",
-    Expert_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    firstName: "Cersei",
-    email: "abx@gamil.com",
-    status: "active",
+    image: "",
+    product_ID: "9498740",
+    salePrice: "1099",
+    name: "Cersei",
+    price: "999",
+    qty: 10,
+    status: "Available",
   },
   {
     id: 3,
-    DOJ: "26/05/2023",
-    Expert_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    firstName: "Jaime",
-    email: "abx@gamil.com",
-    status: "active",
+    image: "",
+    product_ID: "9498740",
+    salePrice: "1099",
+    name: "Jaime",
+    price: "999",
+    qty: 10,
+    status: "Available",
   },
   {
     id: 4,
-    DOJ: "26/05/2023",
-    Expert_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    firstName: "Arya",
-    email: "abx@gamil.com",
-    status: "active",
+    image: "",
+    product_ID: "9498740",
+    salePrice: "1099",
+    name: "Arya",
+    price: "999",
+    qty: 10,
+    status: "Available",
   },
   {
     id: 5,
-    DOJ: "26/05/2023",
-    Expert_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    firstName: "Daenerys",
-    email: "abx@gamil.com",
-    status: "active",
+    image: "",
+    product_ID: "9498740",
+    salePrice: "1099",
+    name: "Daenerys",
+    price: "999",
+    qty: 10,
+    status: "Available",
   },
 ];
-const Experts = () => {
+const Products = () => {
   const { setCheckedItems, setCategorySelect, checkedItems, setTitle } =
     useContext(MyContext);
   const navigate = useNavigate();
-  const handleExpertDetails = (user) => {
-    if (user) {
-      navigate(`/experts/${user}`);
-      setTitle(`Expert ID- ${user}`);
+  const handleProductDetails = (product) => {
+    if (product) {
+      navigate(`/products/id=${product}`);
+      setTitle(`Product ID - ${product}`);
     }
   };
-  const addExperts = () => {
-    navigate(`/experts/add-expert`);
-    setTitle(`Add Experts`);
+  const addProducts = () => {
+    navigate(`/products/add-products`);
+    setTitle(`Add Products`);
   };
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
@@ -113,8 +99,8 @@ const Experts = () => {
         </div>
         <div className="flex items-center gap-4">
           <CommonBtn
-            clickEvent={addExperts}
-            btntext="+ Add Expert"
+            clickEvent={addProducts}
+            btntext="+ Add Products"
             style="bg-[#FF7D24]"
           />
           <CommonBtn btntext="Delete" style="bg-[#FF2E2E]" />
@@ -163,28 +149,28 @@ const Experts = () => {
                 {val.id}
               </div>
               <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[126px]">
-                {val.DOJ}
+                {val.image}
               </div>
               <div
-                onClick={() => handleExpertDetails(val.Expert_ID)}
+                onClick={() => handleProductDetails(val.product_ID)}
                 className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[136px]"
               >
-                {val.Expert_ID}
+                {val.product_ID}
               </div>
               <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[158px]">
-                {val.firstName}
+                {val.name}
               </div>
               <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[122px]">
-                {val.contact}
+                {val.qty}
               </div>
               <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[171px]">
-                {val.email}
+                {val.price}
               </div>
               <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[104px]">
-                {val.city}
+                {val.salePrice}
               </div>
               <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[109px]">
-                <span className="text-white font-medium font-poppins leading-5 text-sm px-7 py-[5px] rounded-lg bg-[#5DB505]">
+                <span className="font-medium font-poppins leading-5 text-sm rounded-lg text-[#5DB505]">
                   {val.status}
                 </span>
               </div>
@@ -196,4 +182,4 @@ const Experts = () => {
   );
 };
 
-export default Experts;
+export default Products;

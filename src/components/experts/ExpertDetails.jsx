@@ -34,7 +34,7 @@ const ExpertDetails = () => {
                 type="text"
                 id="expert-name"
                 placeholder="James"
-                className="py-[13px] focus:border-[525153] outline-none duration-200 hover:border-[#525153] text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
+                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
             <div className="flex flex-col mb-2">
@@ -48,7 +48,7 @@ const ExpertDetails = () => {
                 type="number"
                 id="expert-no"
                 placeholder="+123456789"
-                className="py-[13px] focus:border-[525153] outline-none duration-200 hover:border-[#525153] text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
+                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
             <div className="flex flex-col mb-2">
@@ -62,7 +62,7 @@ const ExpertDetails = () => {
                 type="email"
                 id="expert-email"
                 placeholder="James@gmail.com"
-                className="py-[13px] focus:border-[525153] outline-none duration-200 hover:border-[#525153] text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
+                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
             <div className="flex flex-col mb-2">
@@ -76,7 +76,7 @@ const ExpertDetails = () => {
                 type="text"
                 id="expert-state"
                 placeholder="+123456789"
-                className="py-[13px] focus:border-[525153] outline-none duration-200 hover:border-[#525153] text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
+                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
           </div>
@@ -92,7 +92,7 @@ const ExpertDetails = () => {
                 type="date"
                 id="expert-date"
                 placeholder="James"
-                className="py-[13px] focus:border-[525153] outline-none duration-200 hover:border-[#525153] text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
+                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
             <div className="flex flex-col mb-2">
@@ -106,7 +106,7 @@ const ExpertDetails = () => {
                 type="number"
                 id="expert-no-two"
                 placeholder="+123456789"
-                className="py-[13px] focus:border-[525153] outline-none duration-200 hover:border-[#525153] text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
+                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
             <div className="flex flex-col mb-2">
@@ -120,7 +120,7 @@ const ExpertDetails = () => {
                 type="text"
                 id="expert-city"
                 placeholder="+123456789"
-                className="py-[13px] focus:border-[525153] outline-none duration-200 hover:border-[#525153] text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
+                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
             <div className="flex flex-col mb-2">
@@ -134,7 +134,7 @@ const ExpertDetails = () => {
                 type="number"
                 id="expert-zip"
                 placeholder="+123456789"
-                className="py-[13px] focus:border-[525153] outline-none duration-200 hover:border-[#525153] text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
+                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
           </div>
@@ -155,7 +155,7 @@ const ExpertDetails = () => {
                 type="text"
                 id="expert-username"
                 placeholder="James"
-                className="py-[13px] focus:border-[525153] outline-none duration-200 hover:border-[#525153] text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
+                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
           </div>
@@ -171,7 +171,7 @@ const ExpertDetails = () => {
                 type="password"
                 id="expert-password"
                 placeholder="+123456789"
-                className="py-[13px] focus:border-[525153] outline-none duration-200 hover:border-[#525153] text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
+                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
           </div>

@@ -16,7 +16,6 @@ const SideBar = () => {
   const { setTitle } = useContext(MyContext);
   const navigate = useNavigate();
   const handleTabs = (path) => {
-    console.log(path);
     if (path) {
       navigate(path.toLowerCase());
       setTitle(path);
@@ -33,9 +32,9 @@ const SideBar = () => {
       <SideBtn handleTabs={handleTabs} btnText="Dashboard" icon={home} />
       <SideBtn handleTabs={handleTabs} btnText="Experts" icon={expert} />
       <div>
-        <NavLink to="/product" activeClassName="">
+        <NavLink to="/products" activeClassName="">
           <div
-            onClick={() => toggleDropdown("Product")}
+            onClick={() => toggleDropdown("Products")}
             className="flex items-center justify-between w-full py-[10px] pl-6 pr-[22px] duration-300 cursor-pointer rounded-md hover:bg-[#2A5105] text-white"
           >
             <div className="flex items-center gap-4">
@@ -44,7 +43,7 @@ const SideBar = () => {
                 Products
               </span>
               <img
-                className={isDropdownOpen === "Product" ? "rotate-180" : ""}
+                className={isDropdownOpen === "Products" ? "rotate-180" : ""}
                 src={arrow}
                 alt="arrow"
               />
@@ -52,11 +51,11 @@ const SideBar = () => {
             <CommonSquareIcon />
           </div>
         </NavLink>
-        {isDropdownOpen === "Product" && (
+        {isDropdownOpen === "Products" && (
           <div className="mt-2">
             <NavLink
               activeClassNam=""
-              to="/product/subitem1"
+              to="/products/categories"
               className="block px-4 py-2 subLink text-sm text-white font-poppins opacity-50 font-normal pl-16 leading-6"
               onClick={() => {
                 handleTabs("Categories");
@@ -93,10 +92,10 @@ const SideBar = () => {
           <div className="mt-2">
             <NavLink
               activeClassNam=""
-              to="/farmer/crops-added"
+              to="/farmers/crops-added"
               className="block px-4 py-2 subLink text-sm text-white font-poppins opacity-50 font-normal pl-16 leading-6"
               onClick={() => {
-                handleTabs("crops-Added");
+                handleTabs("Crops Added");
               }}
             >
               Crops Added
@@ -133,7 +132,7 @@ const SideBar = () => {
               to="/users/user-requests"
               className="block px-4 py-2 subLink text-sm text-white font-poppins opacity-50 font-normal pl-16 leading-6"
               onClick={() => {
-                handleTabs("user-requests");
+                handleTabs("User Request");
               }}
             >
               User Requests

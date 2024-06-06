@@ -1,147 +1,126 @@
 import { ArrowBack } from "@mui/icons-material";
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CommonBtn from "../common/CommonBtn";
 import MyContext from "../context/ContextStore";
-import dummyImage from "../../assets/images/png/image-skeletion.png";
-const AddFarmer = () => {
+import demoCrop from "../../assets/images/png/demo-crop.png";
+const ProductDetails = () => {
+  const { Product_id } = useParams();
   const { setTitle } = useContext(MyContext);
   return (
     <div className="py-6 px-10 w-full h-[calc(100vh-76px)] flex flex-col">
       <div className="flex mb-4 justify-between">
-        <Link to="/farmers">
+        <Link to="/products">
           <button
-            onClick={() => setTitle("Farmers")}
+            onClick={() => setTitle("Products")}
             className="flex items-center gap-[14px] text-base font-semibold text-[#303972] leading-6 font-poppins"
           >
             <ArrowBack />
             <span>Back</span>
           </button>
         </Link>
-        <CommonBtn btntext="+ Add Farmer" style="bg-[#FF7D24]" />
+        <CommonBtn btntext="Edit" style="bg-[#05A3E7]" />
       </div>
-      <form className="w-full overflow-auto">
+      <form className="overflow-auto">
         <div className="flex gap-[70px]">
           <div className="w-full">
-            <div className="flex flex-col mb-2">
-              <label
-                htmlFor="Farmer-name"
-                className="text-sm text-[#525153] font-poppins leading-5 mb-2"
-              >
-                Farmer Name<span className="text-[#FD5353]">*</span>
-              </label>
-              <input
-                type="text"
-                id="Farmer-name"
-                placeholder="James"
-                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
-              />
-            </div>
-            <div className="flex flex-col mb-2">
-              <label
-                htmlFor="Farmer-no"
-                className="text-sm text-[#525153] font-poppins leading-5 mb-2"
-              >
-                Contact Number 1<span className="text-[#FD5353]">*</span>
-              </label>
-              <input
-                type="number"
-                id="Farmer-no"
-                placeholder="+123456789"
-                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
-              />
-            </div>
-            <div className="flex flex-col mb-2">
-              <label
-                htmlFor="Farmer-city"
-                className="text-sm text-[#525153] font-poppins leading-5 mb-2"
-              >
-                City<span className="text-[#FD5353]">*</span>
-              </label>
-              <input
-                type="text"
-                id="Farmer-city"
-                placeholder="+123456789"
-                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
-              />
-            </div>
-            <div className="flex flex-col mb-2">
-              <label
-                htmlFor="Farmer-zip"
-                className="text-sm text-[#525153] font-poppins leading-5 mb-2"
-              >
-                Zip Code<span className="text-[#FD5353]">*</span>
-              </label>
-              <input
-                type="number"
-                id="Farmer-zip"
-                placeholder="+123456789"
-                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
-              />
+            <p className="text-black text-sm font-semibold mb-6 font-poppins">
+              Product Images
+            </p>
+            <div className="grid grid-cols-3 gap-x-3 gap-y-6">
+              <img className="w-full" src={demoCrop} alt="demoCrop" />
+              <img className="w-full" src={demoCrop} alt="demoCrop" />
+              <img className="w-full" src={demoCrop} alt="demoCrop" />
+              <img className="w-full" src={demoCrop} alt="demoCrop" />
             </div>
           </div>
           <div className="w-full">
+            <p className="text-black text-sm font-semibold mb-6 font-poppins">
+              Product Images
+            </p>
             <div className="flex flex-col mb-2">
               <label
-                htmlFor="Farmer-date"
+                htmlFor="Product-name"
                 className="text-sm text-[#525153] font-poppins leading-5 mb-2"
               >
-                Date of Joining<span className="text-[#FD5353]">*</span>
+                Product Name<span className="text-[#FD5353]">*</span>
               </label>
               <input
-                type="date"
-                id="Farmer-date"
+                type="text"
+                id="Product-name"
                 placeholder="James"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
             <div className="flex flex-col mb-2">
               <label
-                htmlFor="Farmer-no-two"
+                htmlFor="Product-category"
                 className="text-sm text-[#525153] font-poppins leading-5 mb-2"
               >
-                Contact Number 2<span className="text-[#FD5353]">*</span>
+                Product Name<span className="text-[#FD5353]">*</span>
+              </label>
+              <input
+                type="text"
+                id="Product-category"
+                placeholder="Category-dropwon"
+                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
+              />
+            </div>
+            <div className="flex flex-col mb-2">
+              <label
+                htmlFor="Product-price"
+                className="text-sm text-[#525153] font-poppins leading-5 mb-2"
+              >
+                Actual Price*<span className="text-[#FD5353]">*</span>
               </label>
               <input
                 type="number"
-                id="Farmer-no-two"
+                id="Product-price"
                 placeholder="+123456789"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
             <div className="flex flex-col mb-2">
               <label
-                htmlFor="Farmer-state"
+                htmlFor="Product-sale-price"
                 className="text-sm text-[#525153] font-poppins leading-5 mb-2"
               >
-                State<span className="text-[#FD5353]">*</span>
+                Selling Price<span className="text-[#FD5353]">*</span>
               </label>
               <input
-                type="text"
-                id="Farmer-state"
+                type="number"
+                id="Product-sale-price"
                 placeholder="+123456789"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
-          </div>
-        </div>
-        <div className="inline-block">
-          <p className="text-sm font-poppins leading-5 text-[#4D44B5]">
-            Upload Profile Pic <span className="text-[#FD5353]">*</span>
-          </p>
-          <div className="border border-[#E3E3E3] rounded-lg px-4 py-2.5 mt-3">
-            <img
-              className="mb-7 w-16 h-16 object-cover"
-              src={dummyImage}
-              alt="dummyImage"
-            />
-            <div className="flex items-center gap-2.5">
-              <button className="leading-5 w-[108px] text-center text-xs text-white font-poppins font-medium py-2.5 px-2 rounded-[8px] bg-[#787878]">
-                Choose File
-              </button>
-              <button className="leading-5 w-[108px] text-center text-xs bg-[#FFEAEA] font-poppins font-medium py-2.5 px-2 rounded-[8px] text-[#FD5353]">
-                Remove
-              </button>
+            <div className="flex flex-col mb-2">
+              <label
+                htmlFor="Product-qty"
+                className="text-sm text-[#525153] font-poppins leading-5 mb-2"
+              >
+                Quantity<span className="text-[#FD5353]">*</span>
+              </label>
+              <input
+                type="number"
+                id="Product-qty"
+                placeholder="+123456789"
+                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
+              />
+            </div>
+            <div className="flex flex-col mb-2">
+              <label
+                htmlFor="Product-des"
+                className="text-sm text-[#525153] font-poppins leading-5 mb-2"
+              >
+                Description<span className="text-[#FD5353]">*</span>
+              </label>
+              <textarea
+                type="date"
+                id="Product-des"
+                placeholder="Write here..."
+                className="py-[13px] h-[166px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
+              ></textarea>
             </div>
           </div>
         </div>
@@ -150,4 +129,4 @@ const AddFarmer = () => {
   );
 };
 
-export default AddFarmer;
+export default ProductDetails;

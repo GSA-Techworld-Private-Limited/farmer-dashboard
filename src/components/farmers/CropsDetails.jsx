@@ -1,24 +1,22 @@
 import { ArrowBack } from "@mui/icons-material";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import CommonBtn from "../common/CommonBtn";
 import MyContext from "../context/ContextStore";
-import dummyImage from "../../assets/images/png/image-skeletion.png";
-const AddFarmer = () => {
+import demoCrop from "../../assets/images/png/demo-crop.png";
+const CropsDetails = () => {
   const { setTitle } = useContext(MyContext);
   return (
     <div className="py-6 px-10 w-full h-[calc(100vh-76px)] flex flex-col">
-      <div className="flex mb-4 justify-between">
-        <Link to="/farmers">
+      <div className="flex mb-10 justify-between">
+        <Link to="/farmers/crops-added">
           <button
-            onClick={() => setTitle("Farmers")}
+            onClick={() => setTitle("Crops Added")}
             className="flex items-center gap-[14px] text-base font-semibold text-[#303972] leading-6 font-poppins"
           >
             <ArrowBack />
             <span>Back</span>
           </button>
         </Link>
-        <CommonBtn btntext="+ Add Farmer" style="bg-[#FF7D24]" />
       </div>
       <form className="w-full overflow-auto">
         <div className="flex gap-[70px]">
@@ -39,42 +37,28 @@ const AddFarmer = () => {
             </div>
             <div className="flex flex-col mb-2">
               <label
-                htmlFor="Farmer-no"
+                htmlFor="crop-name"
                 className="text-sm text-[#525153] font-poppins leading-5 mb-2"
               >
-                Contact Number 1<span className="text-[#FD5353]">*</span>
+                Crop Name<span className="text-[#FD5353]">*</span>
               </label>
               <input
                 type="number"
-                id="Farmer-no"
+                id="crop-name"
                 placeholder="+123456789"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
             <div className="flex flex-col mb-2">
               <label
-                htmlFor="Farmer-city"
+                htmlFor="acres"
                 className="text-sm text-[#525153] font-poppins leading-5 mb-2"
               >
-                City<span className="text-[#FD5353]">*</span>
+                Acres<span className="text-[#FD5353]">*</span>
               </label>
               <input
                 type="text"
-                id="Farmer-city"
-                placeholder="+123456789"
-                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
-              />
-            </div>
-            <div className="flex flex-col mb-2">
-              <label
-                htmlFor="Farmer-zip"
-                className="text-sm text-[#525153] font-poppins leading-5 mb-2"
-              >
-                Zip Code<span className="text-[#FD5353]">*</span>
-              </label>
-              <input
-                type="number"
-                id="Farmer-zip"
+                id="acres"
                 placeholder="+123456789"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
@@ -83,66 +67,58 @@ const AddFarmer = () => {
           <div className="w-full">
             <div className="flex flex-col mb-2">
               <label
-                htmlFor="Farmer-date"
+                htmlFor="crop-date"
                 className="text-sm text-[#525153] font-poppins leading-5 mb-2"
               >
-                Date of Joining<span className="text-[#FD5353]">*</span>
+                Date of Sawing<span className="text-[#FD5353]">*</span>
               </label>
               <input
                 type="date"
-                id="Farmer-date"
+                id="crop-date"
                 placeholder="James"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
             <div className="flex flex-col mb-2">
               <label
-                htmlFor="Farmer-no-two"
+                htmlFor="variety"
                 className="text-sm text-[#525153] font-poppins leading-5 mb-2"
               >
-                Contact Number 2<span className="text-[#FD5353]">*</span>
+                Variety<span className="text-[#FD5353]">*</span>
               </label>
               <input
                 type="number"
-                id="Farmer-no-two"
+                id="variety"
                 placeholder="+123456789"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
             <div className="flex flex-col mb-2">
               <label
-                htmlFor="Farmer-state"
+                htmlFor="soil-type"
                 className="text-sm text-[#525153] font-poppins leading-5 mb-2"
               >
-                State<span className="text-[#FD5353]">*</span>
+                Soil Type<span className="text-[#FD5353]">*</span>
               </label>
               <input
                 type="text"
-                id="Farmer-state"
+                id="soil-type"
                 placeholder="+123456789"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
           </div>
         </div>
-        <div className="inline-block">
-          <p className="text-sm font-poppins leading-5 text-[#4D44B5]">
-            Upload Profile Pic <span className="text-[#FD5353]">*</span>
+        <div className="pt-9">
+          <p className="text-sm font-poppins text-[#525153] leading-5">
+            Pictures :
           </p>
-          <div className="border border-[#E3E3E3] rounded-lg px-4 py-2.5 mt-3">
+          <div className="flex items-center gap-6 pt-6">
             <img
-              className="mb-7 w-16 h-16 object-cover"
-              src={dummyImage}
-              alt="dummyImage"
+              className="w-full max-w-[180px]"
+              src={demoCrop}
+              alt="demoCrop"
             />
-            <div className="flex items-center gap-2.5">
-              <button className="leading-5 w-[108px] text-center text-xs text-white font-poppins font-medium py-2.5 px-2 rounded-[8px] bg-[#787878]">
-                Choose File
-              </button>
-              <button className="leading-5 w-[108px] text-center text-xs bg-[#FFEAEA] font-poppins font-medium py-2.5 px-2 rounded-[8px] text-[#FD5353]">
-                Remove
-              </button>
-            </div>
           </div>
         </div>
       </form>
@@ -150,4 +126,4 @@ const AddFarmer = () => {
   );
 };
 
-export default AddFarmer;
+export default CropsDetails;
