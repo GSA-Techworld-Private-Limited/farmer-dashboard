@@ -35,7 +35,6 @@ import {
   fetchProductListStats,
   fetchStats,
 } from "./components/api/auth";
-
 function App() {
   const {
     authenticated,
@@ -60,7 +59,6 @@ function App() {
       setAuthenticated(true);
     }
   }, [authenticated]);
-
   return (
     <>
       {authenticated && <NavBar />}
