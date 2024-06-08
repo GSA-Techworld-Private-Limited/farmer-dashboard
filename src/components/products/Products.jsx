@@ -17,61 +17,14 @@ const columns = [
   { headerName: "Status", width: 109 },
 ];
 
-const rows = [
-  {
-    id: 1,
-    image: "",
-    product_ID: "9498740",
-    salePrice: "1099",
-    name: "Jon",
-    price: "999",
-    qty: 10,
-    status: "Available",
-  },
-  {
-    id: 2,
-    image: "",
-    product_ID: "9498740",
-    salePrice: "1099",
-    name: "Cersei",
-    price: "999",
-    qty: 10,
-    status: "Available",
-  },
-  {
-    id: 3,
-    image: "",
-    product_ID: "9498740",
-    salePrice: "1099",
-    name: "Jaime",
-    price: "999",
-    qty: 10,
-    status: "Available",
-  },
-  {
-    id: 4,
-    image: "",
-    product_ID: "9498740",
-    salePrice: "1099",
-    name: "Arya",
-    price: "999",
-    qty: 10,
-    status: "Available",
-  },
-  {
-    id: 5,
-    image: "",
-    product_ID: "9498740",
-    salePrice: "1099",
-    name: "Daenerys",
-    price: "999",
-    qty: 10,
-    status: "Available",
-  },
-];
 const Products = () => {
-  const { setCheckedItems, setCategorySelect, checkedItems, setTitle } =
-    useContext(MyContext);
+  const {
+    setCheckedItems,
+    setCategorySelect,
+    checkedItems,
+    setTitle,
+    products,
+  } = useContext(MyContext);
   const navigate = useNavigate();
   const handleProductDetails = (product) => {
     if (product) {
@@ -107,75 +60,82 @@ const Products = () => {
           <CommonBtn btntext="Export" style="bg-[#444444]" />
         </div>
       </div>
-      <div className="w-full overflow-auto">
-        <div className="flex items-center gap-3 bg-[#EAFFD4]">
-          <div className="px-4 h-5">
-            <CheckBox
-              isChecked={checkedItems[0] || false}
-              handleCheckBox={() =>
-                handleCheckBoxChange(0, setCheckedItems, setCategorySelect)
-              }
-            />
-          </div>
-          {columns.map((val, i) => (
-            <div
-              key={i}
-              style={{ width: val.width }}
-              className="py-3 text-[#444444] font-poppins font-bold text-sm leading-5"
-            >
-              {val.headerName}
+      <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">
+        <div className="w-[calc(1440px-275px)] 2xl:w-full pb-2">
+          <div className="flex items-center gap-3 bg-[#EAFFD4]">
+            <div className="px-4 h-5">
+              <CheckBox
+                isChecked={checkedItems[0] || false}
+                handleCheckBox={() =>
+                  handleCheckBoxChange(0, setCheckedItems, setCategorySelect)
+                }
+              />
             </div>
-          ))}
-        </div>
-        <div className="flex flex-col gap-4 pt-4">
-          {rows.map((val, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-3 hover:bg-[#f3f1f1] duration-300"
-            >
-              <div className="px-4 h-5">
-                <CheckBox
-                  isChecked={checkedItems[val.id] || false}
-                  handleCheckBox={() =>
-                    handleCheckBoxChange(
-                      val.id,
-                      setCheckedItems,
-                      setCategorySelect
-                    )
-                  }
-                />
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
-                {val.id}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[126px]">
-                {val.image}
-              </div>
+            {columns.map((val, i) => (
               <div
-                onClick={() => handleProductDetails(val.product_ID)}
-                className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[136px]"
+                key={i}
+                style={{ width: val.width }}
+                className="py-3 text-[#444444] font-poppins font-bold text-sm leading-5"
               >
-                {val.product_ID}
+                {val.headerName}
               </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[158px]">
-                {val.name}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[122px]">
-                {val.qty}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[171px]">
-                {val.price}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[104px]">
-                {val.salePrice}
-              </div>
-              <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[109px]">
-                <span className="font-medium font-poppins leading-5 text-sm rounded-lg text-[#5DB505]">
-                  {val.status}
-                </span>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="flex flex-col gap-4 pt-4">
+            {products &&
+              products.map((val, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-3 hover:bg-[#f3f1f1] duration-300"
+                >
+                  <div className="px-4 h-5">
+                    <CheckBox
+                      isChecked={checkedItems[val.product_id] || false}
+                      handleCheckBox={() =>
+                        handleCheckBoxChange(
+                          val.product_id,
+                          setCheckedItems,
+                          setCategorySelect
+                        )
+                      }
+                    />
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
+                    {i + 1}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[126px]">
+                    {val.image}
+                  </div>
+                  <div
+                    onClick={() => handleProductDetails(val.product_id)}
+                    className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[136px]"
+                  >
+                    {val.product_id}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[158px]">
+                    {val.name}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[122px]">
+                    {val.quantity}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[171px]">
+                    {val.actual_price}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[104px]">
+                    {val.selling_price}
+                  </div>
+                  <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[109px]">
+                    <span
+                      className={`font-medium font-poppins leading-5 text-sm rounded-lg ${
+                        val.is_active ? "text-[#5DB505]" : "text-[#FF2E2E]"
+                      }`}
+                    >
+                      {val.is_active ? "Available" : "Unavailable"}
+                    </span>
+                  </div>
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </div>

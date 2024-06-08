@@ -7,28 +7,14 @@ import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
 
 const columns = [
-  { field: "id", headerName: "SL. No", width: 72 },
-  { field: "DOJ", headerName: "DOJ", width: 126 },
-  { field: "Expert_ID", headerName: "Expert ID", width: 136 },
-  { field: "firstName", headerName: "Expert Name", width: 158 },
-  { field: "contact", headerName: "Contact", width: 122, sortable: false },
-  {
-    field: "email",
-    headerName: "email",
-    width: 171,
-  },
-  {
-    field: "city",
-    headerName: "City",
-    sortable: false,
-    width: 104,
-  },
-  {
-    field: "status",
-    headerName: "Status",
-    sortable: false,
-    width: 109,
-  },
+  { headerName: "SL. No", width: 72 },
+  { headerName: "DOJ", width: 126 },
+  { headerName: "Expert ID", width: 136 },
+  { headerName: "Expert Name", width: 158 },
+  { headerName: "Contact", width: 122 },
+  { headerName: "email", width: 171 },
+  { headerName: "City", width: 104 },
+  { headerName: "Status", width: 109 },
 ];
 
 export const formatDateTime = (dateTimeString) => {
@@ -78,76 +64,78 @@ const Experts = () => {
           <CommonBtn btntext="Export" style="bg-[#444444]" />
         </div>
       </div>
-      <div className="w-full overflow-auto">
-        <div className="flex items-center gap-3 bg-[#EAFFD4]">
-          <div className="px-4 h-5">
-            <CheckBox
-              isChecked={checkedItems[0] || false}
-              handleCheckBox={() =>
-                handleCheckBoxChange(0, setCheckedItems, setCategorySelect)
-              }
-            />
-          </div>
-          {columns.map((val, i) => (
-            <div
-              key={i}
-              style={{ width: val.width }}
-              className="py-3 text-[#444444] font-poppins font-bold text-sm leading-5"
-            >
-              {val.headerName}
+      <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">
+        <div className="w-[calc(1440px-275px)] 2xl:w-full pb-2">
+          <div className="flex items-center gap-3 bg-[#EAFFD4]">
+            <div className="px-4 h-5">
+              <CheckBox
+                isChecked={checkedItems[0] || false}
+                handleCheckBox={() =>
+                  handleCheckBoxChange(0, setCheckedItems, setCategorySelect)
+                }
+              />
             </div>
-          ))}
-        </div>
-        <div className="flex flex-col gap-4 pt-4">
-          {experts &&
-            experts.map((val, i) => (
+            {columns.map((val, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 hover:bg-[#f3f1f1] duration-300"
+                style={{ width: val.width }}
+                className="py-3 text-[#444444] font-poppins font-bold text-sm leading-5"
               >
-                <div className="px-4 h-5">
-                  <CheckBox
-                    isChecked={checkedItems[val.id] || false}
-                    handleCheckBox={() =>
-                      handleCheckBoxChange(
-                        val.id,
-                        setCheckedItems,
-                        setCategorySelect
-                      )
-                    }
-                  />
-                </div>
-                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
-                  {i + 1}
-                </div>
-                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[126px]">
-                  {formatDateTime(val.created_at)}
-                </div>
-                <div
-                  onClick={() => handleExpertDetails(val.expert_id)}
-                  className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[136px]"
-                >
-                  {val.expert_id}
-                </div>
-                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[158px]">
-                  {val.name}
-                </div>
-                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[122px]">
-                  {val.contact_no}
-                </div>
-                <div className="py-1 text-sm text-ellipsis overflow-hidden font-semibold font-poppins leading-5 text-[#303972] w-[171px]">
-                  {val.email}
-                </div>
-                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[104px]">
-                  {val.city}
-                </div>
-                <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[109px]">
-                  <span className="text-white font-medium font-poppins leading-5 text-sm px-7 py-[5px] rounded-lg bg-[#5DB505]">
-                    {val.is_active ? "Active" : ""}
-                  </span>
-                </div>
+                {val.headerName}
               </div>
             ))}
+          </div>
+          <div className="flex flex-col gap-4 pt-4">
+            {experts &&
+              experts.map((val, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-3 hover:bg-[#f3f1f1] duration-300"
+                >
+                  <div className="px-4 h-5">
+                    <CheckBox
+                      isChecked={checkedItems[val.expert_id] || false}
+                      handleCheckBox={() =>
+                        handleCheckBoxChange(
+                          val.expert_id,
+                          setCheckedItems,
+                          setCategorySelect
+                        )
+                      }
+                    />
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
+                    {i + 1}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[126px]">
+                    {formatDateTime(val.created_at)}
+                  </div>
+                  <div
+                    onClick={() => handleExpertDetails(val.expert_id)}
+                    className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[136px]"
+                  >
+                    {val.expert_id}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[158px]">
+                    {val.name}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[122px]">
+                    {val.contact_no}
+                  </div>
+                  <div className="py-1 text-sm text-ellipsis overflow-hidden font-semibold font-poppins leading-5 text-[#303972] w-[171px]">
+                    {val.email}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[104px]">
+                    {val.city}
+                  </div>
+                  <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[109px]">
+                    <span className="text-white font-medium font-poppins leading-5 text-sm px-7 py-[5px] rounded-lg bg-[#5DB505]">
+                      {val.is_active ? "Active" : ""}
+                    </span>
+                  </div>
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </div>

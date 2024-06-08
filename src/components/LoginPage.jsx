@@ -16,13 +16,16 @@ const LoginPage = () => {
     const { value, name } = e.target;
     setLoginCredentials({ ...loginCredentials, [name]: value });
   };
+  const [loading, setLoading] = useState(false);
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const res = await axios.post(
         `${baseUrl}superadmin/dashboard-login/`,
         loginCredentials
       );
+      setLoading(false);
       const token = res.data.token;
       sessionStorage.setItem("token", token);
       console.log(res);
@@ -31,12 +34,14 @@ const LoginPage = () => {
       // fetch other details
       fetchStats(setStats);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
   console.log(loginCredentials);
+
   return (
-    <div className="bg-white flex items-center justify-center py-20 container min-h-screen">
+    <div className="bg-white flex relative items-center justify-center py-20 container min-h-screen">
       <div className="w-[559px] pt-4 px-[50px] pb-11 border border-light-green rounded-3xl">
         <img className="mx-auto" src={logo} alt="" />
         <form onSubmit={handleLogin}>
@@ -59,7 +64,7 @@ const LoginPage = () => {
             placeholder="Password"
           />
           <button className="text-white text-2xl 2xl:text-[32px] leading-[38px] font-inter p-3 2xl:p-4 rounded-lg bg-primary w-full mt-10 2xl:mt-12">
-            Login
+            {loading ? "Loading..." : "Login"}
           </button>
         </form>
       </div>

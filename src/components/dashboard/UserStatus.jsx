@@ -27,10 +27,10 @@ const UserStatus = () => {
                   : ""
               }`}
             >
-              <FarmersIcon />
+              <FarmersIcon setColor={key} />
               <div>
-                <p className="text-base leading-4 text-white font-poppins">
-                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                <p className="text-base leading-4 text-white font-poppins capitalize">
+                  {key}
                 </p>
                 <p className="text-white font-poppins font-bold text-2xl leading-6 mt-[5px]">
                   {value}
@@ -66,8 +66,8 @@ const UserStatus = () => {
           </div>
           <div className="flex flex-col h-[370px] overflow-auto gap-2 mt-2">
             {productListStats &&
-              productListStats.map((val) => (
-                <div className="flex justify-between">
+              productListStats.map((val, i) => (
+                <div key={i} className="flex justify-between">
                   <p className="text-black leading-7 w-3/5 text-sm font-poppins text-nowrap overflow-hidden text-ellipsis">
                     {val.name}
                   </p>

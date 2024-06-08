@@ -5,6 +5,7 @@ import CheckBox from "../common/CheckBox";
 import MyContext from "../context/ContextStore";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
+import { formatDateTime } from "../experts/Experts";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -30,66 +31,14 @@ const columns = [
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    DOJ: "26/05/2023",
-    employee_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    firstName: "Jon",
-    email: "abx@gamil.com",
-    farmersAdded: 24,
-    status: "active",
-  },
-  {
-    id: 2,
-    DOJ: "26/05/2023",
-    employee_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    firstName: "Cersei",
-    email: "abx@gamil.com",
-    farmersAdded: 24,
-    status: "active",
-  },
-  {
-    id: 3,
-    DOJ: "26/05/2023",
-    employee_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    firstName: "Jaime",
-    email: "abx@gamil.com",
-    farmersAdded: 24,
-    status: "active",
-  },
-  {
-    id: 4,
-    DOJ: "26/05/2023",
-    employee_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    firstName: "Arya",
-    email: "abx@gamil.com",
-    farmersAdded: 24,
-    status: "active",
-  },
-  {
-    id: 5,
-    DOJ: "26/05/2023",
-    employee_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    firstName: "Daenerys",
-    email: "abx@gamil.com",
-    farmersAdded: 24,
-    status: "active",
-  },
-];
 const Employees = () => {
-  const { setCheckedItems, setCategorySelect, checkedItems, setTitle } =
-    useContext(MyContext);
+  const {
+    setCheckedItems,
+    setCategorySelect,
+    checkedItems,
+    setTitle,
+    employees,
+  } = useContext(MyContext);
   const navigate = useNavigate();
   const handleExpertDetails = (farmer) => {
     if (farmer) {
@@ -125,78 +74,85 @@ const Employees = () => {
           <CommonBtn btntext="Export" style="bg-[#444444]" />
         </div>
       </div>
-      <div className="w-full overflow-auto">
-        <div className="flex items-center gap-2 bg-[#EAFFD4]">
-          <div className="px-4 h-5">
-            <CheckBox
-              isChecked={checkedItems[0] || false}
-              handleCheckBox={() =>
-                handleCheckBoxChange(0, setCheckedItems, setCategorySelect)
-              }
-            />
-          </div>
-          {columns.map((val, i) => (
-            <div
-              key={i}
-              style={{ width: val.width }}
-              className="py-3 text-[#444444] font-poppins font-bold text-sm leading-5"
-            >
-              {val.headerName}
+      <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">
+        <div className="w-[calc(1440px-275px)] 2xl:w-full pb-2">
+          <div className="flex items-center gap-2 bg-[#EAFFD4]">
+            <div className="px-4 h-5">
+              <CheckBox
+                isChecked={checkedItems[0] || false}
+                handleCheckBox={() =>
+                  handleCheckBoxChange(0, setCheckedItems, setCategorySelect)
+                }
+              />
             </div>
-          ))}
-        </div>
-        <div className="flex flex-col gap-4 pt-4">
-          {rows.map((val, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-2 hover:bg-[#f3f1f1] duration-300"
-            >
-              <div className="px-4 h-5">
-                <CheckBox
-                  isChecked={checkedItems[val.employee_ID] || false}
-                  handleCheckBox={() =>
-                    handleCheckBoxChange(
-                      val.employee_ID,
-                      setCheckedItems,
-                      setCategorySelect
-                    )
-                  }
-                />
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
-                {val.id}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[90px]">
-                {val.DOJ}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline w-[114px]">
-                {val.employee_ID}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[158px]">
-                {val.firstName}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[113px]">
-                {val.contact}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[151px]">
-                {val.email}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[97px]">
-                {val.city}
-              </div>
+            {columns.map((val, i) => (
               <div
-                onClick={() => handleExpertDetails(val.firstName)}
-                className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[122px]"
+                key={i}
+                style={{ width: val.width }}
+                className="py-3 text-[#444444] font-poppins font-bold text-sm leading-5"
               >
-                {val.farmersAdded}
+                {val.headerName}
               </div>
-              <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[104px]">
-                <span className="text-white font-medium font-poppins leading-5 text-sm px-7 py-[5px] rounded-lg bg-[#5DB505]">
-                  {val.status}
-                </span>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="flex flex-col gap-4 pt-4">
+            {employees &&
+              employees.map((val, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-2 hover:bg-[#f3f1f1] duration-300"
+                >
+                  <div className="px-4 h-5">
+                    <CheckBox
+                      isChecked={checkedItems[val.employee_id] || false}
+                      handleCheckBox={() =>
+                        handleCheckBoxChange(
+                          val.employee_id,
+                          setCheckedItems,
+                          setCategorySelect
+                        )
+                      }
+                    />
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
+                    {i + 1}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[90px]">
+                    {formatDateTime(val.date_of_joined)}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline w-[114px]">
+                    {val.employee_id}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[158px]">
+                    {val.name}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[113px]">
+                    {val.contact_no}
+                  </div>
+                  <div className="py-1 text-sm text-ellipsis overflow-hidden font-semibold font-poppins leading-5 text-[#303972] w-[151px]">
+                    {val.email}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[97px]">
+                    {val.city}
+                  </div>
+                  <div
+                    onClick={() => handleExpertDetails(val.firstName)}
+                    className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[122px]"
+                  >
+                    {val.farmersAdded}
+                  </div>
+                  <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[104px]">
+                    <span
+                      className={`text-white font-medium font-poppins leading-5 text-sm px-7 py-[5px] rounded-lg ${
+                        val.is_active ? "bg-[#5DB505]" : "bg-[#FF2E2E]"
+                      }`}
+                    >
+                      {val.is_active ? "Active" : "Unactive"}
+                    </span>
+                  </div>
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </div>

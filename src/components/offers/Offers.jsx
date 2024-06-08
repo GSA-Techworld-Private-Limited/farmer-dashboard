@@ -6,6 +6,7 @@ import MyContext from "../context/ContextStore";
 import CheckBox from "../common/CheckBox";
 import CouponOverlay from "./CouponOverlay";
 import BannerOverlay from "./BannerOverlay";
+import { formatDateTime } from "../experts/Experts";
 const columns = [
   { headerName: "SL. No", width: 72 },
   { headerName: "Date", width: 126 },
@@ -73,8 +74,13 @@ const rows = [
   },
 ];
 const Offers = () => {
-  const { setTitle, setCheckedItems, checkedItems, setCategorySelect } =
-    useContext(MyContext);
+  const {
+    setTitle,
+    setCheckedItems,
+    checkedItems,
+    setCategorySelect,
+    couponData,
+  } = useContext(MyContext);
   const navigate = useNavigate();
   const [coupon, setCoupon] = useState(false);
   const [banner, setBanner] = useState(false);
@@ -131,78 +137,85 @@ const Offers = () => {
               </div>
             </div>
           </div>
-          <div className="w-full overflow-auto">
-            <div className="flex items-center gap-2 bg-[#EAFFD4]">
-              <div className="px-4 h-5">
-                <CheckBox
-                  isChecked={checkedItems[0] || false}
-                  handleCheckBox={() =>
-                    handleCheckBoxChange(0, setCheckedItems, setCategorySelect)
-                  }
-                />
-              </div>
-              {columns.map((val, i) => (
-                <div
-                  key={i}
-                  style={{ width: val.width }}
-                  className="py-3 text-[#444444] font-poppins font-bold text-sm leading-5"
-                >
-                  {val.headerName}
+          <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">
+            <div className="w-[calc(1440px-275px)] 2xl:w-full pb-2">
+              <div className="flex items-center gap-2 bg-[#EAFFD4]">
+                <div className="px-4 h-5">
+                  <CheckBox
+                    isChecked={checkedItems[0] || false}
+                    handleCheckBox={() =>
+                      handleCheckBoxChange(
+                        0,
+                        setCheckedItems,
+                        setCategorySelect
+                      )
+                    }
+                  />
                 </div>
-              ))}
-            </div>
-            <div className="flex flex-col gap-4 pt-4">
-              {rows.map((val, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-2 hover:bg-[#f3f1f1] duration-300"
-                >
-                  <div className="px-4 h-5">
-                    <CheckBox
-                      isChecked={checkedItems[val.id] || false}
-                      handleCheckBox={() =>
-                        handleCheckBoxChange(
-                          val.id,
-                          setCheckedItems,
-                          setCategorySelect
-                        )
-                      }
-                    />
-                  </div>
-                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
-                    {val.id}
-                  </div>
-                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[126px]">
-                    {val.DOJ}
-                  </div>
+                {columns.map((val, i) => (
                   <div
-                    onClick={() => handleViewAndEdit(val.coupon_ID, val.name)}
-                    className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] cursor-pointer underline w-[136px]"
+                    key={i}
+                    style={{ width: val.width }}
+                    className="py-3 text-[#444444] font-poppins font-bold text-sm leading-5"
                   >
-                    {val.coupon_ID}
+                    {val.headerName}
                   </div>
-                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[158px]">
-                    {val.name}
-                  </div>
-                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[122px]">
-                    {val.startDate}
-                  </div>
-                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[171px]">
-                    {val.expDate}
-                  </div>
-                  <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[104px]">
-                    <span
-                      className={`text-white font-medium font-poppins leading-5 text-sm inline-block text-center px-2 min-w-[98px] py-[5px] rounded-lg bg-[#5DB505] ${
-                        val.status === "active"
-                          ? "bg-[#5DB505]"
-                          : "bg-[#FD5353]"
-                      }`}
+                ))}
+              </div>
+              <div className="flex flex-col gap-4 pt-4">
+                {couponData &&
+                  couponData.map((val, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-2 hover:bg-[#f3f1f1] duration-300"
                     >
-                      {val.status}
-                    </span>
-                  </div>
-                </div>
-              ))}
+                      <div className="px-4 h-5">
+                        <CheckBox
+                          isChecked={checkedItems[val.id] || false}
+                          handleCheckBox={() =>
+                            handleCheckBoxChange(
+                              val.id,
+                              setCheckedItems,
+                              setCategorySelect
+                            )
+                          }
+                        />
+                      </div>
+                      <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
+                        {i + 1}
+                      </div>
+                      <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[126px]">
+                        {formatDateTime(val.starts_at)}
+                      </div>
+                      <div
+                        onClick={() =>
+                          handleViewAndEdit(val.coupon_code, val.name)
+                        }
+                        className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] cursor-pointer underline w-[136px]"
+                      >
+                        {val.coupon_code}
+                      </div>
+                      <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[158px]">
+                        {val.name}
+                      </div>
+                      <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[122px]">
+                        {formatDateTime(val.starts_at)}
+                      </div>
+                      <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[171px]">
+                        {formatDateTime(val.expiry_at)}
+                      </div>
+                      <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[104px]">
+                        <span
+                          className={`text-white font-medium font-poppins leading-5 text-sm px-7 py-[5px] rounded-lg bg-[#5DB505] ${
+                            val.is_active ? "bg-[#5DB505]" : "bg-[#FD5353]"
+                          }`}
+                        >
+                          {val.is_active ? "Active" : "Unactive"}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
         </div>

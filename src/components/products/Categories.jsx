@@ -6,6 +6,7 @@ import MyContext from "../context/ContextStore";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
 import AddCategory from "./AddCategory";
+import { baseUrl } from "../api/auth";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -13,35 +14,8 @@ const columns = [
   { headerName: "Category Name", width: 154 },
   { headerName: "Total Products", width: 141 },
 ];
-
-const rows = [
-  {
-    id: 1,
-    image: "",
-    cate_name: "9498740",
-    totalQty: "1099",
-  },
-  {
-    id: 2,
-    image: "",
-    cate_name: "9498740",
-    totalQty: "1099",
-  },
-  {
-    id: 3,
-    image: "",
-    cate_name: "9498740",
-    totalQty: "1099",
-  },
-  {
-    id: 4,
-    image: "",
-    cate_name: "9498740",
-    totalQty: "1099",
-  },
-];
 const Categories = () => {
-  const { setCheckedItems, setCategorySelect, checkedItems, setTitle } =
+  const { setCheckedItems, setCategorySelect, checkedItems, categories } =
     useContext(MyContext);
   const [category, setCategory] = useState(false);
   const navigate = useNavigate();
@@ -92,37 +66,41 @@ const Categories = () => {
           ))}
         </div>
         <div className="flex flex-col gap-4 pt-4">
-          {rows.map((val, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-16 hover:bg-[#f3f1f1] duration-300"
-            >
-              <div className="px-4 h-5">
-                <CheckBox
-                  isChecked={checkedItems[val.id] || false}
-                  handleCheckBox={() =>
-                    handleCheckBoxChange(
-                      val.id,
-                      setCheckedItems,
-                      setCategorySelect
-                    )
-                  }
-                />
+          {categories &&
+            categories.map((val, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-16 hover:bg-[#f3f1f1] duration-300"
+              >
+                <div className="px-4 h-5">
+                  <CheckBox
+                    isChecked={checkedItems[val.id] || false}
+                    handleCheckBox={() =>
+                      handleCheckBoxChange(
+                        val.id,
+                        setCheckedItems,
+                        setCategorySelect
+                      )
+                    }
+                  />
+                </div>
+                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
+                  {val.id}
+                </div>
+                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[154px]">
+                  <img className="h-9 rounded w-16 object-cover"
+                    src={val.image.replace("http://localhost:8055/", "http://142.93.223.45:8005/")}
+                    alt="categories image"
+                  />
+                </div>
+                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[154px]">
+                  {val.name}
+                </div>
+                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[141px]">
+                  {val.totalQty}
+                </div>
               </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
-                {val.id}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[154px]">
-                {val.image}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[154px]">
-                {val.cate_name}
-              </div>
-              <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[141px]">
-                {val.totalQty}
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
       {category && <AddCategory setCategory={setCategory} />}

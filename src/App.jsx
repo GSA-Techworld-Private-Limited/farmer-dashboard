@@ -31,9 +31,20 @@ import AddProducts from "./components/products/AddProducts";
 import ProductDetails from "./components/products/ProductDetails";
 import Categories from "./components/products/Categories";
 import {
+  fetchCategories,
+  fetchCouponData,
+  fetchEmployees,
   fetchExperts,
+  fetchFarmers,
+  fetchFarmersCrops,
+  fetchNurseries,
+  fetchOrdersList,
   fetchProductListStats,
+  fetchProducts,
+  fetchSales,
   fetchStats,
+  fetchUsers,
+  fetchVendors,
 } from "./components/api/auth";
 function App() {
   const {
@@ -43,7 +54,17 @@ function App() {
     setProductListStats,
     setExperts,
     title,
-    setTitle,
+    setProducts,
+    setCategories,
+    setOrders,
+    setEmployees,
+    setFarmers,
+    setFarmersCrops,
+    setVendors,
+    setNurseries,
+    setUsers,
+    setCouponData,
+    setSales,
   } = useContext(MyContext);
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -51,8 +72,19 @@ function App() {
       fetchStats(setStats);
       fetchProductListStats(setProductListStats);
       fetchExperts(setExperts);
+      fetchProducts(setProducts);
+      fetchCategories(setCategories);
+      fetchOrdersList(setOrders);
+      fetchEmployees(setEmployees);
+      fetchFarmers(setFarmers);
+      fetchFarmersCrops(setFarmersCrops);
+      fetchVendors(setVendors);
+      fetchNurseries(setNurseries);
+      fetchUsers(setUsers);
+      fetchCouponData(setCouponData);
+      fetchSales(setSales, "yearly");
     }
-  }, []);
+  }, [authenticated]);
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (token) {

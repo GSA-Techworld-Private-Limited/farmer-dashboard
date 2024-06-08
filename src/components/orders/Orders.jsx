@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { formatDateTime } from "../experts/Experts";
 const columns = [
   { headerName: "SL. No", width: 72 },
   { headerName: "Date", width: 94 },
@@ -25,75 +26,8 @@ const columns = [
   { headerName: "Order Status", width: 121 },
 ];
 
-const rows = [
-  {
-    id: 1,
-    date: "27-07-23",
-    order_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    name: "Product 1",
-    qty: 3,
-    orderBy: "Rajeshwar",
-    price: "₹ 12,000",
-    paymentStatus: "Paid",
-    orderStatus: "Delivered",
-  },
-  {
-    id: 2,
-    date: "27-07-23",
-    order_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    name: "Product 1",
-    qty: 3,
-    orderBy: "Rajeshwar",
-    price: "₹ 12,000",
-    paymentStatus: "Paid",
-    orderStatus: "Delivered",
-  },
-  {
-    id: 3,
-    date: "27-07-23",
-    order_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    name: "Product 1",
-    qty: 3,
-    orderBy: "Rajeshwar",
-    price: "₹ 12,000",
-    paymentStatus: "Cod",
-    orderStatus: "Delivered",
-  },
-  {
-    id: 4,
-    date: "27-07-23",
-    order_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    name: "Product 1",
-    qty: 3,
-    orderBy: "Rajeshwar",
-    price: "₹ 12,000",
-    paymentStatus: "Cod",
-    orderStatus: "Pending",
-  },
-  {
-    id: 5,
-    date: "27-07-23",
-    order_ID: "9498740",
-    contact: "9287347823",
-    city: "bengaluru",
-    name: "Product 1",
-    qty: 3,
-    orderBy: "Rajeshwar",
-    price: "₹ 12,000",
-    paymentStatus: "Cod",
-    orderStatus: "Pending",
-  },
-];
 const Orders = () => {
-  const { setCheckedItems, setCategorySelect, checkedItems, setTitle } =
+  const { setCheckedItems, setCategorySelect, checkedItems, orders } =
     useContext(MyContext);
   const [selectedTab, setSelectedTab] = useState("tab1");
   const [status, setStatus] = useState(false);
@@ -125,8 +59,8 @@ const Orders = () => {
           <CommonBtn btntext="Export" style="bg-[#444444]" />
         </div>
       </div>
-      <div className="w-full overflow-auto">
-        <div className="w-[calc(1430px-275px)]">
+      <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">
+        <div className="w-[calc(1440px-275px)] 2xl:w-full pb-2">
           <div className="flex items-center gap-3 bg-[#EAFFD4]">
             <div className="px-4 h-5">
               <CheckBox
@@ -147,72 +81,71 @@ const Orders = () => {
             ))}
           </div>
           <div className="flex flex-col gap-4 pt-4">
-            {rows.map((val, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-3 hover:bg-[#f3f1f1] duration-300"
-              >
-                <div className="px-4 h-5">
-                  <CheckBox
-                    isChecked={checkedItems[val.order_ID] || false}
-                    handleCheckBox={() =>
-                      handleCheckBoxChange(
-                        val.order_ID,
-                        setCheckedItems,
-                        setCategorySelect
-                      )
-                    }
-                  />
-                </div>
-                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
-                  {val.id}
-                </div>
-                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[94px]">
-                  {val.date}
-                </div>
+            {orders &&
+              orders.map((val, i) => (
                 <div
-                  onClick={() => handleExpertDetails(val.order_ID)}
-                  className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[118px]"
+                  key={i}
+                  className="flex items-center gap-3 hover:bg-[#f3f1f1] duration-300"
                 >
-                  {val.order_ID}
-                </div>
-                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[135px]">
-                  {val.name}
-                </div>
-                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[58px]">
-                  {val.qty}
-                </div>
-                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[112px]">
-                  {val.orderBy}
-                </div>
-                <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[121px]">
-                  {val.price}
-                </div>
+                  <div className="px-4 h-5">
+                    <CheckBox
+                      isChecked={checkedItems[val.order_id] || false}
+                      handleCheckBox={() =>
+                        handleCheckBoxChange(
+                          val.order_id,
+                          setCheckedItems,
+                          setCategorySelect
+                        )
+                      }
+                    />
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
+                    {i + 1}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[94px]">
+                    {formatDateTime(val.order_placed_date)}
+                  </div>
+                  <div
+                    onClick={() => handleExpertDetails(val.order_id)}
+                    className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[118px]"
+                  >
+                    {val.order_id}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[135px]">
+                    {val.product}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[58px]">
+                    {val.quantity}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[112px]">
+                    {val.orderBy}
+                  </div>
+                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[121px]">
+                    {val.price}
+                  </div>
 
-                <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[152px]">
-                  <span
-                    className={`text-white w-[105px] font-medium font-poppins leading-5 text-sm px-2 inline-block text-center py-[5px] rounded-lg bg-[#5DB505] ${
-                      val.paymentStatus === "Cod"
-                        ? "bg-[#303972]"
-                        : "bg-[#5DB505]"
-                    }`}
-                  >
-                    {val.paymentStatus}
-                  </span>
+                  <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[152px]">
+                    <span
+                      className={`text-white w-[105px] font-medium font-poppins leading-5 text-sm px-2 inline-block text-center py-[5px] rounded-lg bg-[#5DB505] ${
+                        val.is_paid ? "bg-[#5DB505]" : "bg-[#FD5353]"
+                      }`}
+                    >
+                      {val.is_paid ? "Paid" : "Unpaid"}
+                    </span>
+                  </div>
+                  <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[121px]">
+                    <span
+                      className={`text-white w-[105px] font-medium font-poppins leading-5 text-sm px-2 inline-block text-center py-[5px] rounded-lg bg-[#5DB505] ${
+                        val.order_status === "pending"
+                          ? "bg-[#FD5353]"
+                          : "bg-[#5DB505]"
+                      }`}
+                    >
+                      {val.order_status}
+                    </span>
+                  </div>
                 </div>
-                <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[121px]">
-                  <span
-                    className={`text-white w-[105px] font-medium font-poppins leading-5 text-sm px-2 inline-block text-center py-[5px] rounded-lg bg-[#5DB505] ${
-                      val.orderStatus === "Pending"
-                        ? "bg-[#FD5353]"
-                        : "bg-[#5DB505]"
-                    }`}
-                  >
-                    {val.orderStatus}
-                  </span>
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </div>

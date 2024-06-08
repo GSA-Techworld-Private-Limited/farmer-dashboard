@@ -1,10 +1,12 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useContext, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
+import { fetchSales } from "./api/auth";
+import MyContext from "./context/ContextStore";
 
 const Chart = () => {
   const chartRef = useRef(null);
-
+  const { setSales, sales } = useContext(MyContext);
   useEffect(() => {
     const chart = chartRef.current;
     if (chart) {
@@ -17,27 +19,37 @@ const Chart = () => {
       chart.update();
     }
   }, []);
-
+  const fetchTime = () => {
+    if (sales) {
+      if (sales.period === "Yearly") {
+        return [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+      } else if (sales.period === "Monthly") {
+        return ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"];
+      } else if (sales.period === "Weekly") {
+        return sales.data.map((val) => val.date);
+      }
+    }
+  };
   const data = {
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
+    labels: fetchTime(),
     datasets: [
       {
         type: "bar",
         label: "Sales",
-        data: [73, 80, 70, 100, 50, 100, 80, 70],
+        data: sales && sales.data.map((val) => val.delivered_orders_count),
         backgroundColor: "#B13A1A", // temporary, will be overwritten by useEffect
         borderWidth: 0,
         barPercentage: 0.22,
@@ -110,21 +122,35 @@ const Chart = () => {
       },
     },
   };
-
+  const [loading, setLoading] = useState(false);
   return (
-    <div>
+    <div className="relative">
       <div className="flex items-center justify-between">
+        {loading && (
+          <div className="absolute text-[#5DB505] font-semibold font-poppins inset-0 flex items-center justify-center">
+            Loading...
+          </div>
+        )}
         <div className="text-lg font-poppins font-semibold text-[#303972]">
           Sales Overview
         </div>
         <div className="flex items-center gap-5">
-          <div className="text-[#6C757D] text-sm font-medium leading-5 hover:text-[#5DB505] cursor-pointer">
+          <div
+            onClick={() => fetchSales(setSales, "yearly", setLoading)}
+            className="text-[#6C757D] text-sm font-poppins font-medium leading-5 hover:text-[#5DB505] duration-300 cursor-pointer"
+          >
             Yearly
           </div>
-          <div className="text-[#5DB505] text-sm font-medium leading-5 cursor-pointer">
+          <div
+            onClick={() => fetchSales(setSales, "monthly", setLoading)}
+            className="text-[#6C757D] text-sm font-poppins hover:text-[#5DB505] duration-300 font-medium leading-5 cursor-pointer"
+          >
             Monthly
           </div>
-          <div className="text-[#6C757D] text-sm font-medium leading-5 hover:text-[#5DB505] cursor-pointer">
+          <div
+            onClick={() => fetchSales(setSales, "weekly", setLoading)}
+            className="text-[#6C757D] text-sm font-poppins font-medium leading-5 hover:text-[#5DB505] duration-300 cursor-pointer"
+          >
             Weekly
           </div>
         </div>
