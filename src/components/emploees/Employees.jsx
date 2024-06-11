@@ -6,6 +6,7 @@ import MyContext from "../context/ContextStore";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
 import { formatDateTime } from "../experts/Experts";
+import { exportData } from "../utils/export";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -71,7 +72,11 @@ const Employees = () => {
             style="bg-[#FF7D24]"
           />
           <CommonBtn btntext="Delete" style="bg-[#FF2E2E]" />
-          <CommonBtn btntext="Export" style="bg-[#444444]" />
+          <CommonBtn
+            clickEvent={() => exportData(employees)}
+            btntext="Export"
+            style="bg-[#444444]"
+          />
         </div>
       </div>
       <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">
