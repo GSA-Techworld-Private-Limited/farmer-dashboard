@@ -5,6 +5,8 @@ import CheckBox from "../common/CheckBox";
 import MyContext from "../context/ContextStore";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
+import { baseUrl, fetchExperts } from "../api/auth";
+import axios from "axios";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -28,6 +30,8 @@ const Experts = () => {
     checkedItems,
     setTitle,
     experts,
+    categorySelect,
+    setExperts,
   } = useContext(MyContext);
   const navigate = useNavigate();
   const handleExpertDetails = (user) => {
@@ -39,6 +43,27 @@ const Experts = () => {
   const addExperts = () => {
     navigate(`/experts/add-expert`);
     setTitle(`Add Experts`);
+  };
+  const deleteExpert = async () => {
+    const token = sessionStorage.getItem("token");
+    if (categorySelect) {
+      console.log(categorySelect);
+      try {
+        const res = await axios.delete(
+          `${baseUrl}superadmin/get-experts-dashboard/${categorySelect}/`,
+          {
+            Authorization: `token ${token}`,
+          }
+        );
+        fetchExperts(setExperts);
+        setCategorySelect(null)
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("select item");
+    }
   };
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
@@ -60,7 +85,11 @@ const Experts = () => {
             btntext="+ Add Expert"
             style="bg-[#FF7D24]"
           />
-          <CommonBtn btntext="Delete" style="bg-[#FF2E2E]" />
+          <CommonBtn
+            clickEvent={deleteExpert}
+            btntext="Delete"
+            style="bg-[#FF2E2E]"
+          />
           <CommonBtn btntext="Export" style="bg-[#444444]" />
         </div>
       </div>

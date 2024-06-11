@@ -37,13 +37,14 @@ const Farmers = () => {
     setTitle(`Add Farmer`);
   };
   const deleteFarmer = async () => {
+    console.log("yes",categorySelect);
     const token = sessionStorage.getItem("token");
 
     if (categorySelect) {
       console.log(categorySelect);
       try {
         const res = await axios.delete(
-          `${baseUrl}superadmin/get-farmer-dashboard/${categorySelect}`,
+          `${baseUrl}superadmin/get-farmer-dashboard/${categorySelect}/`,
           {
             Authorization: `token ${token}`,
           }
@@ -51,6 +52,7 @@ const Farmers = () => {
         fetchFarmers(setFarmers);
         console.log(res);
         console.log(categorySelect);
+        setCategorySelect(null)
       } catch (error) {
         console.log(error);
       }
@@ -130,13 +132,13 @@ const Farmers = () => {
                     />
                   </div>
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[64px]">
-                    {val.id}
+                    {i+1}
                   </div>
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[82px]">
                     {formatDateTime(val.created_at)}
                   </div>
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline w-[102px]">
-                    {val.farmer_ID}
+                    {val.id}
                   </div>
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[140px]">
                     {val.full_name}

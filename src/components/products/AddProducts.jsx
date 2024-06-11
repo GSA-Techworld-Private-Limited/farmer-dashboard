@@ -67,7 +67,7 @@ const AddProducts = () => {
             </div>
             <div className="inline-block">
               <p className="text-sm font-poppins leading-5 text-[#4D44B5]">
-                Upload Profile Pic <span className="text-[#FD5353]">*</span>
+                Upload Pic (Max 5) <span className="text-[#FD5353]">*</span>
               </p>
               <div className="border border-[#E3E3E3] rounded-lg px-4 py-2.5 mt-3">
                 <img

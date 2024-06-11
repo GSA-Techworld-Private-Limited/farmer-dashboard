@@ -5,6 +5,8 @@ import CheckBox from "../common/CheckBox";
 import MyContext from "../context/ContextStore";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { baseUrl, fetchVendors } from "../api/auth";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -74,13 +76,39 @@ const Vendors = () => {
     setCheckedItems,
     setCategorySelect,
     checkedItems,
+    categorySelect,
     setTitle,
     vendors,
+    setVendors,
   } = useContext(MyContext);
   const navigate = useNavigate();
   const addVendors = () => {
     navigate(`/vendors/add-vendors`);
     setTitle(`Add Vendors`);
+  };
+  const deleteVendor = async () => {
+    console.log("yes", categorySelect);
+    const token = sessionStorage.getItem("token");
+
+    if (categorySelect) {
+      console.log(categorySelect);
+      try {
+        const res = await axios.delete(
+          `${baseUrl}superadmin/get-vendor-dashboard/${categorySelect}/`,
+          {
+            Authorization: `token ${token}`,
+          }
+        );
+        fetchVendors(setVendors);
+        console.log(res);
+        console.log(categorySelect);
+        setCategorySelect(null);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("select item");
+    }
   };
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
@@ -102,7 +130,11 @@ const Vendors = () => {
             btntext="+ Add Vendor"
             style="bg-[#FF7D24]"
           />
-          <CommonBtn btntext="Delete" style="bg-[#FF2E2E]" />
+          <CommonBtn
+            clickEvent={deleteVendor}
+            btntext="Delete"
+            style="bg-[#FF2E2E]"
+          />
           <CommonBtn btntext="Export" style="bg-[#444444]" />
         </div>
       </div>

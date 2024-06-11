@@ -28,7 +28,9 @@ export const fetchProductListStats = async (setProductListStats) => {
     console.log(error);
   }
 };
-export const fetchExperts = async (setExperts) => {
+export const fetchExperts = async (
+  
+) => {
   try {
     const res = await axios.get(`${baseUrl}superadmin/add-expert-dashboard/`, {
       Authorization: `token ${token}`,

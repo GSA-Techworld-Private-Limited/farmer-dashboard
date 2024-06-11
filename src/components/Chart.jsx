@@ -54,14 +54,6 @@ const Chart = () => {
         borderWidth: 0,
         barPercentage: 0.22,
       },
-      {
-        type: "line",
-        label: "Trend",
-        data: [50, 60, 55, 97, 45, 70, 55, 60],
-        borderColor: "#3AC977",
-        borderWidth: 1,
-        fill: false,
-      },
     ],
   };
 
@@ -156,7 +148,7 @@ const Chart = () => {
         </div>
       </div>
       <div
-        className="mt-6 font-poppins"
+        className="mt-6 font-poppins !text-[#A098AE]"
         style={{ width: "600px", height: "180px" }}
       >
         <Bar data={data} options={options} ref={chartRef} />

@@ -5,6 +5,8 @@ import CheckBox from "../common/CheckBox";
 import MyContext from "../context/ContextStore";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
+import { baseUrl, fetchProducts } from "../api/auth";
+import axios from "axios";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -24,6 +26,8 @@ const Products = () => {
     checkedItems,
     setTitle,
     products,
+    setProducts,
+    categorySelect,
   } = useContext(MyContext);
   const navigate = useNavigate();
   const handleProductDetails = (product) => {
@@ -35,6 +39,27 @@ const Products = () => {
   const addProducts = () => {
     navigate(`/products/add-products`);
     setTitle(`Add Products`);
+  };
+  const deleteProduct = async () => {
+    const token = sessionStorage.getItem("token");
+    if (categorySelect) {
+      console.log(categorySelect);
+      try {
+        const res = await axios.delete(
+          `${baseUrl}superadmin/get-products-dashboard/${categorySelect}/`,
+          {
+            Authorization: `token ${token}`,
+          }
+        );
+        fetchProducts(setProducts);
+        setCategorySelect(null)
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("select item");
+    }
   };
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
@@ -56,7 +81,11 @@ const Products = () => {
             btntext="+ Add Products"
             style="bg-[#FF7D24]"
           />
-          <CommonBtn btntext="Delete" style="bg-[#FF2E2E]" />
+          <CommonBtn
+            clickEvent={deleteProduct}
+            btntext="Delete"
+            style="bg-[#FF2E2E]"
+          />
           <CommonBtn btntext="Export" style="bg-[#444444]" />
         </div>
       </div>
@@ -103,8 +132,22 @@ const Products = () => {
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
                     {i + 1}
                   </div>
-                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[126px]">
-                    {val.image}
+                  <div className="py-1 text-sm flex items-center font-semibold font-poppins leading-5 text-[#303972] w-[126px]">
+                    {val.product_galleries.length > 0
+                      ? val.product_galleries.map((obj, i) => (
+                          <img
+                            key={i}
+                            className={`w-11 h-9 object-cover rounded-[5px] ${
+                              i == !0 ? "-translate-x-1/2" : ""
+                            }`}
+                            src={obj.image.replace(
+                              "http://localhost:8055/",
+                              "http://142.93.223.45:8005/"
+                            )}
+                            alt="sd"
+                          />
+                        ))
+                      : "_"}
                   </div>
                   <div
                     onClick={() => handleProductDetails(val.product_id)}

@@ -6,7 +6,8 @@ import MyContext from "../context/ContextStore";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
 import AddCategory from "./AddCategory";
-import { baseUrl } from "../api/auth";
+import { baseUrl, fetchCategories } from "../api/auth";
+import axios from "axios";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -15,12 +16,38 @@ const columns = [
   { headerName: "Total Products", width: 141 },
 ];
 const Categories = () => {
-  const { setCheckedItems, setCategorySelect, checkedItems, categories } =
-    useContext(MyContext);
+  const {
+    setCheckedItems,
+    categorySelect,
+    setCategorySelect,
+    checkedItems,
+    categories,
+    setCategories,
+  } = useContext(MyContext);
   const [category, setCategory] = useState(false);
   const navigate = useNavigate();
 
-  const addCatgories = () => {};
+  const deleteCate = async () => {
+    const token =sessionStorage.getItem("token")
+    if (categorySelect) {
+      console.log(categorySelect);
+      try {
+        const res = await axios.delete(
+          `${baseUrl}superadmin/get-categories-dashboard/${categorySelect}/`,
+          {
+            Authorization: `token ${token}`,
+          }
+        );
+        fetchCategories(setCategories);
+        console.log(res);
+        setCategorySelect(null)
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("select item");
+    }
+  };
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
       <div className="flex justify-between items-center py-5 px-7 pb-7">
@@ -41,7 +68,11 @@ const Categories = () => {
             btntext="+ Add Category"
             style="bg-[#FF7D24]"
           />
-          <CommonBtn btntext="Delete" style="bg-[#FF2E2E]" />
+          <CommonBtn
+            clickEvent={deleteCate}
+            btntext="Delete"
+            style="bg-[#FF2E2E]"
+          />
           <CommonBtn btntext="Export" style="bg-[#444444]" />
         </div>
       </div>
@@ -88,8 +119,12 @@ const Categories = () => {
                   {val.id}
                 </div>
                 <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[154px]">
-                  <img className="h-9 rounded w-16 object-cover"
-                    src={val.image.replace("http://localhost:8055/", "http://142.93.223.45:8005/")}
+                  <img
+                    className="h-9 rounded w-16 object-cover"
+                    src={val.image.replace(
+                      "http://localhost:8055/",
+                      "http://142.93.223.45:8005/"
+                    )}
                     alt="categories image"
                   />
                 </div>
