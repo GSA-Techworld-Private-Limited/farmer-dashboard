@@ -37,8 +37,8 @@ const ExpertDetails = () => {
   console.log(expertDetails);
 
   useEffect(() => {
-    const fetchProductDetails = async () => {
-      if (expert_id) {
+    if (expert_id) {
+      const fetchProductDetails = async () => {
         try {
           const res = await axios.get(
             `${baseUrl}superadmin/get-experts-dashboard/${expert_id}/`,
@@ -50,9 +50,9 @@ const ExpertDetails = () => {
         } catch (error) {
           console.log(error);
         }
-      }
-    };
-    fetchProductDetails();
+      };
+      fetchProductDetails();
+    }
     console.log("id", expert_id);
   }, [expert_id]);
   return (
@@ -88,7 +88,7 @@ const ExpertDetails = () => {
                 id="expert-name"
                 name="name"
                 onChange={handleExpertInput}
-                value={expertDetails.name}
+                value={expertDetails && expertDetails.name}
                 placeholder="James"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
@@ -104,7 +104,7 @@ const ExpertDetails = () => {
                 type="number"
                 id="expert-no"
                 name="contact_no"
-                // value={expertDetails.contact_no}
+                value={expertDetails && expertDetails.contact_no}
                 onChange={handleExpertInput}
                 placeholder="+123456789"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
@@ -121,7 +121,7 @@ const ExpertDetails = () => {
                 type="email"
                 id="expert-email"
                 name="email"
-                // value={expertDetails.email}
+                value={expertDetails && expertDetails.email}
                 onChange={handleExpertInput}
                 placeholder="James@gmail.com"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
@@ -139,7 +139,7 @@ const ExpertDetails = () => {
                 id="expert-state"
                 placeholder="+123456789"
                 name="state"
-                // value={expertDetails.state}
+                value={expertDetails && expertDetails.state}
                 onChange={handleExpertInput}
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
@@ -158,7 +158,7 @@ const ExpertDetails = () => {
                 id="expert-date"
                 placeholder="James"
                 name="date_of_joined"
-                // value={expertDetails.date_of_joined}
+                value={expertDetails && expertDetails.date_of_joined}
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
@@ -174,7 +174,7 @@ const ExpertDetails = () => {
                 id="expert-no-two"
                 placeholder="+123456789"
                 name="whatsapp_no"
-                // value={expertDetails.whatsapp_no}
+                value={expertDetails && expertDetails.whatsapp_no}
                 onChange={handleExpertInput}
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
@@ -189,7 +189,7 @@ const ExpertDetails = () => {
               <input
                 type="text"
                 id="expert-city"
-                // value={expertDetails.city}
+                value={expertDetails && expertDetails.city}
                 onChange={handleExpertInput}
                 name="city"
                 placeholder="+123456789"
@@ -207,7 +207,7 @@ const ExpertDetails = () => {
                 type="number"
                 id="expert-zip"
                 name="pincode"
-                // value={expertDetails.pincode}
+                value={expertDetails && expertDetails.pincode}
                 onChange={handleExpertInput}
                 placeholder="+123456789"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
@@ -215,7 +215,7 @@ const ExpertDetails = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-end gap-[70px] pt-10">
+        {/* <div className="flex items-end gap-[70px] pt-10">
           <div className="w-full">
             <p className="text-base text-black font-poppins font-semibold leading-6 mb-5">
               Login Credentials
@@ -251,7 +251,7 @@ const ExpertDetails = () => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
       </form>
     </div>
   );
