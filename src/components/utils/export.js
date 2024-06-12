@@ -2,7 +2,17 @@ import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-// import { toast } from "react-toastify";
+
+const extractDate = (str) => {
+  const datePattern = /^\d{4}-\d{2}-\d{2}/;
+  const match = str.match(datePattern);
+  return match ? match[0] : str;
+};
+
+const isURL = (str) => {
+  const urlPattern = /^(http|https):\/\/[^\s$.?#].[^\s]*$/gm;
+  return urlPattern.test(str);
+};
 
 const flattenObject = (obj, parent = "", res = {}) => {
   for (let key in obj) {
@@ -12,10 +22,26 @@ const flattenObject = (obj, parent = "", res = {}) => {
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" "); // Capitalize each word
+
     if (Array.isArray(obj[key])) {
       continue;
-    } else if (typeof obj[key] == "object" && obj[key] !== null) {
+    } else if (typeof obj[key] === "object" && obj[key] !== null) {
       flattenObject(obj[key], propName, res);
+    } else if (typeof obj[key] === "boolean" || !obj[key]) {
+      // Skip boolean values and falsy values
+      continue;
+    } else if (
+      typeof obj[key] === "string" &&
+      (obj[key].startsWith("data:image") || isURL(obj[key]))
+    ) {
+      // Skip image data and URLs
+      continue;
+    } else if (
+      typeof obj[key] === "string" &&
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{6}/.test(obj[key])
+    ) {
+      // Format dates to YYYY-MM-DD
+      res[propName] = { value: extractDate(obj[key]), display: displayName };
     } else {
       res[propName] = { value: obj[key], display: displayName }; // Store both value and display name
     }
@@ -24,14 +50,10 @@ const flattenObject = (obj, parent = "", res = {}) => {
 };
 
 export const exportData = (userData) => {
-  const fileType = "xls";
-  // No date filtering here
+  const fileType = "pdf";
   const filteredData = userData;
 
   if (filteredData.length === 0) {
-    // toast.error("No data found to export.", {
-    //   className: "rounded-[10px]",
-    // });
     alert("No data found to export");
     return;
   }
@@ -39,12 +61,10 @@ export const exportData = (userData) => {
   const flattenedData = filteredData.map((item) => flattenObject(item));
 
   if (fileType === "xlsx" || fileType === "xls") {
-    // Convert flattenedData to an array of arrays
     const dataArray = flattenedData.map((item) =>
       Object.values(item).map((obj) => obj.value)
     );
 
-    // Extract header row from flattenedData and map it to display names
     const headerRow = Object.keys(flattenedData[0]).map(
       (key) => flattenedData[0][key].display
     );
@@ -74,7 +94,7 @@ export const exportData = (userData) => {
     };
 
     const keys = Object.keys(flattenedData[0]);
-    const chunkedKeys = chunkArray(keys, 9);
+    const chunkedKeys = chunkArray(keys, 12);
 
     chunkedKeys.forEach((keyChunk, index) => {
       const columns = keyChunk.map((key) => ({
@@ -89,11 +109,11 @@ export const exportData = (userData) => {
         body: rows,
         theme: "striped",
         headStyles: {
-          fillColor: [189, 189, 189],
+          fillColor: "#EAFFD4",
           textColor: [40, 40, 40],
         },
         alternateRowStyles: {
-          fillColor: [254, 249, 235],
+          fillColor: "#fff",
           textColor: [67, 68, 68],
         },
         styles: {
@@ -116,9 +136,6 @@ export const exportData = (userData) => {
     doc.save("exported-data.pdf");
     afterComplete();
   } else {
-    // toast.error("Request Failed!! Try Again", {
-    //   className: "rounded-[10px]",
-    // });
     alert("Request Failed!! Try Again");
   }
 };

@@ -1,11 +1,60 @@
 import { ArrowBack } from "@mui/icons-material";
-import React, { useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import CommonBtn from "../common/CommonBtn";
 import MyContext from "../context/ContextStore";
+import axios from "axios";
+import { baseUrl, fetchExperts, token } from "../api/auth";
 const ExpertDetails = () => {
+  const navigate = useNavigate();
   const { expert_id } = useParams();
-  const { setTitle } = useContext(MyContext);
+  console.log;
+  const { setExperts, setTitle } = useContext(MyContext);
+  const [expertDetails, setExpertDetails] = useState(null);
+  const handleExpertInput = (e) => {
+    const { name, value } = e.target;
+    setExpertDetails({ ...expertDetails, [name]: value });
+  };
+  const editExpert = async () => {
+    const token = sessionStorage.getItem("token");
+    try {
+      const res = await axios.patch(
+        `${baseUrl}superadmin/get-experts-dashboard/${expertDetails.expert_id}/`,
+        expertDetails,
+        {
+          Authorization: `token ${token}`,
+        }
+      );
+      console.log(res);
+      fetchExperts(setExperts);
+      navigate("/experts");
+      setTitle(`Experts`);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(expertDetails);
+
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      if (expert_id) {
+        try {
+          const res = await axios.get(
+            `${baseUrl}superadmin/get-experts-dashboard/${expert_id}/`,
+            {
+              Authorization: `token ${token}`,
+            }
+          );
+          setExpertDetails(res.data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    fetchProductDetails();
+    console.log("id", expert_id);
+  }, [expert_id]);
   return (
     <div className="py-6 px-10 w-full h-[calc(100vh-76px)] flex flex-col">
       <div className="flex mb-4 justify-between">
@@ -18,7 +67,11 @@ const ExpertDetails = () => {
             <span>Back</span>
           </button>
         </Link>
-        <CommonBtn btntext="Edit" style="bg-[#05A3E7]" />
+        <CommonBtn
+          clickEvent={editExpert}
+          btntext="Edit"
+          style="bg-[#05A3E7]"
+        />
       </div>
       <form className="overflow-auto">
         <div className="flex gap-[70px]">
@@ -33,6 +86,9 @@ const ExpertDetails = () => {
               <input
                 type="text"
                 id="expert-name"
+                name="name"
+                onChange={handleExpertInput}
+                value={expertDetails.name}
                 placeholder="James"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
@@ -47,6 +103,9 @@ const ExpertDetails = () => {
               <input
                 type="number"
                 id="expert-no"
+                name="contact_no"
+                // value={expertDetails.contact_no}
+                onChange={handleExpertInput}
                 placeholder="+123456789"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
@@ -61,6 +120,9 @@ const ExpertDetails = () => {
               <input
                 type="email"
                 id="expert-email"
+                name="email"
+                // value={expertDetails.email}
+                onChange={handleExpertInput}
                 placeholder="James@gmail.com"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
@@ -76,6 +138,9 @@ const ExpertDetails = () => {
                 type="text"
                 id="expert-state"
                 placeholder="+123456789"
+                name="state"
+                // value={expertDetails.state}
+                onChange={handleExpertInput}
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
@@ -92,6 +157,8 @@ const ExpertDetails = () => {
                 type="date"
                 id="expert-date"
                 placeholder="James"
+                name="date_of_joined"
+                // value={expertDetails.date_of_joined}
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
@@ -100,12 +167,15 @@ const ExpertDetails = () => {
                 htmlFor="expert-no-two"
                 className="text-sm text-[#525153] font-poppins leading-5 mb-2"
               >
-                Contact Number 2<span className="text-[#FD5353]">*</span>
+                Whatsapp Number<span className="text-[#FD5353]">*</span>
               </label>
               <input
                 type="number"
                 id="expert-no-two"
                 placeholder="+123456789"
+                name="whatsapp_no"
+                // value={expertDetails.whatsapp_no}
+                onChange={handleExpertInput}
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
             </div>
@@ -119,6 +189,9 @@ const ExpertDetails = () => {
               <input
                 type="text"
                 id="expert-city"
+                // value={expertDetails.city}
+                onChange={handleExpertInput}
+                name="city"
                 placeholder="+123456789"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
@@ -133,6 +206,9 @@ const ExpertDetails = () => {
               <input
                 type="number"
                 id="expert-zip"
+                name="pincode"
+                // value={expertDetails.pincode}
+                onChange={handleExpertInput}
                 placeholder="+123456789"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />

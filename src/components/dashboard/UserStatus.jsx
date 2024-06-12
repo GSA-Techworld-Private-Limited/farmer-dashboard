@@ -64,7 +64,7 @@ const UserStatus = () => {
               Available Qty.
             </p>
           </div>
-          <div className="flex flex-col h-[370px] overflow-auto gap-2 mt-2">
+          <div className="flex flex-col pb-5 max-h-[370px] overflow-auto gap-2 mt-2">
             {productListStats &&
               productListStats.map((val, i) => (
                 <div key={i} className="flex justify-between">

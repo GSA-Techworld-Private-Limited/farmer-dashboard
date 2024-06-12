@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const baseUrl = "https://v3h2dw9k-8055.inc1.devtunnels.ms/";
-const token = sessionStorage.getItem("token");
+export const baseUrl = "https://v3h2dw9k-8000.inc1.devtunnels.ms/";
+export const token = sessionStorage.getItem("token");
 
 export const fetchStats = async (setStats) => {
   try {

@@ -7,6 +7,7 @@ import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
 import { baseUrl, fetchExperts } from "../api/auth";
 import axios from "axios";
+import { exportData } from "../utils/export";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -34,14 +35,29 @@ const Experts = () => {
     setExperts,
   } = useContext(MyContext);
   const navigate = useNavigate();
-  const handleExpertDetails = (user) => {
-    if (user) {
-      navigate(`/experts/${user}`);
-      setTitle(`Expert ID- ${user}`);
-    }
+  const handleExpertDetails = async (expert_id) => {
+    // const token = sessionStorage.getItem("token");
+    navigate(`/experts/${expert_id}`);
+    setTitle(`Expert ID - ${expert_id}`);
+    // if (user) {
+    //   try {
+    //     const res = await axios.get(
+    //       `${baseUrl}superadmin/get-experts-dashboard/${user}/`,
+    //       {
+    //         Authorization: `token ${token}`,
+    //       }
+    //     );
+    //     setExpertDetails(res.data);
+    //     navigate(`/experts/${encodeURIComponent(user)}`);
+    //     setTitle(`Expert ID - ${user}`);
+    //     console.log(res);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
   };
   const addExperts = () => {
-    navigate(`/experts/add-expert`);
+    navigate(`add-expert`);
     setTitle(`Add Experts`);
   };
   const deleteExpert = async () => {
@@ -56,7 +72,7 @@ const Experts = () => {
           }
         );
         fetchExperts(setExperts);
-        setCategorySelect(null)
+        setCategorySelect(null);
         console.log(res);
       } catch (error) {
         console.log(error);
@@ -65,6 +81,7 @@ const Experts = () => {
       alert("select item");
     }
   };
+
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
       <div className="flex justify-between items-center py-5 px-7 pb-7">
@@ -90,7 +107,11 @@ const Experts = () => {
             btntext="Delete"
             style="bg-[#FF2E2E]"
           />
-          <CommonBtn btntext="Export" style="bg-[#444444]" />
+          <CommonBtn
+            clickEvent={() => exportData(experts)}
+            btntext="Export"
+            style="bg-[#444444]"
+          />
         </div>
       </div>
       <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">

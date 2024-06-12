@@ -144,7 +144,7 @@ const Employees = () => {
                     onClick={() => handleExpertDetails(val.firstName)}
                     className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[122px]"
                   >
-                    {val.farmersAdded}
+                    {val.farmer_added}
                   </div>
                   <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[104px]">
                     <span

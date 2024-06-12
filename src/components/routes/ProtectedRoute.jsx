@@ -1,16 +1,15 @@
 import { useContext } from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
 import MyContext from "../context/ContextStore";
-
-function ProtectedRoute({ redirectPath = "/", children }) {
-  const token = sessionStorage.getItem("refreshToken");
-  const location = useLocation();
-  const { authenticated } = useContext(MyContext);
-  if (!token && !authenticated) {
-    return <Navigate to={redirectPath} replace state={{ from: location }} />;
+import { Navigate } from "react-router-dom";
+import PropTypes from "prop-types";
+const ProtectedRoute = ({ element }) => {
+  const { authenticated, loading } = useContext(MyContext);
+  if (loading) {
+    return <div>Loading...</div>;
   }
-
-  return children || <Outlet />;
-}
-
+  return authenticated ? element : <Navigate to="/" />;
+};
+ProtectedRoute.propTypes = {
+  element: PropTypes.element.isRequired,
+};
 export default ProtectedRoute;

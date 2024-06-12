@@ -65,6 +65,7 @@ function App() {
     setUsers,
     setCouponData,
     setSales,
+    setLoading,
   } = useContext(MyContext);
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -85,219 +86,121 @@ function App() {
       fetchSales(setSales, "yearly");
     }
   }, [authenticated]);
+
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (token) {
       setAuthenticated(true);
     }
+    setLoading(false); // Set loading to false after authentication check
   }, [authenticated]);
+  console.log(authenticated);
   return (
     <>
       {authenticated && <NavBar />}
       <div className="flex">
         <div>{authenticated && <SideBar />}</div>
         <Routes>
-          <Route
-            path="/"
-            element={
-              !authenticated ? (
-                <LoginPage />
-              ) : (
-                <Navigate to={title.toLowerCase() || "/dashboard"} />
-              )
-            }
-          />
+          <Route path="/" element={<LoginPage />} />
           <Route
             path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <UserStatus />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<UserStatus />} />}
           />
           <Route
             path="/experts"
-            element={
-              <ProtectedRoute>
-                <Experts />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<Experts />} />}
+          />
+
+          <Route
+            path="/experts/add-expert"
+            exact
+            element={<ProtectedRoute element={<AddExperts />} />}
           />
           <Route
             path="/experts/:expert_id"
-            element={
-              <ProtectedRoute>
-                <ExpertDetails />
-              </ProtectedRoute>
-            }
+            exact
+            element={<ProtectedRoute element={<ExpertDetails />} />}
           />
-          <Route
-            path="/experts/add-expert"
-            element={
-              <ProtectedRoute>
-                <AddExperts />
-              </ProtectedRoute>
-            }
-          />
+
           <Route
             path="/products"
-            element={
-              <ProtectedRoute>
-                <Products />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<Products />} />}
           />
           <Route
             path="/products/:product_id"
-            element={
-              <ProtectedRoute>
-                <ProductDetails />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<ProductDetails />} />}
           />
           <Route
             path="/products/categories"
-            element={
-              <ProtectedRoute>
-                <Categories />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<Categories />} />}
           />
           <Route
             path="/products/add-products"
-            element={
-              <ProtectedRoute>
-                <AddProducts />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<AddProducts />} />}
           />
           <Route
             path="/orders"
-            element={
-              <ProtectedRoute>
-                <Orders />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<Orders />} />}
           />
           <Route
             path="/employees"
-            element={
-              <ProtectedRoute>
-                <Employees />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<Employees />} />}
           />
           <Route
             path="/employees/:farmer_id"
-            element={
-              <ProtectedRoute>
-                <FramerDetails />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<FramerDetails />} />}
           />
           <Route
             path="/employees/add-employees"
-            element={
-              <ProtectedRoute>
-                <AddEmployees />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<AddEmployees />} />}
           />
           <Route
             path="/farmers"
-            element={
-              <ProtectedRoute>
-                <Farmers />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<Farmers />} />}
           />
           <Route
             path="/farmers/add-farmer"
-            element={
-              <ProtectedRoute>
-                <AddFarmer />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<AddFarmer />} />}
           />
           <Route
             path="/farmers/crops-added"
-            element={
-              <ProtectedRoute>
-                <AddedCrops />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<AddedCrops />} />}
           />
           <Route
             path="/farmers/crops-added/:request_id"
-            element={
-              <ProtectedRoute>
-                <CropsDetails />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<CropsDetails />} />}
           />
           <Route
             path="/vendors"
-            element={
-              <ProtectedRoute>
-                <Vendors />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<Vendors />} />}
           />
           <Route
             path="/vendors/add-vendors"
-            element={
-              <ProtectedRoute>
-                <AddVendors />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<AddVendors />} />}
           />
           <Route
             path="/nurseries"
-            element={
-              <ProtectedRoute>
-                <Nurseries />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<Nurseries />} />}
           />
           <Route
             path="/users"
-            element={
-              <ProtectedRoute>
-                <Users />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<Users />} />}
           />
           <Route
             path="/users/user-requests"
-            element={
-              <ProtectedRoute>
-                <UserRequest />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<UserRequest />} />}
           />
           <Route
             path="/users/user-requests/:user_req_id"
-            element={
-              <ProtectedRoute>
-                <RequestDetails />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<RequestDetails />} />}
           />
           <Route
             path="/offers"
-            element={
-              <ProtectedRoute>
-                <Offers />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<Offers />} />}
           />
           <Route
             path="/offers/:offer_id"
-            element={
-              <ProtectedRoute>
-                <OfferDetails />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<OfferDetails />} />}
           />
           <Route
             path="*"

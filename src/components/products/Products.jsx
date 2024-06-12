@@ -28,12 +28,27 @@ const Products = () => {
     products,
     setProducts,
     categorySelect,
+    setProductDetails,
   } = useContext(MyContext);
   const navigate = useNavigate();
-  const handleProductDetails = (product) => {
+
+  const handleProductDetails = async (product) => {
+    const token = sessionStorage.getItem("token");
     if (product) {
-      navigate(`/products/id=${product}`);
-      setTitle(`Product ID - ${product}`);
+      try {
+        const res = await axios.get(
+          `${baseUrl}superadmin/get-products-dashboard/${product}/`,
+          {
+            Authorization: `token ${token}`,
+          }
+        );
+        setProductDetails(res.data);
+        console.log(res);
+        navigate(`/products/id=${product}`);
+        setTitle(`Product ID - ${product}`);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   const addProducts = () => {
@@ -52,7 +67,7 @@ const Products = () => {
           }
         );
         fetchProducts(setProducts);
-        setCategorySelect(null)
+        setCategorySelect(null);
         console.log(res);
       } catch (error) {
         console.log(error);
@@ -141,7 +156,7 @@ const Products = () => {
                               i == !0 ? "-translate-x-1/2" : ""
                             }`}
                             src={obj.image.replace(
-                              "http://localhost:8055/",
+                              "http://localhost:8000/",
                               "http://142.93.223.45:8005/"
                             )}
                             alt="sd"
