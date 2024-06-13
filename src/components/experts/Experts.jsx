@@ -36,25 +36,8 @@ const Experts = () => {
   } = useContext(MyContext);
   const navigate = useNavigate();
   const handleExpertDetails = async (expert_id) => {
-    // const token = sessionStorage.getItem("token");
     navigate(`/experts/${expert_id}`);
     setTitle(`Expert ID - ${expert_id}`);
-    // if (user) {
-    //   try {
-    //     const res = await axios.get(
-    //       `${baseUrl}superadmin/get-experts-dashboard/${user}/`,
-    //       {
-    //         Authorization: `token ${token}`,
-    //       }
-    //     );
-    //     setExpertDetails(res.data);
-    //     navigate(`/experts/${encodeURIComponent(user)}`);
-    //     setTitle(`Expert ID - ${user}`);
-    //     console.log(res);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
   };
   const addExperts = () => {
     navigate(`add-expert`);

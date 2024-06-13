@@ -5,9 +5,14 @@ import PropTypes from "prop-types";
 const ProtectedRoute = ({ element }) => {
   const { authenticated, loading } = useContext(MyContext);
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center fixed inset font-poppins">
+        Loading...
+      </div>
+    );
   }
-  return authenticated ? element : <Navigate to="/" />;
+  const token = sessionStorage.getItem("token");
+  return authenticated && token ? element : <Navigate to="/" />;
 };
 ProtectedRoute.propTypes = {
   element: PropTypes.element.isRequired,

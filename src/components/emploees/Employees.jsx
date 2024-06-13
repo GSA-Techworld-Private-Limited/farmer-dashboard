@@ -7,6 +7,8 @@ import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
 import { formatDateTime } from "../experts/Experts";
 import { exportData } from "../utils/export";
+import { baseUrl, fetchEmployees, token } from "../api/auth";
+import axios from "axios";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -37,8 +39,10 @@ const Employees = () => {
     setCheckedItems,
     setCategorySelect,
     checkedItems,
+    categorySelect,
     setTitle,
     employees,
+    setEmployees,
   } = useContext(MyContext);
   const navigate = useNavigate();
   const handleExpertDetails = (farmer) => {
@@ -50,6 +54,26 @@ const Employees = () => {
   const addEmployees = () => {
     navigate(`/employees/add-employees`);
     setTitle(`Add Employees`);
+  };
+  const deleteEmplyoee = async () => {
+    if (categorySelect) {
+      console.log(categorySelect);
+      try {
+        const res = await axios.delete(
+          `${baseUrl}superadmin/get-employee-dashboard/${categorySelect}/`,
+          {
+            Authorization: `token ${token}`,
+          }
+        );
+        fetchEmployees(setEmployees);
+        setCategorySelect(null);
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("select item");
+    }
   };
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
@@ -71,7 +95,11 @@ const Employees = () => {
             btntext="+ Add Employee"
             style="bg-[#FF7D24]"
           />
-          <CommonBtn btntext="Delete" style="bg-[#FF2E2E]" />
+          <CommonBtn
+            clickEvent={deleteEmplyoee}
+            btntext="Delete"
+            style="bg-[#FF2E2E]"
+          />
           <CommonBtn
             clickEvent={() => exportData(employees)}
             btntext="Export"

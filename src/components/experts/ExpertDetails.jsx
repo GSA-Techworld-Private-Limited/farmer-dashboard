@@ -11,6 +11,7 @@ const ExpertDetails = () => {
   console.log;
   const { setExperts, setTitle } = useContext(MyContext);
   const [expertDetails, setExpertDetails] = useState(null);
+  const [isSaved, setIsSaved] = useState(false);
   const handleExpertInput = (e) => {
     const { name, value } = e.target;
     setExpertDetails({ ...expertDetails, [name]: value });
@@ -25,13 +26,13 @@ const ExpertDetails = () => {
           Authorization: `token ${token}`,
         }
       );
+      setIsSaved(true);
       console.log(res);
       fetchExperts(setExperts);
-      navigate("/experts");
-      setTitle(`Experts`);
       console.log(res);
     } catch (error) {
       console.log(error);
+      alert(error.message);
     }
   };
   console.log(expertDetails);
@@ -69,8 +70,12 @@ const ExpertDetails = () => {
         </Link>
         <CommonBtn
           clickEvent={editExpert}
-          btntext="Edit"
-          style="bg-[#05A3E7]"
+          btntext={isSaved ? "Saved" : "Edit"}
+          style={
+            isSaved
+              ? "bg-transparent !text-[#3F7E00] border border-[#3F7E00]"
+              : "bg-[#05A3E7]"
+          }
         />
       </div>
       <form className="overflow-auto">
