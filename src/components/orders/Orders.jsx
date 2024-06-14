@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { formatDateTime } from "../experts/Experts";
+import { exportData } from "../utils/export";
 const columns = [
   { headerName: "SL. No", width: 72 },
   { headerName: "Date", width: 94 },
@@ -56,7 +57,7 @@ const Orders = () => {
             btntext="Update Status"
             style="bg-[#5DB505]"
           />
-          <CommonBtn btntext="Export" style="bg-[#444444]" />
+          <CommonBtn clickEvent={()=>exportData(orders)} btntext="Export" style="bg-[#444444]" />
         </div>
       </div>
       <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">

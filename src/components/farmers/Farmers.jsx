@@ -37,7 +37,7 @@ const Farmers = () => {
     setTitle(`Add Farmer`);
   };
   const deleteFarmer = async () => {
-    console.log("yes",categorySelect);
+    console.log("yes", categorySelect);
     const token = sessionStorage.getItem("token");
 
     if (categorySelect) {
@@ -52,7 +52,7 @@ const Farmers = () => {
         fetchFarmers(setFarmers);
         console.log(res);
         console.log(categorySelect);
-        setCategorySelect(null)
+        setCategorySelect(null);
       } catch (error) {
         console.log(error);
       }
@@ -60,7 +60,6 @@ const Farmers = () => {
       alert("select item");
     }
   };
-
   return (
     <div className="h-[calc(100vh-76px)] flex flex-col w-full">
       <div className="pt-5 px-7 w-full ">
@@ -132,7 +131,7 @@ const Farmers = () => {
                     />
                   </div>
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[64px]">
-                    {i+1}
+                    {i + 1}
                   </div>
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[82px]">
                     {formatDateTime(val.created_at)}

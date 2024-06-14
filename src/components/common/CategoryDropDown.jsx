@@ -57,6 +57,11 @@ export default function CategoryDropDown({ setProductData, productData }) {
 
       typeof value === "string" ? value.split(",") : value
     );
+    const newValue = typeof value === "string" ? value.split(",") : value;
+    setProductData((prev) => ({
+      ...prev,
+      categories_galleries: newValue,
+    }));
   };
 
   return (
@@ -74,21 +79,31 @@ export default function CategoryDropDown({ setProductData, productData }) {
           renderValue={(selected) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
               {selected.map((value) => (
-                <Chip key={value} label={value} />
+                <Chip
+                  sx={{
+                    fontFamily: "Poppins",
+                    fontSize: "12px",
+                    color: "#000",
+                  }}
+                  key={value}
+                  label={value}
+                />
               ))}
             </Box>
           )}
           MenuProps={MenuProps}
         >
-          {categories.map((name) => (
-            <MenuItem
-              key={name.name}
-              value={name.name}
-              style={getStyles(name.name, personName, theme)}
-            >
-              {name.name}
-            </MenuItem>
-          ))}
+          {categories &&
+            categories.map((name) => (
+              <MenuItem
+                key={name.name}
+                sx={{ fontFamily: "Poppins", fontSize: "12px", color: "#000" }}
+                value={name.id}
+                style={getStyles(name.name, personName, theme)}
+              >
+                {name.name}
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
     </div>

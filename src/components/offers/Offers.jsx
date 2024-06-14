@@ -7,6 +7,7 @@ import CheckBox from "../common/CheckBox";
 import CouponOverlay from "./CouponOverlay";
 import BannerOverlay from "./BannerOverlay";
 import { formatDateTime } from "../experts/Experts";
+import { exportData } from "./../utils/export";
 const columns = [
   { headerName: "SL. No", width: 72 },
   { headerName: "Date", width: 126 },
@@ -133,7 +134,11 @@ const Offers = () => {
                   btntext="+ Add Coupon"
                   style="bg-[#FF7D24]"
                 />
-                <CommonBtn btntext="Export" style="bg-[#444444]" />
+                <CommonBtn
+                  clickEvent={() => exportData(couponData)}
+                  btntext="Export"
+                  style="bg-[#444444]"
+                />
               </div>
             </div>
           </div>
@@ -240,7 +245,11 @@ const Offers = () => {
                   btntext="+ Add Banner"
                   style="bg-[#FF7D24]"
                 />
-                <CommonBtn btntext="Export" style="bg-[#444444]" />
+                <CommonBtn
+                  clickEvent={() => exportData(rows)}
+                  btntext="Export"
+                  style="bg-[#444444]"
+                />
               </div>
             </div>
           </div>

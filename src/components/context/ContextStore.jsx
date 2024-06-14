@@ -22,7 +22,6 @@ export const ContextStore = ({ children }) => {
   const [users, setUsers] = useState(null);
   const [couponData, setCouponData] = useState(null);
   const [sales, setSales] = useState(null);
-  const [productDetails, setProductDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     sessionStorage.setItem("title", title);
@@ -66,8 +65,6 @@ export const ContextStore = ({ children }) => {
         setCouponData,
         sales,
         setSales,
-        productDetails,
-        setProductDetails,
         loading,
         setLoading,
       }}

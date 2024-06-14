@@ -68,10 +68,21 @@ const AddEmployees = () => {
         setIsAdded(true);
         setTimeout(() => setIsAdded(false), [2000]),
           fetchEmployees(setEmployees);
+        setEmployeeData({
+          name: "",
+          contact_no: "",
+          other_contact_no: "",
+          date_of_joined: "",
+          email: "",
+          state: "",
+          city: "",
+          pincode: "",
+          image: null,
+        });
         console.log(res);
       } catch (error) {
         console.log(error);
-        alert(error.message);
+        alert(error.message, "user already resistered");
       }
     } else {
       alert("Fill required field");

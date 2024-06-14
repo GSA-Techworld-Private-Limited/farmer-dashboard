@@ -7,6 +7,7 @@ import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { baseUrl, fetchVendors } from "../api/auth";
+import { exportData } from "../utils/export";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -17,59 +18,6 @@ const columns = [
   { headerName: "Pincode", width: 104 },
   { headerName: "Farmers Added", width: 122 },
   { headerName: "Status", width: 104 },
-];
-
-const rows = [
-  {
-    id: 1,
-    contact: "9287347823",
-    city: "bengaluru",
-    name: "Jon",
-    pincode: 560078,
-    state: "Karnataka",
-    farmersAdded: 24,
-    status: "active",
-  },
-  {
-    id: 2,
-    contact: "9287347823",
-    city: "bengaluru",
-    name: "Cersei",
-    pincode: 560078,
-    state: "Karnataka",
-    farmersAdded: 24,
-    status: "active",
-  },
-  {
-    id: 3,
-    contact: "9287347823",
-    city: "bengaluru",
-    name: "Jaime",
-    pincode: 560078,
-    state: "Karnataka",
-    farmersAdded: 24,
-    status: "active",
-  },
-  {
-    id: 4,
-    contact: "9287347823",
-    city: "bengaluru",
-    name: "Arya",
-    pincode: 560078,
-    state: "Karnataka",
-    farmersAdded: 24,
-    status: "active",
-  },
-  {
-    id: 5,
-    contact: "9287347823",
-    city: "bengaluru",
-    name: "Daenerys",
-    pincode: 560078,
-    state: "Karnataka",
-    farmersAdded: 24,
-    status: "active",
-  },
 ];
 const Vendors = () => {
   const {
@@ -105,6 +53,7 @@ const Vendors = () => {
         setCategorySelect(null);
       } catch (error) {
         console.log(error);
+        alert(error)
       }
     } else {
       alert("select item");
@@ -135,7 +84,11 @@ const Vendors = () => {
             btntext="Delete"
             style="bg-[#FF2E2E]"
           />
-          <CommonBtn btntext="Export" style="bg-[#444444]" />
+          <CommonBtn
+            clickEvent={() => exportData(vendors)}
+            btntext="Export"
+            style="bg-[#444444]"
+          />
         </div>
       </div>
       <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">

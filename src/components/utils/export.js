@@ -50,9 +50,9 @@ const flattenObject = (obj, parent = "", res = {}) => {
 };
 
 export const exportData = (userData) => {
-  const fileType = "pdf";
+  const fileType = "pdf"; // Update this to switch between 'pdf' and 'xlsx'
   const filteredData = userData;
-
+  console.log(userData);
   if (filteredData.length === 0) {
     alert("No data found to export");
     return;
@@ -62,11 +62,11 @@ export const exportData = (userData) => {
 
   if (fileType === "xlsx" || fileType === "xls") {
     const dataArray = flattenedData.map((item) =>
-      Object.values(item).map((obj) => obj.value)
+      Object.values(item).map((obj) => obj?.value)
     );
 
     const headerRow = Object.keys(flattenedData[0]).map(
-      (key) => flattenedData[0][key].display
+      (key) => flattenedData[0][key]?.display
     );
 
     const worksheet = XLSX.utils.aoa_to_sheet([headerRow, ...dataArray]);
@@ -81,7 +81,8 @@ export const exportData = (userData) => {
       type: "application/octet-stream",
     });
     saveAs(dataBlob, `exported-data.${fileType}`);
-    afterComplete();
+    // Uncomment the following line if you have an afterComplete function
+    // afterComplete();
   } else if (fileType === "pdf") {
     const doc = new jsPDF("p", "pt", "a4");
 
@@ -94,15 +95,15 @@ export const exportData = (userData) => {
     };
 
     const keys = Object.keys(flattenedData[0]);
-    const chunkedKeys = chunkArray(keys, 12);
+    const chunkedKeys = chunkArray(keys, 13);
 
     chunkedKeys.forEach((keyChunk, index) => {
       const columns = keyChunk.map((key) => ({
-        header: flattenedData[0][key].display,
+        header: flattenedData[0][key]?.display,
         dataKey: key,
       }));
       const rows = flattenedData.map((item) =>
-        keyChunk.map((key) => item[key].value)
+        keyChunk.map((key) => item[key]?.value)
       );
       doc.autoTable({
         head: [columns.map((col) => col.header)],
@@ -134,7 +135,8 @@ export const exportData = (userData) => {
     });
 
     doc.save("exported-data.pdf");
-    afterComplete();
+    // Uncomment the following line if you have an afterComplete function
+    // afterComplete();
   } else {
     alert("Request Failed!! Try Again");
   }

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { BellIcon, DottedMenuIcon, LogoutIcon } from "./Icons";
-import MyContext from "../context/ContextStore";
 import { useNavigate } from "react-router-dom";
+import MyContext from "../context/ContextStore";
 
 const NavBar = () => {
   const { title, setAuthenticated } = useContext(MyContext);

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import AddCategory from "./AddCategory";
 import { baseUrl, fetchCategories } from "../api/auth";
 import axios from "axios";
+import { exportData } from "../utils/export";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -28,7 +29,7 @@ const Categories = () => {
   const navigate = useNavigate();
 
   const deleteCate = async () => {
-    const token =sessionStorage.getItem("token")
+    const token = sessionStorage.getItem("token");
     if (categorySelect) {
       console.log(categorySelect);
       try {
@@ -40,7 +41,7 @@ const Categories = () => {
         );
         fetchCategories(setCategories);
         console.log(res);
-        setCategorySelect(null)
+        setCategorySelect(null);
       } catch (error) {
         console.log(error);
       }
@@ -73,7 +74,11 @@ const Categories = () => {
             btntext="Delete"
             style="bg-[#FF2E2E]"
           />
-          <CommonBtn btntext="Export" style="bg-[#444444]" />
+          <CommonBtn
+            clickEvent={() => exportData(categories)}
+            btntext="Export"
+            style="bg-[#444444]"
+          />
         </div>
       </div>
       <div className="w-full overflow-auto">
@@ -116,7 +121,7 @@ const Categories = () => {
                   />
                 </div>
                 <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
-                  {val.id}
+                  {i+1}
                 </div>
                 <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[154px]">
                   <img

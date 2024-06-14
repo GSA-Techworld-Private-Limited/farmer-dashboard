@@ -7,6 +7,7 @@ import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
 import { baseUrl, fetchProducts } from "../api/auth";
 import axios from "axios";
+import { exportData } from "../utils/export";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -28,28 +29,12 @@ const Products = () => {
     products,
     setProducts,
     categorySelect,
-    setProductDetails,
   } = useContext(MyContext);
   const navigate = useNavigate();
 
   const handleProductDetails = async (product) => {
-    const token = sessionStorage.getItem("token");
-    if (product) {
-      try {
-        const res = await axios.get(
-          `${baseUrl}superadmin/get-products-dashboard/${product}/`,
-          {
-            Authorization: `token ${token}`,
-          }
-        );
-        setProductDetails(res.data);
-        console.log(res);
-        navigate(`/products/id=${product}`);
-        setTitle(`Product ID - ${product}`);
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    navigate(`/products/${product}`);
+    setTitle(`Product ID - ${product}`);
   };
   const addProducts = () => {
     navigate(`/products/add-products`);
@@ -101,7 +86,11 @@ const Products = () => {
             btntext="Delete"
             style="bg-[#FF2E2E]"
           />
-          <CommonBtn btntext="Export" style="bg-[#444444]" />
+          <CommonBtn
+            clickEvent={() => exportData(products)}
+            btntext="Export"
+            style="bg-[#444444]"
+          />
         </div>
       </div>
       <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">
@@ -149,19 +138,21 @@ const Products = () => {
                   </div>
                   <div className="py-1 text-sm flex items-center font-semibold font-poppins leading-5 text-[#303972] w-[126px]">
                     {val.product_galleries.length > 0
-                      ? val.product_galleries.map((obj, i) => (
-                          <img
-                            key={i}
-                            className={`w-11 h-9 object-cover rounded-[5px] ${
-                              i == !0 ? "-translate-x-1/2" : ""
-                            }`}
-                            src={obj.image.replace(
-                              "http://localhost:8000/",
-                              "http://142.93.223.45:8005/"
-                            )}
-                            alt="sd"
-                          />
-                        ))
+                      ? val.product_galleries
+                          .slice(0, 3)
+                          .map((obj, i) => (
+                            <img
+                              key={i}
+                              className={`w-11 h-9 object-cover rounded-[5px] ${
+                                i == !0 ? "-translate-x-1/2" : ""
+                              }`}
+                              src={obj.image.replace(
+                                "http://localhost:8000/",
+                                "http://142.93.223.45:8005/"
+                              )}
+                              alt="sd"
+                            />
+                          ))
                       : "_"}
                   </div>
                   <div

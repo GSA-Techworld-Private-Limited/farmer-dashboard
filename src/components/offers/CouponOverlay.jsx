@@ -1,6 +1,73 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import closeIcon from "../../assets/images/svg/close.svg";
+import { baseUrl, fetchCouponData, token } from "../api/auth";
+import MyContext from "../context/ContextStore";
+import axios from "axios";
 const CouponOverlay = (props) => {
+  const { setCouponData } = useContext(MyContext);
+  const [addCoupon, setAddCoupon] = useState({
+    coupon_code: "",
+    name: "",
+    discount: "", // This is a string, as it's a CharField in the model
+    amount: "", // Decimal field as a string
+    starts_at: "",
+    expiry_at: "",
+    description: "",
+    is_active: true,
+  });
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setAddCoupon({ ...addCoupon, [name]: value });
+  };
+  const submitCoupon = async (e) => {
+    e.preventDefault();
+    const {
+      coupon_code,
+      name,
+      discount,
+      amount,
+      starts_at,
+      expiry_at,
+      description,
+    } = addCoupon;
+    if (
+      coupon_code &&
+      name &&
+      discount &&
+      amount &&
+      starts_at &&
+      expiry_at &&
+      description
+    ) {
+      try {
+        const res = await axios.post(
+          `${baseUrl}superadmin/add-coupons-dashboard/`,
+          addCoupon,
+          {
+            Authorization: `token ${token}`,
+          }
+        );
+        fetchCouponData(setCouponData);
+        console.log(res);
+        alert("added", res);
+        setAddCoupon({
+          coupon_code: "",
+          name: "",
+          discount: "", // This is a string, as it's a CharField in the model
+          amount: "", // Decimal field as a string
+          starts_at: "",
+          expiry_at: "",
+          description: "",
+          is_active: true,
+        });
+      } catch (error) {
+        console.log(error);
+        alert(error.message);
+      }
+    } else {
+      alert("add required details");
+    }
+  };
   return (
     <div>
       <div className="flex items-center duration-100 justify-center fixed inset-0">
@@ -27,6 +94,9 @@ const CouponOverlay = (props) => {
                 Coupon Name<span className="text-[#FD5353]">*</span>
               </label>
               <input
+                value={addCoupon.name}
+                onChange={handleInput}
+                name="name"
                 type="text"
                 id="Coupon-name"
                 placeholder="James"
@@ -41,6 +111,9 @@ const CouponOverlay = (props) => {
                 Coupon ID<span className="text-[#FD5353]">*</span>
               </label>
               <input
+                value={addCoupon.coupon_code}
+                onChange={handleInput}
+                name="coupon_code"
                 type="text"
                 id="Coupon-id"
                 placeholder="James"
@@ -56,6 +129,9 @@ const CouponOverlay = (props) => {
                   Discount Percentage<span className="text-[#FD5353]">*</span>
                 </label>
                 <input
+                  value={addCoupon.discount}
+                  onChange={handleInput}
+                  name="discount"
                   type="number"
                   min={1}
                   max={100}
@@ -78,6 +154,9 @@ const CouponOverlay = (props) => {
                   Max Amount<span className="text-[#FD5353]">*</span>
                 </label>
                 <input
+                  value={addCoupon.amount}
+                  onChange={handleInput}
+                  name="amount"
                   type="number"
                   id="Coupon-amount"
                   placeholder="James"
@@ -94,6 +173,9 @@ const CouponOverlay = (props) => {
                   From Date<span className="text-[#FD5353]">*</span>
                 </label>
                 <input
+                  value={addCoupon.starts_at}
+                  onChange={handleInput}
+                  name="starts_at"
                   type="date"
                   id="Coupon-from-date"
                   placeholder="00%"
@@ -108,6 +190,9 @@ const CouponOverlay = (props) => {
                   To Date<span className="text-[#FD5353]">*</span>
                 </label>
                 <input
+                  value={addCoupon.expiry_at}
+                  onChange={handleInput}
+                  name="expiry_at"
                   type="date"
                   id="Coupon-to-date"
                   placeholder="James"
@@ -123,6 +208,9 @@ const CouponOverlay = (props) => {
                 Description<span className="text-[#FD5353]">*</span>
               </label>
               <textarea
+                value={addCoupon.description}
+                onChange={handleInput}
+                name="description"
                 type="date"
                 id="Coupon-des"
                 placeholder="Write here..."
@@ -130,7 +218,10 @@ const CouponOverlay = (props) => {
               ></textarea>
             </div>
           </div>
-          <button className="py-[18px] px-16 leading-6 text-sm text-white font-poppins rounded-[8px] bg-[#3F7E00]">
+          <button
+            onClick={submitCoupon}
+            className="py-[18px] px-16 leading-6 text-sm text-white font-poppins rounded-[8px] bg-[#3F7E00]"
+          >
             Add Coupon
           </button>
         </div>

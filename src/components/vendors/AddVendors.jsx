@@ -78,6 +78,7 @@ const AddVendors = () => {
           }
         );
         console.log(res);
+        alert("vendor added");
         fetchVendors(setVendors);
         setVendorData({
           name: "",

@@ -5,6 +5,7 @@ import CheckBox from "../common/CheckBox";
 import MyContext from "../context/ContextStore";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
+import { exportData } from "../utils/export";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -34,7 +35,11 @@ const Users = () => {
             className="text-base leading-[22px] w-full text-[#6C757D] placeholder:text-[#6C757D] outline-none font-poppins py-[13px] px-1"
           />
         </div>
-        <CommonBtn btntext="Export" style="bg-[#444444]" />
+        <CommonBtn
+          clickEvent={() => exportData(users)}
+          btntext="Export"
+          style="bg-[#444444]"
+        />
       </div>
       <div className="w-full overflow-auto">
         <div className="flex items-center gap-6 bg-[#EAFFD4]">

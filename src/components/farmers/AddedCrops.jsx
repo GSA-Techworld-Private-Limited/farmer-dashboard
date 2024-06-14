@@ -6,6 +6,7 @@ import MyContext from "../context/ContextStore";
 import CheckBox from "../common/CheckBox";
 import { formatDateTime } from "../experts/Experts";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
+import { exportData } from "../utils/export";
 const columns = [
   { headerName: "SL. No", width: 64 },
   { headerName: "Date", width: 99 },
@@ -29,7 +30,7 @@ const AddedCrops = () => {
   const navigate = useNavigate();
   const cropsDetails = (id) => {
     setTitle(`Request ID - ${id}`);
-    navigate(`/farmers/crops-added/id=${id}`);
+    navigate(`/farmers/crops-added/${id}`);
   };
   return (
     <div className="h-[calc(100vh-76px)] flex flex-col w-full">
@@ -46,7 +47,11 @@ const AddedCrops = () => {
               className="text-base leading-[22px] w-full text-[#6C757D] placeholder:text-[#6C757D] outline-none font-poppins py-[13px] px-1"
             />
           </div>
-          <CommonBtn btntext="Export" style="bg-[#444444]" />
+          <CommonBtn
+            clickEvent={() => exportData(farmersCrops)}
+            btntext="Export"
+            style="bg-[#444444]"
+          />
         </div>
       </div>
       <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">

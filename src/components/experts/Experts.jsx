@@ -35,7 +35,7 @@ const Experts = () => {
     setExperts,
   } = useContext(MyContext);
   const navigate = useNavigate();
-  const handleExpertDetails = async (expert_id) => {
+  const handleExpertDetails = (expert_id) => {
     navigate(`/experts/${expert_id}`);
     setTitle(`Expert ID - ${expert_id}`);
   };
