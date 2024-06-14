@@ -128,7 +128,7 @@ const Categories = () => {
                     className="h-9 rounded w-16 object-cover"
                     src={val.image.replace(
                       "http://localhost:8000/",
-                      "http://142.93.223.45:8005/"
+                     baseUrl
                     )}
                     alt="categories image"
                   />

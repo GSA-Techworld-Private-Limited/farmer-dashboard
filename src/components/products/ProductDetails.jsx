@@ -85,11 +85,8 @@ const ProductDetails = () => {
               {productDetails &&
                 productDetails.product_galleries.map((val) => (
                   <img
-                    className="w-full"
-                    src={val.image.replace(
-                      "http://localhost:8000/",
-                      "http://142.93.223.45:8005/"
-                    )}
+                    className="w-full h-[132px] object-cover rounded-md"
+                    src={val.image.replace("http://localhost:8000/", baseUrl)}
                     alt="demoCrop"
                   />
                 ))}

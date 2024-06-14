@@ -144,11 +144,15 @@ const Products = () => {
                             <img
                               key={i}
                               className={`w-11 h-9 object-cover rounded-[5px] ${
-                                i == !0 ? "-translate-x-1/2" : ""
+                                i == !0
+                                  ? "-translate-x-1/2"
+                                  : i == 2
+                                  ? "-translate-x-full"
+                                  : ""
                               }`}
                               src={obj.image.replace(
                                 "http://localhost:8000/",
-                                "http://142.93.223.45:8005/"
+                                baseUrl
                               )}
                               alt="sd"
                             />
