@@ -102,14 +102,7 @@ const UserRequest = () => {
       </div>
       <div className="w-full overflow-auto">
         <div className="flex items-center gap-8 bg-[#EAFFD4]">
-          <div className="px-4 h-5">
-            <CheckBox
-              isChecked={checkedItems[0] || false}
-              handleCheckBox={() =>
-                handleCheckBoxChange(0, setCheckedItems, setCategorySelect)
-              }
-            />
-          </div>
+          <div className="px-[26px] h-5"></div>
           {columns.map((val, i) => (
             <div
               key={i}

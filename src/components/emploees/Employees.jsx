@@ -9,6 +9,7 @@ import { formatDateTime } from "../experts/Experts";
 import { exportData } from "../utils/export";
 import { baseUrl, fetchEmployees, token } from "../api/auth";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -67,12 +68,20 @@ const Employees = () => {
         );
         fetchEmployees(setEmployees);
         setCategorySelect(null);
+        toast.success("Employee Deleted Successfully!", {
+          theme: "light",
+        });
         console.log(res);
       } catch (error) {
         console.log(error);
+        toast.error(error.message, {
+          theme: "light",
+        });
       }
     } else {
-      alert("select item");
+      toast.warning("First Select Any Item!", {
+        theme: "light",
+      });
     }
   };
   return (
@@ -110,14 +119,7 @@ const Employees = () => {
       <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">
         <div className="w-[calc(1440px-275px)] 2xl:w-full pb-2">
           <div className="flex items-center gap-2 bg-[#EAFFD4]">
-            <div className="px-4 h-5">
-              <CheckBox
-                isChecked={checkedItems[0] || false}
-                handleCheckBox={() =>
-                  handleCheckBoxChange(0, setCheckedItems, setCategorySelect)
-                }
-              />
-            </div>
+            <div className="px-[26px] h-5"></div>
             {columns.map((val, i) => (
               <div
                 key={i}

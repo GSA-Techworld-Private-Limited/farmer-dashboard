@@ -12,6 +12,7 @@ import {
 } from "../ui/select";
 import axios from "axios";
 import { baseUrl, fetchProducts, token } from "../api/auth";
+import { toast } from "react-toastify";
 const ProductDetails = () => {
   const { product_id } = useParams();
   const { setTitle, setProducts } = useContext(MyContext);
@@ -51,10 +52,15 @@ const ProductDetails = () => {
       );
       console.log(res);
       fetchProducts(setProducts);
-      alert(res);
+      // alert(res);
+      toast.success("Product Edited Successfully", {
+        theme: "light",
+      });
     } catch (error) {
       console.log(error);
-      alert(error.message);
+      toast.success(error.message, {
+        theme: "light",
+      });
     }
   };
   return (

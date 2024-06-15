@@ -6,6 +6,7 @@ import MyContext from "../context/ContextStore";
 import dummyImage from "../../assets/images/png/image-skeletion.png";
 import { baseUrl, fetchFarmers, token } from "../api/auth";
 import axios from "axios";
+import { toast } from "react-toastify";
 const AddFarmer = () => {
   const fileInputRef = useRef();
   const { setTitle, setFarmers } = useContext(MyContext);
@@ -83,13 +84,19 @@ const AddFarmer = () => {
           zipcode: "",
           photo: null,
         });
-        alert(res);
+        toast.success("Farmer Added Successfully!", {
+          theme: "light",
+        });
       } catch (error) {
         console.log(error);
-        alert(error.message, "user already resistered");
+        toast.error(error.message, {
+          theme: "light",
+        });
       }
     } else {
-      alert("Fill required field");
+      toast.warning("Fill required field", {
+        theme: "light",
+      });
     }
   };
   return (

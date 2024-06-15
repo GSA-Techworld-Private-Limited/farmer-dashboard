@@ -3,6 +3,7 @@ import closeIcon from "../../assets/images/svg/close.svg";
 import { baseUrl, fetchCouponData, token } from "../api/auth";
 import MyContext from "../context/ContextStore";
 import axios from "axios";
+import { toast } from "react-toastify";
 const CouponOverlay = (props) => {
   const { setCouponData } = useContext(MyContext);
   const [addCoupon, setAddCoupon] = useState({
@@ -49,7 +50,9 @@ const CouponOverlay = (props) => {
         );
         fetchCouponData(setCouponData);
         console.log(res);
-        alert("added", res);
+        toast.success("Coupon Added Successfully", {
+          theme: "light",
+        });
         setAddCoupon({
           coupon_code: "",
           name: "",
@@ -62,10 +65,14 @@ const CouponOverlay = (props) => {
         });
       } catch (error) {
         console.log(error);
-        alert(error.message);
+        toast.error(error.message, {
+          theme: "light",
+        });
       }
     } else {
-      alert("add required details");
+      toast.warning("Add required details", {
+        theme: "light",
+      });
     }
   };
   return (

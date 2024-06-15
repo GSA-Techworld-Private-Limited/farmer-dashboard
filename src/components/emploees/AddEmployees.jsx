@@ -6,6 +6,7 @@ import MyContext from "../context/ContextStore";
 import { baseUrl, fetchEmployees, token } from "../api/auth";
 import dummyImage from "../../assets/images/png/image-skeletion.png";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddEmployees = () => {
   const { setTitle, setEmployees } = useContext(MyContext);
@@ -79,13 +80,21 @@ const AddEmployees = () => {
           pincode: "",
           image: null,
         });
+        fileInputRef.current.value = null;
+        toast.success("Employee Added Successfully!", {
+          theme: "light",
+        });
         console.log(res);
       } catch (error) {
         console.log(error);
-        alert(error.message, "user already resistered");
+        toast.error(error.message, {
+          theme: "light",
+        });
       }
     } else {
-      alert("Fill required field");
+      toast.warning("Fill required field", {
+        theme: "light",
+      });
     }
   };
   const handleInput = (e) => {

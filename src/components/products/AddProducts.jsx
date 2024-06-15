@@ -7,6 +7,7 @@ import dummyImage from "../../assets/images/png/image-skeletion.png";
 import { baseUrl, fetchProducts, token } from "../api/auth";
 import axios from "axios";
 import CategoryDropDown from "../common/CategoryDropDown";
+import { toast } from "react-toastify";
 const AddProducts = () => {
   const navigate = useNavigate();
   const { setTitle, setProducts, categories } = useContext(MyContext);
@@ -69,13 +70,21 @@ const AddProducts = () => {
         fetchProducts(setProducts);
         console.log(res.data.product_id);
         setProduct_id(res.data.product_id);
+        toast.success("First Step Completed Successfully", {
+          theme: "light",
+        });
         console.log(res);
       } catch (error) {
         console.log(error);
         alert(error.message);
+        toast.error(error.message, {
+          theme: "light",
+        });
       }
     } else {
-      alert("fill all reqired fields");
+      toast.warning("Fill all the required field", {
+        theme: "light",
+      });
     }
   };
 
@@ -115,7 +124,9 @@ const AddProducts = () => {
               },
             }
           );
-          alert("Product added successfully");
+          toast.success("Product added successfully", {
+            theme: "light",
+          });
           fetchProducts(setProducts);
           setProduct_galleries([]);
           navigate("/products");
@@ -123,12 +134,19 @@ const AddProducts = () => {
           fileInputRef.current.value = null;
         } catch (err) {
           alert(err);
+          toast.error(err, {
+            theme: "light",
+          });
         }
       } else {
-        alert("add images");
+         toast.warning("Add Images First!", {
+          theme: "light",
+        });
       }
     } else {
-      alert("Add Product details first");
+      toast.warning("Add Product details first", {
+        theme: "light",
+      });
     }
   };
   console.log(productData);

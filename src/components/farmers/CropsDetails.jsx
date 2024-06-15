@@ -143,16 +143,24 @@ const CropsDetails = () => {
             Pictures :
           </p>
           <div className="flex items-center gap-6 pt-6">
-            <img
-              className="w-full max-w-[180px]"
-              src={cropDetail && `${baseUrl}${cropDetail.image1}`}
-              alt="demoCrop"
-            />
-            <img
-              className="w-full max-w-[180px]"
-              src={cropDetail && `${baseUrl}${cropDetail.image2}`}
-              alt="demoCrop"
-            />
+            {cropDetail && cropDetail.image1 ? (
+              <img
+                className="w-full max-w-[180px] max-h-[180px] object-cover"
+                src={cropDetail && `${baseUrl}${cropDetail.image1}`}
+                alt="demoCrop"
+              />
+            ) : (
+              <p className="text-red-400 font-poppins">No images uploaded</p>
+            )}
+            {cropDetail && cropDetail.image2 ? (
+              <img
+                className="w-full max-w-[180px] max-h-[180px] object-cover"
+                src={cropDetail && `${baseUrl}${cropDetail.image2}`}
+                alt="demoCrop"
+              />
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>

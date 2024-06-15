@@ -6,7 +6,7 @@ export const ContextStore = ({ children }) => {
   const [checkedItems, setCheckedItems] = useState({});
   const [categorySelect, setCategorySelect] = useState(null);
   const updatedTitle = sessionStorage.getItem("title") || "Dashboard";
-  const [title, setTitle] = useState(updatedTitle);
+  const [title, setTitle] = useState("Dashboard");
   // data
   const [stats, setStats] = useState(null);
   const [productListStats, setProductListStats] = useState(null);

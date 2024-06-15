@@ -8,6 +8,7 @@ import CouponOverlay from "./CouponOverlay";
 import BannerOverlay from "./BannerOverlay";
 import { formatDateTime } from "../experts/Experts";
 import { exportData } from "./../utils/export";
+import { handleCheckBoxChange } from "../utils/handleCheckBox";
 const columns = [
   { headerName: "SL. No", width: 72 },
   { headerName: "Date", width: 126 },
@@ -145,18 +146,7 @@ const Offers = () => {
           <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">
             <div className="w-[calc(1440px-275px)] 2xl:w-full pb-2">
               <div className="flex items-center gap-2 bg-[#EAFFD4]">
-                <div className="px-4 h-5">
-                  <CheckBox
-                    isChecked={checkedItems[0] || false}
-                    handleCheckBox={() =>
-                      handleCheckBoxChange(
-                        0,
-                        setCheckedItems,
-                        setCategorySelect
-                      )
-                    }
-                  />
-                </div>
+                <div className="px-[26px] h-5"></div>
                 {columns.map((val, i) => (
                   <div
                     key={i}
@@ -176,10 +166,10 @@ const Offers = () => {
                     >
                       <div className="px-4 h-5">
                         <CheckBox
-                          isChecked={checkedItems[val.id] || false}
+                          isChecked={checkedItems[val.coupon_code] || false}
                           handleCheckBox={() =>
                             handleCheckBoxChange(
-                              val.id,
+                              val.coupon_code,
                               setCheckedItems,
                               setCategorySelect
                             )
@@ -255,14 +245,7 @@ const Offers = () => {
           </div>
           <div className="w-full overflow-auto">
             <div className="flex items-center gap-2 bg-[#EAFFD4]">
-              <div className="px-4 h-5">
-                <CheckBox
-                  isChecked={checkedItems[0] || false}
-                  handleCheckBox={() =>
-                    handleCheckBoxChange(0, setCheckedItems, setCategorySelect)
-                  }
-                />
-              </div>
+              <div className="px-[26px] h-5"></div>
               {BannerColumns.map((val, i) => (
                 <div
                   key={i}

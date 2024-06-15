@@ -8,6 +8,7 @@ import { formatDateTime } from "../experts/Experts";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { baseUrl, fetchFarmers } from "../api/auth";
 import axios from "axios";
+import { toast } from "react-toastify";
 const columns = [
   { headerName: "SL. No", width: 64 },
   { headerName: "Date", width: 82 },
@@ -51,13 +52,21 @@ const Farmers = () => {
         );
         fetchFarmers(setFarmers);
         console.log(res);
+        toast.success("Farmer Deleted Successfully!", {
+          theme: "light",
+        });
         console.log(categorySelect);
         setCategorySelect(null);
       } catch (error) {
         console.log(error);
+        toast.error(error, {
+          theme: "light",
+        });
       }
     } else {
-      alert("select item");
+      toast.warning("First Select Any Item!", {
+        theme: "light",
+      });
     }
   };
   return (
@@ -93,14 +102,7 @@ const Farmers = () => {
       <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">
         <div className="w-[calc(1440px-275px)] 2xl:w-full pb-2">
           <div className="flex items-center gap-2 bg-[#EAFFD4]">
-            <div className="px-4 h-5">
-              <CheckBox
-                isChecked={checkedItems[0] || false}
-                handleCheckBox={() =>
-                  handleCheckBoxChange(0, setCheckedItems, setCategorySelect)
-                }
-              />
-            </div>
+            <div className="px-[26px] h-5"></div>
             {columns.map((val, i) => (
               <div
                 key={i}

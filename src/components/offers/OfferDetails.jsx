@@ -131,13 +131,15 @@ const OfferDetails = () => {
                 htmlFor="Coupon-id"
                 className="text-sm text-[#525153] font-poppins leading-5 mb-2"
               >
-                Coupon ID<span className="text-[#FD5353]">*</span>
+                Coupon ID<span className="text-[#FD5353]">*</span>{" "}
+                <span className="text-red-500 font-poppins text-xs">
+                  (You can't change the coupon code)
+                </span>
               </label>
               <input
                 type="text"
                 value={couponDetails && couponDetails.coupon_code}
                 name="coupon_code"
-                onChange={handleInput}
                 id="Coupon-id"
                 placeholder="+123456789"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"

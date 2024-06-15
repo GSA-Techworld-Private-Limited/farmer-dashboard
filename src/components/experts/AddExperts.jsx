@@ -5,6 +5,7 @@ import CommonBtn from "../common/CommonBtn";
 import MyContext from "../context/ContextStore";
 import { baseUrl, fetchExperts, token } from "../api/auth";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddExperts = () => {
   const { setTitle, setExperts } = useContext(MyContext);
@@ -46,10 +47,15 @@ const AddExperts = () => {
         pincode: "",
       });
       fetchExperts(setExperts);
+      toast.success("Expert Added Successfully", {
+        theme: "light",
+      });
       console.log(res);
     } catch (error) {
       console.log(error);
-      alert(error.message);
+      toast.error(error.message, {
+        theme: "light",
+      });
     }
   };
   return (

@@ -9,6 +9,7 @@ import AddCategory from "./AddCategory";
 import { baseUrl, fetchCategories } from "../api/auth";
 import axios from "axios";
 import { exportData } from "../utils/export";
+import { toast } from "react-toastify";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -41,12 +42,19 @@ const Categories = () => {
         );
         fetchCategories(setCategories);
         console.log(res);
+        toast.success("Category Deleted Successfully!", {
+          theme: "light",
+        });
         setCategorySelect(null);
       } catch (error) {
-        console.log(error);
+        toast.error(error.message, {
+          theme: "light",
+        });
       }
     } else {
-      alert("select item");
+      toast.warning("First Select Item!", {
+        theme: "light",
+      });
     }
   };
   return (
@@ -83,14 +91,7 @@ const Categories = () => {
       </div>
       <div className="w-full overflow-auto">
         <div className="flex items-center gap-16 bg-[#EAFFD4]">
-          <div className="px-4 h-5">
-            <CheckBox
-              isChecked={checkedItems[0] || false}
-              handleCheckBox={() =>
-                handleCheckBoxChange(0, setCheckedItems, setCategorySelect)
-              }
-            />
-          </div>
+          <div className="px-[26px] h-5"></div>
           {columns.map((val, i) => (
             <div
               key={i}
@@ -121,15 +122,12 @@ const Categories = () => {
                   />
                 </div>
                 <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
-                  {i+1}
+                  {i + 1}
                 </div>
                 <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[154px]">
                   <img
                     className="h-9 rounded w-16 object-cover"
-                    src={val.image.replace(
-                      "http://localhost:8000/",
-                     baseUrl
-                    )}
+                    src={val.image.replace("http://localhost:8000/", baseUrl)}
                     alt="categories image"
                   />
                 </div>

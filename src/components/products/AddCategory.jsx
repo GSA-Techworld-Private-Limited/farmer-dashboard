@@ -4,6 +4,7 @@ import dummyImage from "../../assets/images/png/image-skeletion.png";
 import { baseUrl, fetchCategories } from "../api/auth";
 import axios from "axios";
 import MyContext from "../context/ContextStore";
+import { toast } from "react-toastify";
 const AddCategory = (props) => {
   const fileInputRef = useRef(null);
   const { setCategories } = useContext(MyContext);
@@ -27,6 +28,9 @@ const AddCategory = (props) => {
           }
         );
         console.log(res);
+        toast.success("Category Added Successfully!", {
+          theme: "light",
+        });
         setCategoryData({
           name: "",
           image: null,
@@ -35,9 +39,14 @@ const AddCategory = (props) => {
         fetchCategories(setCategories);
       } catch (error) {
         console.log(error);
+        toast.error(error.message, {
+          theme: "light",
+        });
       }
     } else {
-      alert("Fill reqired field");
+      toast.warning("Fill required field", {
+        theme: "light",
+      });
     }
   };
   const handleInput = (e) => {

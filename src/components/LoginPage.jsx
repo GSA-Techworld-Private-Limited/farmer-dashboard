@@ -4,6 +4,7 @@ import MyContext from "./context/ContextStore";
 import logo from "../assets/images/png/gsa.png";
 import axios from "axios";
 import { baseUrl, fetchStats } from "./api/auth";
+import { toast } from "react-toastify";
 const LoginPage = () => {
   const navigate = useNavigate();
   const { setAuthenticated, setStats } = useContext(MyContext);
@@ -29,6 +30,9 @@ const LoginPage = () => {
       const token = res.data.token;
       sessionStorage.setItem("token", token);
       console.log(res);
+      toast.success("Login Successfully", {
+        theme: "light",
+      });
       setAuthenticated(true);
       navigate("/dashboard");
       // fetch other details
@@ -36,6 +40,9 @@ const LoginPage = () => {
     } catch (error) {
       setLoading(false);
       console.log(error);
+      toast.error("Invalid Credentials!", {
+        theme: "light",
+      });
     }
   };
   console.log(loginCredentials);

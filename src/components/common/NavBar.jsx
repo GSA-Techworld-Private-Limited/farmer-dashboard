@@ -2,15 +2,20 @@ import React, { useContext } from "react";
 import { BellIcon, DottedMenuIcon, LogoutIcon } from "./Icons";
 import { useNavigate } from "react-router-dom";
 import MyContext from "../context/ContextStore";
+import { toast } from "react-toastify";
 
 const NavBar = () => {
-  const { title, setAuthenticated } = useContext(MyContext);
+  const { title, setAuthenticated, setTitle } = useContext(MyContext);
   const navigate = useNavigate();
   const logout = () => {
     const token = sessionStorage.getItem("token");
     if (token) {
       sessionStorage.removeItem("token");
       setAuthenticated(false);
+      setTitle("Dashboard");
+      toast.success("Logout Successfully", {
+        theme: "light",
+      });
     }
   };
   return (

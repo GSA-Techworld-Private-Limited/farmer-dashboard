@@ -30,6 +30,7 @@ import Products from "./components/products/Products";
 import AddProducts from "./components/products/AddProducts";
 import ProductDetails from "./components/products/ProductDetails";
 import Categories from "./components/products/Categories";
+import "react-toastify/dist/ReactToastify.css";
 import {
   fetchCategories,
   fetchCouponData,
@@ -46,6 +47,8 @@ import {
   fetchUsers,
   fetchVendors,
 } from "./components/api/auth";
+import AddNursery from "./components/nurseries/AddNursery";
+import { ToastContainer } from "react-toastify";
 function App() {
   const {
     authenticated,
@@ -97,6 +100,7 @@ function App() {
   console.log(authenticated);
   return (
     <>
+      <ToastContainer />
       {authenticated && <NavBar />}
       <div className="flex">
         <div>{authenticated && <SideBar />}</div>
@@ -181,6 +185,10 @@ function App() {
           <Route
             path="/nurseries"
             element={<ProtectedRoute element={<Nurseries />} />}
+          />
+          <Route
+            path="/nurseries/add-nursery"
+            element={<ProtectedRoute element={<AddNursery />} />}
           />
           <Route
             path="/users"

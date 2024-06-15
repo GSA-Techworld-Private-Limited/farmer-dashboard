@@ -57,14 +57,7 @@ const AddedCrops = () => {
       <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">
         <div className="w-[calc(1440px-275px)] 2xl:w-full pb-2">
           <div className="flex items-center gap-4 bg-[#EAFFD4]">
-            <div className="px-4 h-5">
-              <CheckBox
-                isChecked={checkedItems[0] || false}
-                handleCheckBox={() =>
-                  handleCheckBoxChange(0, setCheckedItems, setCategorySelect)
-                }
-              />
-            </div>
+            <div className="px-[26px] h-5"></div>
             {columns.map((val, i) => (
               <div
                 key={i}

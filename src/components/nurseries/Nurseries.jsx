@@ -6,6 +6,9 @@ import MyContext from "../context/ContextStore";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
 import { exportData } from "../utils/export";
+import axios from "axios";
+import { baseUrl, fetchNurseries, token } from "../api/auth";
+import { toast } from "react-toastify";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -19,13 +22,50 @@ const columns = [
 ];
 
 const Nurseries = () => {
-  const { setCheckedItems, setCategorySelect, checkedItems, nurseries } =
-    useContext(MyContext);
+  const {
+    setCheckedItems,
+    setCategorySelect,
+    setNurseries,
+    checkedItems,
+    categorySelect,
+    nurseries,
+  } = useContext(MyContext);
   const navigate = useNavigate();
-  //   const addVendors = () => {
-  //     navigate(`/vendors/add-vendors`);
-  //     setTitle(`Add Nurseries`);
-  //   };
+  const addNursery = () => {
+    navigate(`/nurseries/add-nursery`);
+    setTitle(`Add Nurseries`);
+  };
+  const deleteNursery = async () => {
+    console.log("yes", categorySelect);
+
+    if (categorySelect) {
+      console.log(categorySelect);
+      try {
+        const res = await axios.delete(
+          `${baseUrl}superadmin/get-nursery-dashboard/${categorySelect}/`,
+          {
+            Authorization: `token ${token}`,
+          }
+        );
+        fetchNurseries(setNurseries);
+        console.log(res);
+        console.log(categorySelect);
+        setCategorySelect(null);
+        toast.success("Nursery Deleted Successfully", {
+          theme: "light",
+        });
+      } catch (error) {
+        console.log(error);
+        toast.error(error, {
+          theme: "light",
+        });
+      }
+    } else {
+      toast.warning("Select Item First", {
+        theme: "light",
+      });
+    }
+  };
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
       <div className="flex justify-between items-center py-5 px-7 pb-7">
@@ -42,11 +82,15 @@ const Nurseries = () => {
         </div>
         <div className="flex items-center gap-4">
           <CommonBtn
-            // clickEvent={addVendors}
+            clickEvent={addNursery}
             btntext="+ Add Nursery"
             style="bg-[#FF7D24]"
           />
-          <CommonBtn btntext="Delete" style="bg-[#FF2E2E]" />
+          <CommonBtn
+            clickEvent={deleteNursery}
+            btntext="Delete"
+            style="bg-[#FF2E2E]"
+          />
           <CommonBtn
             clickEvent={() => exportData(nurseries)}
             btntext="Export"
@@ -57,14 +101,7 @@ const Nurseries = () => {
       <div className="w-[calc(100vw-275px)] 2xl:w-full overflow-auto">
         <div className="w-[calc(1440px-275px)] 2xl:w-full pb-2">
           <div className="flex items-center gap-6 bg-[#EAFFD4]">
-            <div className="px-4 h-5">
-              <CheckBox
-                isChecked={checkedItems[0] || false}
-                handleCheckBox={() =>
-                  handleCheckBoxChange(0, setCheckedItems, setCategorySelect)
-                }
-              />
-            </div>
+            <div className="px-[26px] h-5"></div>
             {columns.map((val, i) => (
               <div
                 key={i}

@@ -6,8 +6,8 @@ const ProtectedRoute = ({ element }) => {
   const { authenticated, loading } = useContext(MyContext);
   if (loading) {
     return (
-      <div className="flex items-center justify-center fixed inset font-poppins">
-        Loading...
+      <div className="flex items-center justify-center fixed inset-0 font-poppins">
+        <p>Loading...</p>
       </div>
     );
   }
