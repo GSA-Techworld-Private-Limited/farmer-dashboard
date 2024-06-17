@@ -99,7 +99,7 @@ const CropsDetails = () => {
                 Date of Sawing<span className="text-[#FD5353]">*</span>
               </label>
               <input
-                type="date"
+                type="text"
                 value={cropDetail && cropDetail.seed_sowed_on}
                 id="crop-date"
                 placeholder="James"

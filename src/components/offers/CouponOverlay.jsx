@@ -16,9 +16,26 @@ const CouponOverlay = (props) => {
     description: "",
     is_active: true,
   });
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
   const handleInput = (e) => {
     const { name, value } = e.target;
-    setAddCoupon({ ...addCoupon, [name]: value });
+    if (name === "starts_at" || name === "expiry_at") {
+      const selectedDate = new Date(value);
+      const currentDate = new Date();
+
+      if (selectedDate < currentDate) {
+        setAddCoupon({
+          ...addCoupon,
+          [name]: tomorrow.toISOString().split("T")[0],
+        });
+      } else {
+        setAddCoupon({ ...addCoupon, [name]: value });
+      }
+    } else {
+      setAddCoupon({ ...addCoupon, [name]: value });
+    }
   };
   const submitCoupon = async (e) => {
     e.preventDefault();

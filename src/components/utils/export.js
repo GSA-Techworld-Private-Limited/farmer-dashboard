@@ -49,8 +49,7 @@ const flattenObject = (obj, parent = "", res = {}) => {
   return res;
 };
 
-export const exportData = (userData) => {
-  const fileType = "pdf"; // Update this to switch between 'pdf' and 'xlsx'
+export const exportData = (userData, fileType) => {
   const filteredData = userData;
   console.log(userData);
   if (filteredData.length === 0) {

@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import NavBar from "./components/common/NavBar";
 import SideBar from "./components/SideBar";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import MyContext from "./components/context/ContextStore";
 import LoginPage from "./components/LoginPage";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
@@ -49,6 +49,7 @@ import {
 } from "./components/api/auth";
 import AddNursery from "./components/nurseries/AddNursery";
 import { ToastContainer } from "react-toastify";
+import ExportOverlay from "./components/common/ExportOverlay";
 function App() {
   const {
     authenticated,
@@ -56,7 +57,6 @@ function App() {
     setStats,
     setProductListStats,
     setExperts,
-    title,
     setProducts,
     setCategories,
     setOrders,
@@ -69,6 +69,8 @@ function App() {
     setCouponData,
     setSales,
     setLoading,
+    exportLayer,
+    setExportLayer,
   } = useContext(MyContext);
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -100,6 +102,7 @@ function App() {
   console.log(authenticated);
   return (
     <>
+      {exportLayer && <ExportOverlay setExportLayer={setExportLayer} />}
       <ToastContainer />
       {authenticated && <NavBar />}
       <div className="flex">

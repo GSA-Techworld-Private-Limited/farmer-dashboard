@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import CommonBtn from "../common/CommonBtn";
 import { SearchRounded } from "@mui/icons-material";
 import CheckBox from "../common/CheckBox";
@@ -9,6 +9,7 @@ import { exportData } from "../utils/export";
 import axios from "axios";
 import { baseUrl, fetchNurseries, token } from "../api/auth";
 import { toast } from "react-toastify";
+import SearchInput from "../SearchInput";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -29,8 +30,12 @@ const Nurseries = () => {
     checkedItems,
     categorySelect,
     nurseries,
+    setExportLayer,
+    setDataForExport,
+    setTitle,
   } = useContext(MyContext);
   const navigate = useNavigate();
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const addNursery = () => {
     navigate(`/nurseries/add-nursery`);
     setTitle(`Add Nurseries`);
@@ -66,6 +71,13 @@ const Nurseries = () => {
       });
     }
   };
+  const handleSearchResults = (results) => {
+    setFilteredProducts(results);
+  };
+  const showOverlay = () => {
+    setExportLayer(true);
+    setDataForExport(nurseries);
+  };
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
       <div className="flex justify-between items-center py-5 px-7 pb-7">
@@ -73,11 +85,9 @@ const Nurseries = () => {
           <label htmlFor="search" className="px-[18px] text-[#4D44B5]">
             <SearchRounded />
           </label>
-          <input
-            type="text"
-            id="search"
-            placeholder="Search here..."
-            className="text-base leading-[22px] w-full text-[#6C757D] placeholder:text-[#6C757D] outline-none font-poppins py-[13px] px-1"
+          <SearchInput
+            items={nurseries}
+            onSearchResults={handleSearchResults}
           />
         </div>
         <div className="flex items-center gap-4">
@@ -92,7 +102,7 @@ const Nurseries = () => {
             style="bg-[#FF2E2E]"
           />
           <CommonBtn
-            clickEvent={() => exportData(nurseries)}
+            clickEvent={showOverlay}
             btntext="Export"
             style="bg-[#444444]"
           />
@@ -113,8 +123,8 @@ const Nurseries = () => {
             ))}
           </div>
           <div className="flex flex-col gap-4 pt-4">
-            {nurseries &&
-              nurseries.map((val, i) => (
+            {filteredProducts && filteredProducts.length > 0 ? (
+              filteredProducts.map((val, i) => (
                 <div
                   key={i}
                   className="flex items-center gap-6 hover:bg-[#f3f1f1] duration-300"
@@ -162,7 +172,12 @@ const Nurseries = () => {
                     </span>
                   </div>
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="flex items-center justify-center text-red-500 font-poppins flex-col">
+                <span className="text-3xl">☹</span> <p>No matches found</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

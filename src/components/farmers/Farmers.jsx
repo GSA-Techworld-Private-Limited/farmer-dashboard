@@ -1,5 +1,5 @@
 import { ArrowBack, SearchRounded } from "@mui/icons-material";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CommonBtn from "../common/CommonBtn";
 import MyContext from "../context/ContextStore";
@@ -9,6 +9,7 @@ import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { baseUrl, fetchFarmers } from "../api/auth";
 import axios from "axios";
 import { toast } from "react-toastify";
+import SearchInput from "../SearchInput";
 const columns = [
   { headerName: "SL. No", width: 64 },
   { headerName: "Date", width: 82 },
@@ -31,8 +32,11 @@ const Farmers = () => {
     farmers,
     setFarmers,
     categorySelect,
+    setExportLayer,
+    setDataForExport,
   } = useContext(MyContext);
   const navigate = useNavigate();
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const addFarmer = () => {
     navigate(`/farmers/add-farmer`);
     setTitle(`Add Farmer`);
@@ -69,6 +73,13 @@ const Farmers = () => {
       });
     }
   };
+  const handleSearchResults = (results) => {
+    setFilteredProducts(results);
+  };
+  const showOverlay = () => {
+    setExportLayer(true);
+    setDataForExport(farmers);
+  };
   return (
     <div className="h-[calc(100vh-76px)] flex flex-col w-full">
       <div className="pt-5 px-7 w-full ">
@@ -77,11 +88,9 @@ const Farmers = () => {
             <label htmlFor="search" className="px-[18px] text-[#4D44B5]">
               <SearchRounded />
             </label>
-            <input
-              type="text"
-              id="search"
-              placeholder="Search here..."
-              className="text-base leading-[22px] w-full text-[#6C757D] placeholder:text-[#6C757D] outline-none font-poppins py-[13px] px-1"
+            <SearchInput
+              items={farmers}
+              onSearchResults={handleSearchResults}
             />
           </div>
           <div className="flex items-center gap-4">
@@ -95,7 +104,11 @@ const Farmers = () => {
               btntext="Delete"
               style="bg-[#FF2E2E]"
             />
-            <CommonBtn btntext="Export" style="bg-[#444444]" />
+            <CommonBtn
+              clickEvent={showOverlay}
+              btntext="Export"
+              style="bg-[#444444]"
+            />
           </div>
         </div>
       </div>
@@ -114,8 +127,8 @@ const Farmers = () => {
             ))}
           </div>
           <div className="flex flex-col gap-4 pt-4">
-            {farmers &&
-              farmers.map((val, i) => (
+            {filteredProducts && filteredProducts.length > 0 ? (
+              filteredProducts.map((val, i) => (
                 <div
                   key={i}
                   className="flex items-center gap-2 hover:bg-[#f3f1f1] duration-300"
@@ -176,7 +189,12 @@ const Farmers = () => {
                     </span>
                   </div>
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="flex items-center justify-center text-red-500 font-poppins flex-col">
+                <span className="text-3xl">☹</span> <p>No matches found</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

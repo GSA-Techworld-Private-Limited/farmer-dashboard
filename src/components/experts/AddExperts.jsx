@@ -22,7 +22,20 @@ const AddExperts = () => {
   });
   const handleInput = (e) => {
     const { name, value } = e.target;
-    setExpertData({ ...expertData, [name]: value });
+    if (name === "date_of_joined") {
+      const today = new Date();
+      const selectedDate = new Date(value);
+      if (selectedDate > today) {
+        setExpertData({
+          ...expertData,
+          [name]: today.toISOString().split("T")[0],
+        });
+      } else {
+        setExpertData({ ...expertData, [name]: value });
+      }
+    } else {
+      setExpertData({ ...expertData, [name]: value });
+    }
   };
   const submitExpert = async (e) => {
     e.preventDefault();

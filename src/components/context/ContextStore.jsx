@@ -6,7 +6,8 @@ export const ContextStore = ({ children }) => {
   const [checkedItems, setCheckedItems] = useState({});
   const [categorySelect, setCategorySelect] = useState(null);
   const updatedTitle = sessionStorage.getItem("title") || "Dashboard";
-  const [title, setTitle] = useState("Dashboard");
+  const [title, setTitle] = useState(updatedTitle);
+  const [exportLayer, setExportLayer] = useState(false);
   // data
   const [stats, setStats] = useState(null);
   const [productListStats, setProductListStats] = useState(null);
@@ -23,6 +24,7 @@ export const ContextStore = ({ children }) => {
   const [couponData, setCouponData] = useState(null);
   const [sales, setSales] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [dataForExport, setDataForExport] = useState(null);
   useEffect(() => {
     sessionStorage.setItem("title", title);
   }, [title]);
@@ -67,6 +69,10 @@ export const ContextStore = ({ children }) => {
         setSales,
         loading,
         setLoading,
+        exportLayer,
+        setExportLayer,
+        dataForExport,
+        setDataForExport,
       }}
     >
       {children}

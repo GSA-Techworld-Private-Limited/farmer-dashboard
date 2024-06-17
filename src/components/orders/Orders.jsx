@@ -15,6 +15,7 @@ import {
 } from "../ui/select";
 import { formatDateTime } from "../experts/Experts";
 import { exportData } from "../utils/export";
+import SearchInput from "../SearchInput";
 const columns = [
   { headerName: "SL. No", width: 72 },
   { headerName: "Date", width: 94 },
@@ -28,12 +29,26 @@ const columns = [
 ];
 
 const Orders = () => {
-  const { setCheckedItems, setCategorySelect, checkedItems, orders } =
-    useContext(MyContext);
+  const {
+    setCheckedItems,
+    setCategorySelect,
+    checkedItems,
+    orders,
+    setExportLayer,
+    setDataForExport,
+  } = useContext(MyContext);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedTab, setSelectedTab] = useState("tab1");
   const [status, setStatus] = useState(false);
   const navigate = useNavigate();
   const handleExpertDetails = (user) => {};
+  const handleSearchResults = (results) => {
+    setFilteredProducts(results);
+  };
+  const showOverlay = () => {
+    setExportLayer(true);
+    setDataForExport(orders);
+  };
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
       <div className="flex justify-between items-center py-5 px-7 pb-7">
@@ -41,12 +56,7 @@ const Orders = () => {
           <label htmlFor="search" className="px-[18px] text-[#4D44B5]">
             <SearchRounded />
           </label>
-          <input
-            type="text"
-            id="search"
-            placeholder="Search here..."
-            className="text-base leading-[22px] w-full text-[#6C757D] placeholder:text-[#6C757D] outline-none font-poppins py-[13px] px-1"
-          />
+          <SearchInput items={orders} onSearchResults={handleSearchResults} />
         </div>
         <p className="text-sm font-semibold leading-5 text-black font-poppins">
           Add Transaction ID
@@ -58,7 +68,7 @@ const Orders = () => {
             style="bg-[#5DB505]"
           />
           <CommonBtn
-            clickEvent={() => exportData(orders)}
+            clickEvent={showOverlay}
             btntext="Export"
             style="bg-[#444444]"
           />
@@ -79,8 +89,8 @@ const Orders = () => {
             ))}
           </div>
           <div className="flex flex-col gap-4 pt-4">
-            {orders &&
-              orders.map((val, i) => (
+            {filteredProducts && filteredProducts.length > 0 ? (
+              filteredProducts.map((val, i) => (
                 <div
                   key={i}
                   className="flex items-center gap-3 hover:bg-[#f3f1f1] duration-300"
@@ -143,7 +153,12 @@ const Orders = () => {
                     </span>
                   </div>
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="flex items-center justify-center text-red-500 font-poppins flex-col">
+                <span className="text-3xl">☹</span> <p>No matches found</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

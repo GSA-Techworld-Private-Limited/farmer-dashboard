@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import CommonBtn from "../common/CommonBtn";
 import { SearchRounded } from "@mui/icons-material";
 import CheckBox from "../common/CheckBox";
 import MyContext from "../context/ContextStore";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
-import { useNavigate } from "react-router-dom";
 import { exportData } from "../utils/export";
+import SearchInput from "../SearchInput";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -18,9 +18,22 @@ const columns = [
 ];
 
 const Users = () => {
-  const { setCheckedItems, setCategorySelect, checkedItems, setTitle, users } =
-    useContext(MyContext);
-
+  const {
+    setCheckedItems,
+    setCategorySelect,
+    checkedItems,
+    users,
+    setExportLayer,
+    setDataForExport,
+  } = useContext(MyContext);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const handleSearchResults = (results) => {
+    setFilteredProducts(results);
+  };
+  const showOverlay = () => {
+    setExportLayer(true);
+    setDataForExport(users);
+  };
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
       <div className="flex justify-between items-center py-5 px-7 pb-7">
@@ -28,15 +41,10 @@ const Users = () => {
           <label htmlFor="search" className="px-[18px] text-[#4D44B5]">
             <SearchRounded />
           </label>
-          <input
-            type="text"
-            id="search"
-            placeholder="Search here..."
-            className="text-base leading-[22px] w-full text-[#6C757D] placeholder:text-[#6C757D] outline-none font-poppins py-[13px] px-1"
-          />
+          <SearchInput items={users} onSearchResults={handleSearchResults} />
         </div>
         <CommonBtn
-          clickEvent={() => exportData(users)}
+          clickEvent={showOverlay}
           btntext="Export"
           style="bg-[#444444]"
         />
@@ -55,8 +63,8 @@ const Users = () => {
           ))}
         </div>
         <div className="flex flex-col gap-4 pt-4">
-          {users &&
-            users.map((val, i) => (
+          {filteredProducts && filteredProducts.length > 0 ? (
+            filteredProducts.map((val, i) => (
               <div
                 key={i}
                 className="flex items-center gap-6 hover:bg-[#f3f1f1] duration-300"
@@ -98,7 +106,12 @@ const Users = () => {
                   </span>
                 </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <div className="flex items-center justify-center text-red-500 font-poppins flex-col">
+              <span className="text-3xl">☹</span> <p>No matches found</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import CommonBtn from "../common/CommonBtn";
 import { SearchRounded } from "@mui/icons-material";
 import CheckBox from "../common/CheckBox";
@@ -9,6 +9,7 @@ import axios from "axios";
 import { baseUrl, fetchVendors } from "../api/auth";
 import { exportData } from "../utils/export";
 import { toast } from "react-toastify";
+import SearchInput from "../SearchInput";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -29,8 +30,11 @@ const Vendors = () => {
     setTitle,
     vendors,
     setVendors,
+    setExportLayer,
+    setDataForExport,
   } = useContext(MyContext);
   const navigate = useNavigate();
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const addVendors = () => {
     navigate(`/vendors/add-vendors`);
     setTitle(`Add Vendors`);
@@ -67,6 +71,13 @@ const Vendors = () => {
       });
     }
   };
+  const handleSearchResults = (results) => {
+    setFilteredProducts(results);
+  };
+  const showOverlay = () => {
+    setExportLayer(true);
+    setDataForExport(vendors);
+  };
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
       <div className="flex justify-between items-center py-5 px-7 pb-7">
@@ -74,12 +85,7 @@ const Vendors = () => {
           <label htmlFor="search" className="px-[18px] text-[#4D44B5]">
             <SearchRounded />
           </label>
-          <input
-            type="text"
-            id="search"
-            placeholder="Search here..."
-            className="text-base leading-[22px] w-full text-[#6C757D] placeholder:text-[#6C757D] outline-none font-poppins py-[13px] px-1"
-          />
+          <SearchInput items={vendors} onSearchResults={handleSearchResults} />
         </div>
         <div className="flex items-center gap-4">
           <CommonBtn
@@ -93,7 +99,7 @@ const Vendors = () => {
             style="bg-[#FF2E2E]"
           />
           <CommonBtn
-            clickEvent={() => exportData(vendors)}
+            clickEvent={showOverlay}
             btntext="Export"
             style="bg-[#444444]"
           />
@@ -114,8 +120,8 @@ const Vendors = () => {
             ))}
           </div>
           <div className="flex flex-col gap-4 pt-4">
-            {vendors &&
-              vendors.map((val, i) => (
+            {filteredProducts && filteredProducts.length > 0 ? (
+              filteredProducts.map((val, i) => (
                 <div
                   key={i}
                   className="flex items-center gap-6 hover:bg-[#f3f1f1] duration-300"
@@ -163,7 +169,12 @@ const Vendors = () => {
                     </span>
                   </div>
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="flex items-center justify-center text-red-500 font-poppins flex-col">
+                <span className="text-3xl">☹</span> <p>No matches found</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

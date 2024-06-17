@@ -79,7 +79,6 @@ const AddNursery = () => {
           }
         );
         console.log(res);
-        alert("Nursery added");
         fetchNurseries(setNurseries);
         setNurseryData({
           name: "",

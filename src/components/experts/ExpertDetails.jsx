@@ -14,7 +14,21 @@ const ExpertDetails = () => {
   const [isSaved, setIsSaved] = useState(false);
   const handleExpertInput = (e) => {
     const { name, value } = e.target;
-    setExpertDetails({ ...expertDetails, [name]: value });
+    if (name === "date_of_joined") {
+      const today = new Date();
+      const selectedDate = new Date(value);
+      if (selectedDate > today) {
+        setExpertDetails({
+          ...expertDetails,
+          [name]: today.toISOString().split("T")[0],
+        });
+        console.log("done");
+      } else {
+        setExpertDetails({ ...expertDetails, [name]: value });
+      }
+    } else {
+      setExpertDetails({ ...expertDetails, [name]: value });
+    }
   };
   const editExpert = async () => {
     const token = sessionStorage.getItem("token");
@@ -163,6 +177,7 @@ const ExpertDetails = () => {
                 id="expert-date"
                 placeholder="James"
                 name="date_of_joined"
+                onChange={handleExpertInput}
                 value={expertDetails && expertDetails.date_of_joined}
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />

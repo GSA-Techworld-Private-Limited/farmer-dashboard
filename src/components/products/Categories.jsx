@@ -10,6 +10,7 @@ import { baseUrl, fetchCategories } from "../api/auth";
 import axios from "axios";
 import { exportData } from "../utils/export";
 import { toast } from "react-toastify";
+import SearchInput from "../SearchInput";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -25,10 +26,12 @@ const Categories = () => {
     checkedItems,
     categories,
     setCategories,
+    setExportLayer,
+    setDataForExport,
   } = useContext(MyContext);
   const [category, setCategory] = useState(false);
   const navigate = useNavigate();
-
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const deleteCate = async () => {
     const token = sessionStorage.getItem("token");
     if (categorySelect) {
@@ -57,6 +60,13 @@ const Categories = () => {
       });
     }
   };
+  const handleSearchResults = (results) => {
+    setFilteredProducts(results);
+  };
+  const showOverlay = () => {
+    setExportLayer(true);
+    setDataForExport(categories);
+  };
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
       <div className="flex justify-between items-center py-5 px-7 pb-7">
@@ -64,11 +74,9 @@ const Categories = () => {
           <label htmlFor="search" className="px-[18px] text-[#4D44B5]">
             <SearchRounded />
           </label>
-          <input
-            type="text"
-            id="search"
-            placeholder="Search here..."
-            className="text-base leading-[22px] w-full text-[#6C757D] placeholder:text-[#6C757D] outline-none font-poppins py-[13px] px-1"
+          <SearchInput
+            items={categories}
+            onSearchResults={handleSearchResults}
           />
         </div>
         <div className="flex items-center gap-4">
@@ -83,7 +91,7 @@ const Categories = () => {
             style="bg-[#FF2E2E]"
           />
           <CommonBtn
-            clickEvent={() => exportData(categories)}
+            clickEvent={showOverlay}
             btntext="Export"
             style="bg-[#444444]"
           />
@@ -103,8 +111,8 @@ const Categories = () => {
           ))}
         </div>
         <div className="flex flex-col gap-4 pt-4">
-          {categories &&
-            categories.map((val, i) => (
+          {filteredProducts && filteredProducts.length > 0 ? (
+            filteredProducts.map((val, i) => (
               <div
                 key={i}
                 className="flex items-center gap-16 hover:bg-[#f3f1f1] duration-300"
@@ -138,7 +146,12 @@ const Categories = () => {
                   {val.totalQty}
                 </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <div className="flex items-center justify-center text-red-500 font-poppins flex-col">
+              <span className="text-3xl">☹</span> <p>No matches found</p>
+            </div>
+          )}
         </div>
       </div>
       {category && <AddCategory setCategory={setCategory} />}

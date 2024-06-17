@@ -11,6 +11,7 @@ const NavBar = () => {
     const token = sessionStorage.getItem("token");
     if (token) {
       sessionStorage.removeItem("token");
+      sessionStorage.removeItem("title");
       setAuthenticated(false);
       setTitle("Dashboard");
       toast.success("Logout Successfully", {

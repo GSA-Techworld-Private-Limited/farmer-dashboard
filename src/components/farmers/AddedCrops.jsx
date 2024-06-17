@@ -1,5 +1,5 @@
 import { ArrowBack, SearchRounded } from "@mui/icons-material";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CommonBtn from "../common/CommonBtn";
 import MyContext from "../context/ContextStore";
@@ -7,6 +7,7 @@ import CheckBox from "../common/CheckBox";
 import { formatDateTime } from "../experts/Experts";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { exportData } from "../utils/export";
+import SearchInput from "../SearchInput";
 const columns = [
   { headerName: "SL. No", width: 64 },
   { headerName: "Date", width: 99 },
@@ -26,11 +27,21 @@ const AddedCrops = () => {
     checkedItems,
     setCategorySelect,
     farmersCrops,
+    setExportLayer,
+    setDataForExport,
   } = useContext(MyContext);
   const navigate = useNavigate();
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const cropsDetails = (id) => {
     setTitle(`Request ID - ${id}`);
     navigate(`/farmers/crops-added/${id}`);
+  };
+  const handleSearchResults = (results) => {
+    setFilteredProducts(results);
+  };
+  const showOverlay = () => {
+    setExportLayer(true);
+    setDataForExport(farmersCrops);
   };
   return (
     <div className="h-[calc(100vh-76px)] flex flex-col w-full">
@@ -40,15 +51,13 @@ const AddedCrops = () => {
             <label htmlFor="search" className="px-[18px] text-[#4D44B5]">
               <SearchRounded />
             </label>
-            <input
-              type="text"
-              id="search"
-              placeholder="Search here..."
-              className="text-base leading-[22px] w-full text-[#6C757D] placeholder:text-[#6C757D] outline-none font-poppins py-[13px] px-1"
+            <SearchInput
+              items={farmersCrops}
+              onSearchResults={handleSearchResults}
             />
           </div>
           <CommonBtn
-            clickEvent={() => exportData(farmersCrops)}
+            clickEvent={showOverlay}
             btntext="Export"
             style="bg-[#444444]"
           />
@@ -69,8 +78,8 @@ const AddedCrops = () => {
             ))}
           </div>
           <div className="flex flex-col gap-4 pt-4">
-            {farmersCrops &&
-              farmersCrops.map((val, i) => (
+            {filteredProducts && filteredProducts.length > 0 ? (
+              filteredProducts.map((val, i) => (
                 <div
                   key={i}
                   className="flex items-center gap-4 hover:bg-[#f3f1f1] duration-300"
@@ -88,7 +97,7 @@ const AddedCrops = () => {
                     />
                   </div>
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[64px]">
-                    {val.id}
+                    {i+1}
                   </div>
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[99px]">
                     {formatDateTime(val.created_at)}
@@ -127,7 +136,12 @@ const AddedCrops = () => {
                     </span>
                   </div>
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="flex items-center justify-center text-red-500 font-poppins flex-col">
+                <span className="text-3xl">☹</span> <p>No matches found</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

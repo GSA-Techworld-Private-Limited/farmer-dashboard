@@ -105,6 +105,18 @@ const AddEmployees = () => {
         ...employeeData,
         [name]: files[0],
       });
+    } else if (name === "date_of_joined") {
+      const today = new Date();
+      const selectedDate = new Date(value);
+      if (selectedDate > today) {
+        setEmployeeData({
+          ...employeeData,
+          [name]: today.toISOString().split("T")[0],
+        });
+        console.log("done");
+      } else {
+        setEmployeeData({ ...employeeData, [name]: value });
+      }
     } else {
       setEmployeeData({ ...employeeData, [name]: value });
     }

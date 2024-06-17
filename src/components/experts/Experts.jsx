@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import CommonBtn from "../common/CommonBtn";
 import { SearchRounded } from "@mui/icons-material";
 import CheckBox from "../common/CheckBox";
@@ -7,8 +7,8 @@ import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
 import { baseUrl, fetchExperts } from "../api/auth";
 import axios from "axios";
-import { exportData } from "../utils/export";
 import { toast } from "react-toastify";
+import SearchInput from "../SearchInput";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -34,8 +34,11 @@ const Experts = () => {
     experts,
     categorySelect,
     setExperts,
+    setExportLayer,
+    setDataForExport,
   } = useContext(MyContext);
   const navigate = useNavigate();
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const handleExpertDetails = (expert_id) => {
     navigate(`/experts/${expert_id}`);
     setTitle(`Expert ID - ${expert_id}`);
@@ -73,7 +76,13 @@ const Experts = () => {
       });
     }
   };
-
+  const handleSearchResults = (results) => {
+    setFilteredProducts(results);
+  };
+  const showOverlay = () => {
+    setExportLayer(true);
+    setDataForExport(experts);
+  };
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
       <div className="flex justify-between items-center py-5 px-7 pb-7">
@@ -81,12 +90,7 @@ const Experts = () => {
           <label htmlFor="search" className="px-[18px] text-[#4D44B5]">
             <SearchRounded />
           </label>
-          <input
-            type="text"
-            id="search"
-            placeholder="Search here..."
-            className="text-base leading-[22px] w-full text-[#6C757D] placeholder:text-[#6C757D] outline-none font-poppins py-[13px] px-1"
-          />
+          <SearchInput items={experts} onSearchResults={handleSearchResults} />
         </div>
         <div className="flex items-center gap-4">
           <CommonBtn
@@ -100,7 +104,7 @@ const Experts = () => {
             style="bg-[#FF2E2E]"
           />
           <CommonBtn
-            clickEvent={() => exportData(experts)}
+            clickEvent={showOverlay}
             btntext="Export"
             style="bg-[#444444]"
           />
@@ -121,8 +125,8 @@ const Experts = () => {
             ))}
           </div>
           <div className="flex flex-col gap-4 pt-4">
-            {experts &&
-              experts.map((val, i) => (
+            {filteredProducts && filteredProducts.length > 0 ? (
+              filteredProducts.map((val, i) => (
                 <div
                   key={i}
                   className="flex items-center gap-3 hover:bg-[#f3f1f1] duration-300"
@@ -143,7 +147,7 @@ const Experts = () => {
                     {i + 1}
                   </div>
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[126px]">
-                    {formatDateTime(val.created_at)}
+                    {formatDateTime(val.date_of_joined)}
                   </div>
                   <div
                     onClick={() => handleExpertDetails(val.expert_id)}
@@ -169,7 +173,12 @@ const Experts = () => {
                     </span>
                   </div>
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="flex items-center justify-center text-red-500 font-poppins flex-col">
+                <span className="text-3xl">☹</span> <p>No matches found</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

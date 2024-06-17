@@ -9,6 +9,7 @@ import BannerOverlay from "./BannerOverlay";
 import { formatDateTime } from "../experts/Experts";
 import { exportData } from "./../utils/export";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
+import SearchInput from "../SearchInput";
 const columns = [
   { headerName: "SL. No", width: 72 },
   { headerName: "Date", width: 126 },
@@ -32,7 +33,7 @@ const rows = [
   {
     id: 1,
     DOJ: "25/09/23",
-    coupon_ID: "9498740",
+    banner_id: "9498740",
     name: "Diwali Coupon",
     startDate: "25/09/23",
     expDate: "25/09/23",
@@ -41,7 +42,7 @@ const rows = [
   {
     id: 2,
     DOJ: "25/09/23",
-    coupon_ID: "9498740",
+    banner_id: "9498740",
     name: "Diwali Coupon",
     startDate: "25/09/23",
     expDate: "25/09/23",
@@ -50,7 +51,7 @@ const rows = [
   {
     id: 3,
     DOJ: "25/09/23",
-    coupon_ID: "9498740",
+    banner_id: "9498740",
     name: "Diwali Coupon",
     startDate: "25/09/23",
     expDate: "25/09/23",
@@ -59,7 +60,7 @@ const rows = [
   {
     id: 4,
     DOJ: "25/09/23",
-    coupon_ID: "9498740",
+    banner_id: "9498740",
     name: "Diwali Coupon",
     startDate: "25/09/23",
     expDate: "25/09/23",
@@ -68,7 +69,7 @@ const rows = [
   {
     id: 5,
     DOJ: "25/09/23",
-    coupon_ID: "9498740",
+    banner_id: "9498740",
     name: "Diwali Coupon",
     startDate: "25/09/23",
     expDate: "25/09/23",
@@ -82,16 +83,29 @@ const Offers = () => {
     checkedItems,
     setCategorySelect,
     couponData,
+    setExportLayer,
+    setDataForExport,
   } = useContext(MyContext);
   const navigate = useNavigate();
   const [coupon, setCoupon] = useState(false);
   const [banner, setBanner] = useState(false);
-
+  const [filteredOffers, setFilteredOffers] = useState([]);
+  const [filteredBanners, setFilteredBanners] = useState([]);
   const handleViewAndEdit = (id, name) => {
     navigate(`/offers/${id}`);
     setTitle(name);
   };
   const [offerTabs, setOfferTabs] = useState("coupon");
+  const handleOfferSearch = (results) => {
+    setFilteredOffers(results);
+  };
+  const handleBannerSearch = (results) => {
+    setFilteredBanners(results);
+  };
+  const showOverlay = (data) => {
+    setExportLayer(true);
+    setDataForExport(data);
+  };
   return (
     <div className="h-[calc(100vh-76px)] flex flex-col w-full">
       <div className="flex items-center gap-10 pt-6 px-10">
@@ -122,11 +136,9 @@ const Offers = () => {
                 <label htmlFor="search" className="px-[18px] text-[#4D44B5]">
                   <SearchRounded />
                 </label>
-                <input
-                  type="text"
-                  id="search"
-                  placeholder="Search here..."
-                  className="text-base leading-[22px] w-full text-[#6C757D] placeholder:text-[#6C757D] outline-none font-poppins py-[13px] px-1"
+                <SearchInput
+                  items={couponData}
+                  onSearchResults={handleOfferSearch}
                 />
               </div>
               <div className="flex items-center gap-4">
@@ -136,7 +148,7 @@ const Offers = () => {
                   style="bg-[#FF7D24]"
                 />
                 <CommonBtn
-                  clickEvent={() => exportData(couponData)}
+                  clickEvent={() => showOverlay(couponData)}
                   btntext="Export"
                   style="bg-[#444444]"
                 />
@@ -158,8 +170,8 @@ const Offers = () => {
                 ))}
               </div>
               <div className="flex flex-col gap-4 pt-4">
-                {couponData &&
-                  couponData.map((val, i) => (
+                {filteredOffers && filteredOffers.length > 0 ? (
+                  filteredOffers.map((val, i) => (
                     <div
                       key={i}
                       className="flex items-center gap-2 hover:bg-[#f3f1f1] duration-300"
@@ -209,7 +221,12 @@ const Offers = () => {
                         </span>
                       </div>
                     </div>
-                  ))}
+                  ))
+                ) : (
+                  <div className="flex items-center justify-center text-red-500 font-poppins flex-col">
+                    <span className="text-3xl">☹</span> <p>No matches found</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -222,11 +239,9 @@ const Offers = () => {
                 <label htmlFor="search" className="px-[18px] text-[#4D44B5]">
                   <SearchRounded />
                 </label>
-                <input
-                  type="text"
-                  id="search"
-                  placeholder="Search here..."
-                  className="text-base leading-[22px] w-full text-[#6C757D] placeholder:text-[#6C757D] outline-none font-poppins py-[13px] px-1"
+                <SearchInput
+                  items={rows}
+                  onSearchResults={handleBannerSearch}
                 />
               </div>
               <div className="flex items-center gap-4">
@@ -236,7 +251,7 @@ const Offers = () => {
                   style="bg-[#FF7D24]"
                 />
                 <CommonBtn
-                  clickEvent={() => exportData(rows)}
+                  clickEvent={() => showOverlay(rows)}
                   btntext="Export"
                   style="bg-[#444444]"
                 />
@@ -257,57 +272,63 @@ const Offers = () => {
               ))}
             </div>
             <div className="flex flex-col gap-4 pt-4">
-              {rows.map((val, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-2 hover:bg-[#f3f1f1] duration-300"
-                >
-                  <div className="px-4 h-5">
-                    <CheckBox
-                      isChecked={checkedItems[val.id] || false}
-                      handleCheckBox={() =>
-                        handleCheckBoxChange(
-                          val.id,
-                          setCheckedItems,
-                          setCategorySelect
-                        )
-                      }
-                    />
-                  </div>
-                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
-                    {val.id}
-                  </div>
-                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[126px]">
-                    {val.DOJ}
-                  </div>
+              {filteredBanners && filteredBanners.length > 0 ? (
+                filteredBanners.map((val, i) => (
                   <div
-                    onClick={() => handleViewAndEdit(val.coupon_ID, val.name)}
-                    className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] cursor-pointer underline w-[136px]"
+                    key={i}
+                    className="flex items-center gap-2 hover:bg-[#f3f1f1] duration-300"
                   >
-                    {val.coupon_ID}
-                  </div>
-                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[158px]">
-                    {val.name}
-                  </div>
-                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[122px]">
-                    {val.startDate}
-                  </div>
-                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[171px]">
-                    {val.expDate}
-                  </div>
-                  <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[104px]">
-                    <span
-                      className={`text-white font-medium font-poppins leading-5 text-sm inline-block text-center px-2 min-w-[98px] py-[5px] rounded-lg bg-[#5DB505] ${
-                        val.status === "active"
-                          ? "bg-[#5DB505]"
-                          : "bg-[#FD5353]"
-                      }`}
+                    <div className="px-4 h-5">
+                      <CheckBox
+                        isChecked={checkedItems[val.id] || false}
+                        handleCheckBox={() =>
+                          handleCheckBoxChange(
+                            val.id,
+                            setCheckedItems,
+                            setCategorySelect
+                          )
+                        }
+                      />
+                    </div>
+                    <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
+                      {val.id}
+                    </div>
+                    <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[126px]">
+                      {val.DOJ}
+                    </div>
+                    <div
+                      onClick={() => handleViewAndEdit(val.banner_id, val.name)}
+                      className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] cursor-pointer underline w-[136px]"
                     >
-                      {val.status}
-                    </span>
+                      {val.banner_id}
+                    </div>
+                    <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[158px]">
+                      {val.name}
+                    </div>
+                    <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[122px]">
+                      {val.startDate}
+                    </div>
+                    <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[171px]">
+                      {val.expDate}
+                    </div>
+                    <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[104px]">
+                      <span
+                        className={`text-white font-medium font-poppins leading-5 text-sm inline-block text-center px-2 min-w-[98px] py-[5px] rounded-lg bg-[#5DB505] ${
+                          val.status === "active"
+                            ? "bg-[#5DB505]"
+                            : "bg-[#FD5353]"
+                        }`}
+                      >
+                        {val.status}
+                      </span>
+                    </div>
                   </div>
+                ))
+              ) : (
+                <div className="flex items-center justify-center text-red-500 font-poppins flex-col">
+                  <span className="text-3xl">☹</span> <p>No matches found</p>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>
