@@ -23,6 +23,8 @@ export const ContextStore = ({ children }) => {
   const [users, setUsers] = useState(null);
   const [couponData, setCouponData] = useState(null);
   const [sales, setSales] = useState(null);
+  const [usersRequest, setUsersRequest] = useState(null);
+  const [bannerData, setBannerData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [dataForExport, setDataForExport] = useState(null);
   useEffect(() => {
@@ -73,6 +75,10 @@ export const ContextStore = ({ children }) => {
         setExportLayer,
         dataForExport,
         setDataForExport,
+        usersRequest,
+        setUsersRequest,
+        bannerData,
+        setBannerData,
       }}
     >
       {children}

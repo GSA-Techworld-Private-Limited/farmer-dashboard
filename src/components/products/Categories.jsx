@@ -143,7 +143,7 @@ const Categories = () => {
                   {val.name}
                 </div>
                 <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[141px]">
-                  {val.totalQty}
+                  {val.total_products}
                 </div>
               </div>
             ))

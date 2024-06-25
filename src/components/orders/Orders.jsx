@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import CommonBtn from "../common/CommonBtn";
 import { SearchRounded } from "@mui/icons-material";
 import CheckBox from "../common/CheckBox";
@@ -16,6 +16,9 @@ import {
 import { formatDateTime } from "../experts/Experts";
 import { exportData } from "../utils/export";
 import SearchInput from "../SearchInput";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { baseUrl, fetchOrdersList, token } from "../api/auth";
 const columns = [
   { headerName: "SL. No", width: 72 },
   { headerName: "Date", width: 94 },
@@ -32,12 +35,16 @@ const Orders = () => {
   const {
     setCheckedItems,
     setCategorySelect,
+    categorySelect,
     checkedItems,
     orders,
     setExportLayer,
-    setDataForExport,
+    setDataForExport,setOrders
   } = useContext(MyContext);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [currElem, setCurrElem] = useState();
+  const [orderStatus, setOrderStatus] = useState(); // Initialize with current order status
+  const [paymentStatus, setPaymentStatus] = useState(); // Initialize with current payment status
   const [selectedTab, setSelectedTab] = useState("tab1");
   const [status, setStatus] = useState(false);
   const navigate = useNavigate();
@@ -49,6 +56,53 @@ const Orders = () => {
     setExportLayer(true);
     setDataForExport(orders);
   };
+  const showUpdateLayer = () => {
+    if (categorySelect) {
+      setStatus(true);
+    } else {
+      toast.warning("Select Any Item!", {
+        theme: "light",
+      });
+    }
+  };
+  useEffect(() => {
+    if (categorySelect) {
+      const selectedOrder = orders.find(
+        (order) => order.order_id === categorySelect
+      );
+      setCurrElem(selectedOrder)
+    if(currElem&&currElem.length>0){
+      setOrderStatus(currElem.order_status)
+      setPaymentStatus(currElem.is_paid ? 'Paid' : 'Unpaid')
+    }
+    }
+  }, [categorySelect]);
+console.log(orderStatus);
+const handleUpdate = () => {
+  const data = {
+    order_status: orderStatus,
+    is_paid: paymentStatus 
+  };
+
+  const headers = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
+
+  axios.patch(`${baseUrl}superadmin/get-orders-dashboard/${currElem.order_id}/`, data, { headers })
+    .then(response => {
+      toast.success("Status updated successfully", {
+        theme: "light",
+      });
+      setStatus(false); // Close the modal or update status as needed
+      fetchOrdersList(setOrders)
+    })
+    .catch(error => {
+      toast.error("Failed to update status", {
+        theme: "light",
+      });
+    });
+};
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
       <div className="flex justify-between items-center py-5 px-7 pb-7">
@@ -63,7 +117,7 @@ const Orders = () => {
         </p>
         <div className="flex items-center gap-4">
           <CommonBtn
-            clickEvent={() => setStatus(true)}
+            clickEvent={showUpdateLayer}
             btntext="Update Status"
             style="bg-[#5DB505]"
           />
@@ -126,10 +180,10 @@ const Orders = () => {
                     {val.quantity}
                   </div>
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[112px]">
-                    {val.orderBy}
+                    {val.ordered_by}
                   </div>
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[121px]">
-                    {val.price}
+                    {val.total_price}
                   </div>
 
                   <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[152px]">
@@ -162,28 +216,20 @@ const Orders = () => {
           </div>
         </div>
       </div>
-      <div
-        className={`flex items-center duration-100 justify-center fixed inset-0 ${
-          status
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`}
-      >
-        <div
-          onClick={() => setStatus(false)}
-          className="fixed inset-0 backdrop-blur-sm bg-[#3F7E00] bg-opacity-15"
-        ></div>
-        <div className="w-full max-w-[598px] mx-auto pb-[42px] relative z-10 px-[53px] pt-[18px] bg-white rounded-3xl">
-          <button
+      <div className={`flex items-center duration-100 justify-center fixed inset-0 ${status ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+      <div onClick={() => setStatus(false)} className="fixed inset-0 backdrop-blur-sm bg-[#3F7E00] bg-opacity-15"></div>
+      <div className="w-full max-w-[598px] mx-auto pb-[42px] relative z-10 px-[53px] pt-[18px] bg-white rounded-3xl">
+      <button
             onClick={() => setStatus(false)}
             className="rounded-full absolute top-6 right-9"
           >
             <img src={closeIcon} alt="close icon" />
           </button>
-          <p className="text-[#3F7E00] text-2xl font-semibold font-poppins text-center leading-9">
-            Update Status
-          </p>
-          <div className="flex space-x-[42px] mt-10">
+        <p className="text-[#3F7E00] text-2xl font-semibold font-poppins text-center leading-9">
+          Update Status
+        </p>
+        <div className="my-11">
+        <div className="flex space-x-[42px] mt-10">
             <label className="flex items-center cursor-pointer">
               <input
                 type="radio"
@@ -211,47 +257,51 @@ const Orders = () => {
               </span>
             </label>
           </div>
-          <div className="my-11">
-            {selectedTab === "tab1" && (
-              <div>
-                <Select>
+          {selectedTab === "tab1" && (
+              <div className="mt-11">
+               <Select onValueChange={(val) => setOrderStatus(val)}>
                   <SelectTrigger className="w-[369px]">
-                    <SelectValue placeholder="Delivered" />
+                    <SelectValue placeholder="Order Status" />
                   </SelectTrigger>
                   <SelectContent width="w-[369px]">
-                    <SelectItem color="text-[#3F7E00]" value="resolved">
-                      Delivered
-                    </SelectItem>
                     <SelectItem color="text-[#FF3D00]" value="pending">
                       Pending
+                    </SelectItem>
+                    <SelectItem color="text-[#3F7E00]" value="delivered">
+                      Delivered
                     </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             )}
             {selectedTab === "tab2" && (
-              <div>
-                <Select>
+              <div className="mt-11">
+               <Select onValueChange={(val) => setPaymentStatus(val)}>
                   <SelectTrigger className="w-[369px]">
-                    <SelectValue placeholder="Paid" />
+                    <SelectValue placeholder="Payment Status" />
                   </SelectTrigger>
                   <SelectContent width="w-[369px]">
-                    <SelectItem color="text-[#3F7E00]" value="resolved">
+                    <SelectItem color="text-[#3F7E00]" value={true}>
                       Paid
                     </SelectItem>
-                    <SelectItem color="text-[#FF3D00]" value="pending">
+                    <SelectItem color="text-[#FF3D00]" value={false}>
                       Unpaid
                     </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             )}
-          </div>
-          <button className="py-[18px] px-16 leading-6 text-base text-white font-poppins font-medium rounded-[8px] bg-[#5DB505]">
-            Update
-          </button>
+          
+          
         </div>
+        <button
+          onClick={handleUpdate}
+          className="py-[18px] px-16 leading-6 text-base text-white font-poppins font-medium rounded-[8px] bg-[#5DB505]"
+        >
+          Update Status
+        </button>
       </div>
+    </div>
     </div>
   );
 };

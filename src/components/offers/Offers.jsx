@@ -84,15 +84,19 @@ const Offers = () => {
     setCategorySelect,
     couponData,
     setExportLayer,
-    setDataForExport,
+    setDataForExport,bannerData
   } = useContext(MyContext);
   const navigate = useNavigate();
   const [coupon, setCoupon] = useState(false);
   const [banner, setBanner] = useState(false);
   const [filteredOffers, setFilteredOffers] = useState([]);
   const [filteredBanners, setFilteredBanners] = useState([]);
-  const handleViewAndEdit = (id, name) => {
-    navigate(`/offers/${id}`);
+  const handleViewAndEdit = (id, name,tag) => {
+    if(tag==="coupon"){
+      navigate(`/offers/${id}`);
+    }else if(tag==="banner"){
+      navigate(`/offers/banner/${id}`);
+    }
     setTitle(name);
   };
   const [offerTabs, setOfferTabs] = useState("coupon");
@@ -106,6 +110,7 @@ const Offers = () => {
     setExportLayer(true);
     setDataForExport(data);
   };
+  console.log(bannerData);
   return (
     <div className="h-[calc(100vh-76px)] flex flex-col w-full">
       <div className="flex items-center gap-10 pt-6 px-10">
@@ -196,7 +201,7 @@ const Offers = () => {
                       </div>
                       <div
                         onClick={() =>
-                          handleViewAndEdit(val.coupon_code, val.name)
+                          handleViewAndEdit(val.coupon_code, val.name,"coupon")
                         }
                         className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] cursor-pointer underline w-[136px]"
                       >
@@ -240,7 +245,7 @@ const Offers = () => {
                   <SearchRounded />
                 </label>
                 <SearchInput
-                  items={rows}
+                  items={bannerData}
                   onSearchResults={handleBannerSearch}
                 />
               </div>
@@ -251,7 +256,7 @@ const Offers = () => {
                   style="bg-[#FF7D24]"
                 />
                 <CommonBtn
-                  clickEvent={() => showOverlay(rows)}
+                  clickEvent={() => showOverlay(bannerData)}
                   btntext="Export"
                   style="bg-[#444444]"
                 />
@@ -291,37 +296,35 @@ const Offers = () => {
                       />
                     </div>
                     <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
-                      {val.id}
+                      {i+1}
                     </div>
                     <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[126px]">
-                      {val.DOJ}
+                      {formatDateTime(val.created_at)}
                     </div>
                     <div
-                      onClick={() => handleViewAndEdit(val.banner_id, val.name)}
+                      onClick={() => handleViewAndEdit(val.bannerID, val.banner_name,"banner")}
                       className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] cursor-pointer underline w-[136px]"
                     >
-                      {val.banner_id}
+                      {val.bannerID}
                     </div>
                     <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[158px]">
-                      {val.name}
+                      {val.banner_name}
                     </div>
                     <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[122px]">
-                      {val.startDate}
+                      {formatDateTime(val.from_date)}
                     </div>
                     <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[171px]">
-                      {val.expDate}
+                    {formatDateTime(val.to_date)}
                     </div>
                     <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[104px]">
-                      <span
-                        className={`text-white font-medium font-poppins leading-5 text-sm inline-block text-center px-2 min-w-[98px] py-[5px] rounded-lg bg-[#5DB505] ${
-                          val.status === "active"
-                            ? "bg-[#5DB505]"
-                            : "bg-[#FD5353]"
-                        }`}
-                      >
-                        {val.status}
-                      </span>
-                    </div>
+                        <span
+                          className={`text-white font-medium font-poppins leading-5 text-sm px-7 py-[5px] rounded-lg bg-[#5DB505] ${
+                            val.status ? "bg-[#5DB505]" : "bg-[#FD5353]"
+                          }`}
+                        >
+                          {val.status ? "Active" : "Unactive"}
+                        </span>
+                      </div>
                   </div>
                 ))
               ) : (

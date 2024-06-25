@@ -1,10 +1,34 @@
 import { ArrowBack } from "@mui/icons-material";
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext,useState,useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import MyContext from "../context/ContextStore";
 import demoCrop from "../../assets/images/png/demo-crop.png";
+import axios from "axios";
+import { baseUrl, token } from "../api/auth";
 const RequestDetails = () => {
   const { setTitle } = useContext(MyContext);
+  const {user_req_id}=useParams()
+  const [reqDetails, setreqDetails] = useState();
+  useEffect(() => {
+    if (user_req_id) {
+      const fetchProductDetails = async () => {
+        try {
+          const res = await axios.get(
+            `${baseUrl}superadmin/other-user-plant/${user_req_id}/`,
+            {
+              Authorization: `token ${token}`,
+            }
+          );
+          setreqDetails(res.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchProductDetails();
+    }
+    console.log("id", user_req_id);
+  }, [user_req_id]);
+  console.log(reqDetails);
   return (
     <div className="py-6 px-10 w-full h-[calc(100vh-76px)] flex flex-col">
       <div className="flex mb-10 justify-between">
@@ -29,7 +53,7 @@ const RequestDetails = () => {
                 User Name<span className="text-[#FD5353]">*</span>
               </label>
               <p className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]">
-                lorem
+              {reqDetails &&reqDetails.user}
               </p>
             </div>
             <div className="flex flex-col mb-2">
@@ -37,7 +61,7 @@ const RequestDetails = () => {
                 Plant Name<span className="text-[#FD5353]">*</span>
               </p>
               <p className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]">
-                abc
+             {reqDetails &&reqDetails.plantName}
               </p>
             </div>
             <div className="flex flex-col mb-2">
@@ -46,10 +70,7 @@ const RequestDetails = () => {
               </p>
               <div className="py-[13px] h-[170px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]">
                 <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iste
-                  dignissimos quod itaque quisquam neque culpa sed alias. Nulla
-                  corrupti fuga, saepe laboriosam ipsum minus qui corporis,
-                  omnis facere maiores eum!
+                {reqDetails &&reqDetails.description}
                 </p>
               </div>
             </div>
@@ -59,9 +80,8 @@ const RequestDetails = () => {
               Pictures :
             </p>
             <div className="grid grid-cols-2 gap-7">
-              <img className="w-full" src={demoCrop} alt="demoCrop" />
-              <img className="w-full" src={demoCrop} alt="demoCrop" />
-              <img className="w-full" src={demoCrop} alt="demoCrop" />
+              <img className="w-full" src={reqDetails && baseUrl+reqDetails.plantImage1} alt="demoCrop" />
+              <img className="w-full" src={reqDetails && baseUrl+reqDetails.plantImage2} alt="demoCrop" />
             </div>
           </div>
         </div>
@@ -72,10 +92,7 @@ const RequestDetails = () => {
             </p>
             <div className="py-[13px] h-[170px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]">
               <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iste
-                dignissimos quod itaque quisquam neque culpa sed alias. Nulla
-                corrupti fuga, saepe laboriosam ipsum minus qui corporis, omnis
-                facere maiores eum!
+            
               </p>
             </div>
           </div>

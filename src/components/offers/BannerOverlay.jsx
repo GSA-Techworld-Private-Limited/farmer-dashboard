@@ -1,7 +1,81 @@
-import React from "react";
+import React, { useContext, useRef, useState } from "react";
+import axios from "axios";
 import closeIcon from "../../assets/images/svg/close.svg";
 import dummyImage from "../../assets/images/png/image-skeletion.png";
+import { baseUrl, fetchBannerData } from "../api/auth";
+import { toast } from "react-toastify";
+import MyContext from "../context/ContextStore";
+
 const BannerOverlay = (props) => {
+  const {setBannerData}=useContext(MyContext)
+  const inputFileRef=useRef()
+  const [formData, setFormData] = useState({
+    bannerName: "",
+    fromDate: "",
+    toDate: "",
+    profilePic: null,
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleFileChange = (event) => {
+    setFormData({
+      ...formData,
+      profilePic: event.target.files[0],
+    });
+  };
+
+  const handleSubmit = async () => {
+    const data = new FormData();
+    data.append("banner_name", formData.bannerName);
+    data.append("from_date", formData.fromDate);
+    data.append("to_date", formData.toDate);
+    if (formData.profilePic) {
+      data.append("image", formData.profilePic);
+    }
+    const { bannerName, fromDate, toDate, profilePic } = formData;
+    if (bannerName && fromDate && toDate && profilePic) {
+      try {
+        const response = await axios.post(
+          `${baseUrl}superadmin/banners/`,
+          data,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log("Success:", response.data);
+        fetchBannerData(setBannerData)
+        toast.success("Banner Added Successfully", {
+          theme: "light",
+        });
+        setFormData({
+          bannerName: "",
+          fromDate: "",
+          toDate: "",
+          profilePic: null,
+        })
+        inputFileRef.current.value=""
+      } catch (error) {
+        console.error("Error:", error);
+        toast.error(error.message, {
+          theme: "light",
+        });
+      }
+    } else {
+      toast.warning("Fill Reqired Fields", {
+        theme: "light",
+      });
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center duration-100 justify-center fixed inset-0">
@@ -22,28 +96,17 @@ const BannerOverlay = (props) => {
           <div className="pt-10 mb-6">
             <div className="flex flex-col mb-2">
               <label
-                htmlFor="Banner-name"
+                htmlFor="bannerName"
                 className="text-sm text-[#525153] font-poppins leading-5 mb-2"
               >
                 Banner Name<span className="text-[#FD5353]">*</span>
               </label>
               <input
                 type="text"
-                id="Banner-name"
-                placeholder="James"
-                className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
-              />
-            </div>
-            <div className="flex flex-col mb-2">
-              <label
-                htmlFor="Banner-id"
-                className="text-sm text-[#525153] font-poppins leading-5 mb-2"
-              >
-                Banner ID<span className="text-[#FD5353]">*</span>
-              </label>
-              <input
-                type="text"
-                id="Banner-id"
+                id="bannerName"
+                name="bannerName"
+                value={formData.bannerName}
+                onChange={handleInputChange}
                 placeholder="James"
                 className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
               />
@@ -51,29 +114,33 @@ const BannerOverlay = (props) => {
             <div className="flex gap-6 mb-6">
               <div className="flex flex-col w-full">
                 <label
-                  htmlFor="Banner-from-date"
+                  htmlFor="fromDate"
                   className="text-sm text-[#525153] font-poppins leading-5 mb-2"
                 >
                   From Date<span className="text-[#FD5353]">*</span>
                 </label>
                 <input
                   type="date"
-                  id="Banner-from-date"
-                  placeholder="00%"
+                  id="fromDate"
+                  name="fromDate"
+                  value={formData.fromDate}
+                  onChange={handleInputChange}
                   className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
                 />
               </div>
               <div className="flex flex-col w-full">
                 <label
-                  htmlFor="Banner-to-date"
+                  htmlFor="toDate"
                   className="text-sm text-[#525153] font-poppins leading-5 mb-2"
                 >
                   To Date<span className="text-[#FD5353]">*</span>
                 </label>
                 <input
                   type="date"
-                  id="Banner-to-date"
-                  placeholder="James"
+                  id="toDate"
+                  name="toDate"
+                  value={formData.toDate}
+                  onChange={handleInputChange}
                   className="py-[13px] focus:border-[#525153] outline-none duration-200 text-sm w-full text-[#6C757D] placeholder:text-[#6C757D] font-poppins leading-5 px-5 rounded-md border border-[#DDDDDD]"
                 />
               </div>
@@ -87,21 +154,43 @@ const BannerOverlay = (props) => {
               <div className="border border-[#E3E3E3] rounded-lg px-4 py-2.5 mt-3">
                 <img
                   className="mb-7 w-16 h-16 object-cover"
-                  src={dummyImage}
+                  src={
+                    formData.profilePic
+                      ? URL.createObjectURL(formData.profilePic)
+                      : dummyImage
+                  }
                   alt="dummyImage"
                 />
                 <div className="flex items-center gap-2.5">
-                  <button className="leading-5 w-[108px] text-center text-xs text-white font-poppins font-medium py-2.5 px-2 rounded-[8px] bg-[#787878]">
+                  <input
+                    type="file"
+                    ref={inputFileRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                    id="profilePic"
+                  />
+                  <label
+                    htmlFor="profilePic"
+                    className="leading-5 w-[108px] text-center text-xs text-white font-poppins font-medium py-2.5 px-2 rounded-[8px] bg-[#787878] cursor-pointer"
+                  >
                     Choose File
-                  </button>
-                  <button className="leading-5 w-[108px] text-center text-xs bg-[#FFEAEA] font-poppins font-medium py-2.5 px-2 rounded-[8px] text-[#FD5353]">
+                  </label>
+                  <button
+                    onClick={() =>
+                      setFormData({ ...formData, profilePic: null })
+                    }
+                    className="leading-5 w-[108px] text-center text-xs bg-[#FFEAEA] font-poppins font-medium py-2.5 px-2 rounded-[8px] text-[#FD5353]"
+                  >
                     Remove
                   </button>
                 </div>
               </div>
             </div>
           </div>
-          <button className="py-[18px] px-16 leading-6 text-sm text-white font-poppins rounded-[8px] bg-[#3F7E00]">
+          <button
+            onClick={handleSubmit}
+            className="py-[18px] px-16 leading-6 text-sm text-white font-poppins rounded-[8px] bg-[#3F7E00]"
+          >
             Add Banner
           </button>
         </div>

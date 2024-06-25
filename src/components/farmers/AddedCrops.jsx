@@ -106,17 +106,17 @@ const AddedCrops = () => {
                     onClick={() => cropsDetails(val.id)}
                     className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline w-[112px]"
                   >
-                    {val.id}
+                    {val.request_id}
                   </div>
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[145px]">
-                    {val.farmer}
+                    {val.farmer_name}
                   </div>
 
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[104px]">
                     {val.crop_name}
                   </div>
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[104px]">
-                    {val.variety}
+                    {val.crop_variety}
                   </div>
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[87px]">
                     {val.farm_size}

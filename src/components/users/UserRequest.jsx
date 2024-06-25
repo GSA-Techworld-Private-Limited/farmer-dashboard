@@ -6,6 +6,7 @@ import MyContext from "../context/ContextStore";
 import { handleCheckBoxChange } from "../utils/handleCheckBox";
 import { useNavigate } from "react-router-dom";
 import SearchInput from "../SearchInput";
+import { formatDateTime } from "../experts/Experts";
 
 const columns = [
   { headerName: "SL. No", width: 72 },
@@ -17,53 +18,7 @@ const columns = [
   { headerName: "Status", width: 104 },
 ];
 
-const rows = [
-  {
-    id: 1,
-    request_ID: "3564364",
-    date: "27-07-23",
-    description: "",
-    name: "Jon",
-    plantName: "Hibiscous",
-    status: "Pending",
-  },
-  {
-    id: 2,
-    request_ID: "3564364",
-    date: "27-07-23",
-    description: "",
-    name: "Cersei",
-    plantName: "Hibiscous",
-    status: "Pending",
-  },
-  {
-    id: 3,
-    request_ID: "3564364",
-    date: "27-07-23",
-    description: "",
-    name: "Jaime",
-    plantName: "Hibiscous",
-    status: "Pending",
-  },
-  {
-    id: 4,
-    request_ID: "3564364",
-    date: "27-07-23",
-    description: "",
-    name: "Arya",
-    plantName: "Hibiscous",
-    status: "Pending",
-  },
-  {
-    id: 5,
-    request_ID: "3564364",
-    date: "27-07-23",
-    description: "",
-    name: "Daenerys",
-    plantName: "Hibiscous",
-    status: "Pending",
-  },
-];
+
 const UserRequest = () => {
   const {
     setCheckedItems,
@@ -71,14 +26,14 @@ const UserRequest = () => {
     checkedItems,
     setTitle,
     setExportLayer,
-    setDataForExport,
+    setDataForExport,usersRequest
   } = useContext(MyContext);
   const navigate = useNavigate();
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const requestDetails = (id) => {
+  const requestDetails = (id,req_id) => {
     if (id) {
-      setTitle(`Request ID - ${id}`);
-      navigate(`/users/user-requests/id=${id}`);
+      setTitle(`Request ID - ${req_id}`);
+      navigate(`/users/user-requests/${id}`);
     }
   };
   const handleSearchResults = (results) => {
@@ -86,7 +41,7 @@ const UserRequest = () => {
   };
   const showOverlay = () => {
     setExportLayer(true);
-    setDataForExport(rows);
+    setDataForExport(usersRequest);
   };
   return (
     <div className="w-full h-[calc(100vh-76px)] flex flex-col">
@@ -95,7 +50,7 @@ const UserRequest = () => {
           <label htmlFor="search" className="px-[18px] text-[#4D44B5]">
             <SearchRounded />
           </label>
-          <SearchInput items={rows} onSearchResults={handleSearchResults} />
+          <SearchInput items={usersRequest} onSearchResults={handleSearchResults} />
         </div>
         <CommonBtn
           clickEvent={showOverlay}
@@ -136,25 +91,25 @@ const UserRequest = () => {
                   />
                 </div>
                 <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[72px]">
-                  {val.id}
+                  {i+1}
                 </div>
                 <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[93px]">
-                  {val.date}
+                  {formatDateTime(val.created_at)}
                 </div>
                 <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[112px]">
-                  {val.name}
+                  {val.username}
                 </div>
                 <div
-                  onClick={() => requestDetails(val.request_ID)}
+                  onClick={() => requestDetails(val.plant_ID,val.request_id)}
                   className="py-1 text-sm font-semibold font-poppins leading-5 text-[#3F7E00] cursor-pointer underline w-[134px]"
                 >
-                  {val.request_ID}
+                  {val.request_id}
                 </div>
                 <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[107px]">
-                  {val.plantName}
+                  {val.plant_ID}
                 </div>
                 <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[107px]">
-                  <div className="rounded-[5px] border-[0.5px] border-[#ADA9A9] h-[52px]">
+                  <div className="rounded-[5px] p-2 border-[0.5px] border-[#ADA9A9] h-[52px]">
                     {val.description}
                   </div>
                 </div>
@@ -162,7 +117,7 @@ const UserRequest = () => {
                 <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[104px]">
                   <span
                     className={`text-white font-medium font-poppins leading-5 text-sm px-7 py-[5px] rounded-lg ${
-                      val.status === "Pending" ? "bg-[#FD5353]" : "bg-[#5DB505]"
+                      val.status.toLowerCase() === "Pending".toLowerCase() ? "bg-[#FD5353]" : val.status.toLowerCase()==="waiting".toLowerCase()?"bg-[#FF7D24]":"bg-[#5DB505]"
                     }`}
                   >
                     {val.status}
@@ -172,7 +127,7 @@ const UserRequest = () => {
             ))
           ) : (
             <div className="flex items-center justify-center text-red-500 font-poppins flex-col">
-              <span className="text-3xl">☹</span> <p>No matches found</p>
+              <span className="text-3xl">☹</span> <p>No data found</p>
             </div>
           )}
         </div>

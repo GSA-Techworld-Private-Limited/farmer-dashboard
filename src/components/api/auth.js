@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const baseUrl = "https://v3h2dw9k-8000.inc1.devtunnels.ms/";
+export const baseUrl = "http://142.93.223.45:8005/";
 export const token = sessionStorage.getItem("token");
 
 export const fetchStats = async (setStats) => {
@@ -153,12 +153,37 @@ export const fetchUsers = async (setUsers) => {
     console.log(error);
   }
 };
+export const fetchUsersRequest = async (setUsersRequest) => {
+  try {
+    const res = await axios.get(
+      `${baseUrl}superadmin/other-user-plant-requests/`,
+      {
+        Authorization: `token ${token}`,
+      }
+    );
+    setUsersRequest(res.data);
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const fetchCouponData = async (setCouponData) => {
   try {
     const res = await axios.get(`${baseUrl}superadmin/add-coupons-dashboard/`, {
       Authorization: `token ${token}`,
     });
     setCouponData(res.data);
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const fetchBannerData = async (setBannerData) => {
+  try {
+    const res = await axios.get(`${baseUrl}superadmin/banners/`, {
+      Authorization: `token ${token}`,
+    });
+    setBannerData(res.data);
     console.log(res);
   } catch (error) {
     console.log(error);

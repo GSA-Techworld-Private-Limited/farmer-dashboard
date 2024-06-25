@@ -101,8 +101,15 @@ const Users = () => {
                 </div>
 
                 <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[104px]">
-                  <span className="text-white font-medium font-poppins leading-5 text-sm px-7 py-[5px] rounded-lg bg-[#5DB505]">
-                    {val.status}
+                  <span className={`text-white font-medium font-poppins leading-5 text-sm inline-block text-center px-2 min-w-[98px] py-[5px] rounded-lg bg-[#5DB505] ${
+                        val.status === true
+                          ? "bg-[#5DB505]"
+                          : "bg-[#FD5353]"
+                      }`}>
+                  {val.status === true
+                          ? "Active"
+                          : "Unactive"
+                      }
                   </span>
                 </div>
               </div>

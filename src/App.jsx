@@ -32,6 +32,7 @@ import ProductDetails from "./components/products/ProductDetails";
 import Categories from "./components/products/Categories";
 import "react-toastify/dist/ReactToastify.css";
 import {
+  fetchBannerData,
   fetchCategories,
   fetchCouponData,
   fetchEmployees,
@@ -45,11 +46,13 @@ import {
   fetchSales,
   fetchStats,
   fetchUsers,
+  fetchUsersRequest,
   fetchVendors,
 } from "./components/api/auth";
 import AddNursery from "./components/nurseries/AddNursery";
 import { ToastContainer } from "react-toastify";
 import ExportOverlay from "./components/common/ExportOverlay";
+import BannerDetails from "./components/offers/BannerDetails";
 function App() {
   const {
     authenticated,
@@ -69,8 +72,8 @@ function App() {
     setCouponData,
     setSales,
     setLoading,
-    exportLayer,
-    setExportLayer,
+    exportLayer,setBannerData,
+    setExportLayer,setUsersRequest
   } = useContext(MyContext);
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -87,7 +90,9 @@ function App() {
       fetchVendors(setVendors);
       fetchNurseries(setNurseries);
       fetchUsers(setUsers);
+      fetchUsersRequest(setUsersRequest);
       fetchCouponData(setCouponData);
+      fetchBannerData(setBannerData)
       fetchSales(setSales, "yearly");
     }
   }, [authenticated]);
@@ -212,6 +217,10 @@ function App() {
           <Route
             path="/offers/:offer_id"
             element={<ProtectedRoute element={<OfferDetails />} />}
+          />
+          <Route
+            path="/offers/banner/:banner_id"
+            element={<ProtectedRoute element={<BannerDetails />} />}
           />
           <Route
             path="*"

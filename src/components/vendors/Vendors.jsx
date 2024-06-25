@@ -18,7 +18,6 @@ const columns = [
   { headerName: "State", width: 106 },
   { headerName: "City", width: 104 },
   { headerName: "Pincode", width: 104 },
-  { headerName: "Farmers Added", width: 122 },
   { headerName: "Status", width: 104 },
 ];
 const Vendors = () => {
@@ -156,9 +155,7 @@ const Vendors = () => {
                   <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] w-[104px]">
                     {val.pincode}
                   </div>
-                  <div className="py-1 text-sm font-semibold font-poppins leading-5 text-[#303972] underline w-[122px]">
-                    {val.farmersAdded}
-                  </div>
+                
                   <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[104px]">
                     <span
                       className={`text-white font-medium font-poppins leading-5 text-sm px-7 py-[5px] rounded-lg bg-[#5DB505] ${

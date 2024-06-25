@@ -38,9 +38,9 @@ const Employees = () => {
   } = useContext(MyContext);
   const navigate = useNavigate();
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const handleExpertDetails = (farmer) => {
-    if (farmer) {
-      navigate(`/employees/${farmer}`);
+  const handleExpertDetails = (farmer,id) => {
+    if (id) {
+      navigate(`/employees/${id}`);
       setTitle(`${farmer} (Farmers)`);
     }
   };
@@ -168,7 +168,7 @@ const Employees = () => {
                     {val.city}
                   </div>
                   <div
-                    onClick={() => handleExpertDetails(val.firstName)}
+                    onClick={() => handleExpertDetails(val.name,val.employee_id)}
                     className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline cursor-pointer w-[122px]"
                   >
                     {val.farmer_added}
