@@ -103,7 +103,7 @@ const AddedCrops = () => {
                     {formatDateTime(val.created_at)}
                   </div>
                   <div
-                    onClick={() => cropsDetails(val.id)}
+                    onClick={() => cropsDetails(val.crop_ID)}
                     className="py-1 text-sm font-semibold font-poppins leading-5 text-[#438700] underline w-[112px]"
                   >
                     {val.request_id}
@@ -127,7 +127,7 @@ const AddedCrops = () => {
                   <div className="py-1 text-sm font-semibold capitalize font-poppins leading-5 text-[#303972] w-[104px]">
                     <span
                       className={`text-white font-medium font-poppins leading-5 text-sm inline-block text-center px-2 min-w-[98px] py-[5px] rounded-lg bg-[#5DB505] ${
-                        val.status === "Delivered"
+                        val.status.toLowerCase() === "accepted".toLowerCase()
                           ? "bg-[#5DB505]"
                           : "bg-[#FD5353]"
                       }`}

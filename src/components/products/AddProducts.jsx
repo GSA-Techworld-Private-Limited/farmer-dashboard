@@ -76,7 +76,6 @@ const AddProducts = () => {
         console.log(res);
       } catch (error) {
         console.log(error);
-        alert(error.message);
         toast.error(error.message, {
           theme: "light",
         });
